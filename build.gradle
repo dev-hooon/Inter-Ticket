@@ -4,22 +4,32 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'dev.hooon'
-version = '0.0.1-SNAPSHOT'
+subprojects {
 
-java {
+	apply plugin: 'java'
+	apply plugin: 'java-library'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	group = 'dev.hooon'
+	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = '17'
-}
 
-repositories {
-	mavenCentral()
-}
+	repositories {
+		mavenCentral()
+	}
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+	// 공통 dependencies
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testCompileOnly 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.projectlombok:lombok'
+		implementation 'org.springframework.boot:spring-boot-starter-validation'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 }
