@@ -11,7 +11,7 @@ subprojects {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 
-	group = 'com.example'
+	group = 'dev.hooon'
 	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = '17'
 
