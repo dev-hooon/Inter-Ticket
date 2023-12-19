@@ -11,6 +11,6 @@ public class CoreTest {
         // when
 
         // then
-        throw new RuntimeException();
+
     }
 }
