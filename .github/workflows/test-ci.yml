@@ -40,7 +40,7 @@ jobs:
         uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: |
-            ${{ github.workspace }}/**/build/jacoco/report/index.html
+            ${{ github.workspace }}/**/build/jacoco/report/index.html,
             ${{ github.workspace }}/**/build/jacoco/report/index.html
           token: ${{ secrets.GITHUB_TOKEN }}
           title: '# :lobster: Test Coverage Report'
