@@ -43,4 +43,6 @@ jobs:
             ${{ github.workspace }}/**/build/jacoco/report/index.html
             ${{ github.workspace }}/**/build/jacoco/report/index.html
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: "test coverage analysis"
+          title: '# :lobster: Test Coverage Report'
+          pass-emoji: ':green_circle:'
+          fail-emoji: ':red_circle:'
