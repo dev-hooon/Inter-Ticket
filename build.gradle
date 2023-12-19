@@ -41,9 +41,8 @@ subprojects {
 
 	jacocoTestReport {
 		reports {
-			// html로 report 생성
-			// 빌드경로를 jacoco/report 디렉토리 내부로 경로 설정
-			html.destination file("$buildDir/jacoco/report")
+			xml.required = true
+			html.required = true
 		}
 
 		def Qdomains = []
