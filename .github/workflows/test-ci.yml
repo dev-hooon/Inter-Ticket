@@ -31,4 +31,14 @@ jobs:
       - name: test CI
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test
+          arguments: clean test jacocoTestReport jacocoTestCoverageVerification
+
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.6.1
+        with:
+          paths: |
+            ${{ github.workspace }}/**/build/jacoco/report/index.html
+            ${{ github.workspace }}/**/build/jacoco/report/index.html
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "test coverage analysis"
