@@ -21,7 +21,7 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 	private SeatRepository seatRepository;
 
 	@Test
-	@DisplayName("show_id 로 좌석의 날짜, 회차, 시간 정보를 조회한다")
+	@DisplayName("[show_id 로 좌석의 날짜, 회차, 시간 정보를 조회한다]")
 	void findSeatDateRoundInfoByShowIdTest() {
 		//when
 		List<SeatDateRoundDto> result = seatRepository.findSeatDateRoundInfoByShowId(1L);
