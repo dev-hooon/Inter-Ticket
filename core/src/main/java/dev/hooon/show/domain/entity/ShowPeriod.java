@@ -1,14 +1,14 @@
 package dev.hooon.show.domain.entity;
 
+import static lombok.AccessLevel.*;
+
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Embeddable

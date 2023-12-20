@@ -1,18 +1,27 @@
 package dev.hooon.show.domain.entity.seat;
 
-import dev.hooon.common.entity.TimeBaseEntity;
-import dev.hooon.show.domain.entity.Show;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import static jakarta.persistence.ConstraintMode.*;
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 import java.time.LocalDate;
 
-import static jakarta.persistence.ConstraintMode.NO_CONSTRAINT;
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PROTECTED;
+import dev.hooon.common.entity.TimeBaseEntity;
+import dev.hooon.show.domain.entity.Show;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -48,6 +57,7 @@ public class Seat extends TimeBaseEntity {
     @Embedded
     private ShowRound showRound;
 
-    @Column(name = "seat_is_booked", nullable = false)
-    private boolean isBooked;
+    @Enumerated(STRING)
+    @Column(name = "seat_status", nullable = false)
+    private SeatStatus seatStatus;
 }
