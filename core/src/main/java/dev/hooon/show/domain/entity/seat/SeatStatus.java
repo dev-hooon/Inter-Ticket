@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SeatStatus {
 
-	AVAILABLE_BOOKING("예매 가능"),
+	AVAILABLE("예매 가능"),
 	BOOKED("예매 완료"),
 	CANCELED("예매 취소");
 
