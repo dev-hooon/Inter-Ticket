@@ -1,13 +1,18 @@
 package dev.hooon.user.domain.entity;
 
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.GenerationType.*;
+
 import dev.hooon.common.entity.TimeBaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter
