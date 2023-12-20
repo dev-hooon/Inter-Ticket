@@ -1,6 +1,7 @@
 package dev.hooon.show.domain.entity;
 
 import static jakarta.persistence.ConstraintMode.*;
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
@@ -10,6 +11,7 @@ import dev.hooon.show.domain.entity.place.Place;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -32,6 +34,10 @@ public class Show extends TimeBaseEntity {
 
     @Column(name = "show_name", nullable = false)
     private String name;
+
+    @Enumerated(STRING)
+    @Column(name = "show_category", nullable = false)
+    private ShowCategory category;
 
     @Embedded
     private ShowPeriod showPeriod;
