@@ -45,8 +45,8 @@ public class Show extends TimeBaseEntity {
     @Embedded
     private ShowTime showTime;
 
-    @Column(name = "show_age", nullable = false)
-    private String showAge;
+    @Column(name = "show_age_limit", nullable = false)
+    private String showAgeLimit;
 
     @Column(name = "show_total_seats")
     private int totalSeats;
