@@ -30,6 +30,9 @@ public class Show extends TimeBaseEntity {
     @Column(name = "show_id")
     private Long id;
 
+    @Column(name = "show_name", nullable = false)
+    private String name;
+
     @Embedded
     private ShowPeriod showPeriod;
 
