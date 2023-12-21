@@ -8,12 +8,16 @@ import org.testcontainers.utility.DockerImageName;
 
 public abstract class TestContainerSupport {
 
+	protected TestContainerSupport() {
+	}
+
 	private static final String REDIS_IMAGE = "redis:latest";
 	private static final String POSTGRES_IMAGE = "postgres:13-alpine";
 	private static final int REDIS_PORT = 6379;
-	private static final int POSTGRES_PORT = 5432;
 
+	private static final int POSTGRES_PORT = 5432;
 	private static final GenericContainer<?> REDIS;
+
 	private static final PostgreSQLContainer<?> POSTGRES;
 
 	static {
