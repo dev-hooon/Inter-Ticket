@@ -33,7 +33,7 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 		assertAll(
 			() -> assertThat(seatInfo1.showDate()).isEqualTo(seatInfo2.showDate()),
 			() -> assertThat(seatInfo1.round()).isLessThan(seatInfo2.round()),
-			() -> assertThat(seatInfo1.startTime()).isEqualTo(seatInfo2.startTime())
+			() -> assertThat(seatInfo1.startTime()).isBefore(seatInfo2.startTime())
 		);
 	}
 }
