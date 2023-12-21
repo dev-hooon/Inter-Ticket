@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 .DS_Store
-application*.yml
+core/src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
