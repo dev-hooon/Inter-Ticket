@@ -12,6 +12,11 @@ import dev.hooon.show.dto.query.SeatDateRoundDto;
 public interface SeatJpaRepository extends JpaRepository<Seat, Long>, SeatRepository {
 
 	@Override
+	default void saveAll(List<Seat> seats) {
+		seats.forEach(this::save);
+	}
+
+	@Override
 	@Query("""
 		select distinct
 		new dev.hooon.show.dto.query.SeatDateRoundDto(s.showDate, s.showRound.round, s.showRound.startTime)
