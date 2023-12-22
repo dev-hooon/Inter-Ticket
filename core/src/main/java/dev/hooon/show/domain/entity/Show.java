@@ -4,7 +4,6 @@ import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
 
 import dev.hooon.common.entity.TimeBaseEntity;
 import dev.hooon.show.domain.entity.place.Place;
@@ -24,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "show_table")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class Show extends TimeBaseEntity {
 
     @Id
