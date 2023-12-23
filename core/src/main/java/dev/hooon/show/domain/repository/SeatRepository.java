@@ -7,6 +7,7 @@ import dev.hooon.show.dto.query.SeatDateRoundDto;
 
 public interface SeatRepository {
 
-	void saveAll(List<Seat> seats);
+	void saveAll(Iterable<Seat> seats);
+
 	List<SeatDateRoundDto> findSeatDateRoundInfoByShowId(Long showId);
 }
