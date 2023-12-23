@@ -1,7 +1,6 @@
 package dev.hooon.show.domain.entity.place;
 
 import static jakarta.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
 
 import dev.hooon.common.entity.TimeBaseEntity;
 import jakarta.persistence.Column;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "place_table")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class Place extends TimeBaseEntity {
 
     @Id
