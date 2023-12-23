@@ -1,5 +1,6 @@
 package dev.hooon.user.infrastructure.adaptor;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,15 @@ public class UserRepositoryAdaptor implements UserRepository {
 	@Override
 	public Optional<User> findById(Long id) {
 		return userJpaRepository.findById(id);
+	}
+
+	@Override
+	public List<User> findByName(String name) {
+		return userJpaRepository.findByName(name);
+	}
+
+	@Override
+	public Long save(User user) {
+		return userJpaRepository.save(user).getId();
 	}
 }
