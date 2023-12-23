@@ -1,4 +1,4 @@
-package dev.hooon.show.infrastructure;
+package dev.hooon.show.infrastructure.repository;
 
 import java.util.List;
 
@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import dev.hooon.show.domain.entity.seat.Seat;
-import dev.hooon.show.domain.repository.SeatRepository;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
 
-public interface SeatJpaRepository extends JpaRepository<Seat, Long>, SeatRepository {
+public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
-	@Override
 	@Query("""
 		select distinct
 		new dev.hooon.show.dto.query.SeatDateRoundDto(s.showDate, s.showRound.round, s.showRound.startTime)
