@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,12 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
 public class ShowPeriod {
 
-    @Column(name = "show_start_date", nullable = false)
-    private LocalDate startDate;
+	@Column(name = "show_start_date", nullable = false)
+	private LocalDate startDate;
 
-    @Column(name = "show_end_date", nullable = false)
-    private LocalDate endDate;
+	@Column(name = "show_end_date", nullable = false)
+	private LocalDate endDate;
 }
