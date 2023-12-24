@@ -16,9 +16,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class ShowPeriod {
 
-    @Column(name = "show_start_date", nullable = false)
-    private LocalDate startDate;
+	@Column(name = "show_start_date", nullable = false)
+	private LocalDate startDate;
 
-    @Column(name = "show_end_date", nullable = false)
-    private LocalDate endDate;
+	@Column(name = "show_end_date", nullable = false)
+	private LocalDate endDate;
+
+	public ShowPeriod(
+		LocalDate startDate,
+		LocalDate endDate
+	) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
 }
