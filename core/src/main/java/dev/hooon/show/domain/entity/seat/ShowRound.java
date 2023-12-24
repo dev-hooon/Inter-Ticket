@@ -25,4 +25,9 @@ public class ShowRound {
     @Column(name = "seat_start_time")
     @Convert(converter = Jsr310JpaConverters.LocalTimeConverter.class)
     private LocalTime startTime;
+
+    public ShowRound(int round, LocalTime startTime) {
+        this.round = round;
+        this.startTime = startTime;
+    }
 }

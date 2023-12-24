@@ -22,4 +22,14 @@ public class SeatPositionInfo {
 
     @Column(name = "seat_col", nullable = false)
     private int col;
+
+    public SeatPositionInfo(
+        String sector,
+        String row,
+        int col
+    ) {
+        this.sector = sector;
+        this.row = row;
+        this.col = col;
+    }
 }
