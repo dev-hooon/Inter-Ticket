@@ -40,7 +40,7 @@ public class ApiExceptionHandler {
 		NotFoundException e
 	) {
 		log.error("NotFoundException : ", e);
-		return new ErrorResponseTemplate(e.getErrorCode().getMessage(), e.getErrorCode().getCode());
+		return new ErrorResponseTemplate(e.getMessage(), e.getCode());
 	}
 
 }
