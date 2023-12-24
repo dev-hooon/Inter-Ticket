@@ -33,4 +33,14 @@ public class ApiExceptionHandler {
 
 		return new ErrorResponseTemplate(message, ARGUMENT_NOT_VALID_ERROR_CODE);
 	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(NotFoundException.class)
+	public ErrorResponseTemplate handleNotFoundException(
+		NotFoundException e
+	) {
+		log.error("NotFoundException : ", e);
+		return new ErrorResponseTemplate(e.getMessage(), e.getCode());
+	}
+
 }

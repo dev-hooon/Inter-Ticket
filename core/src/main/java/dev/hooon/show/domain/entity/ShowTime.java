@@ -14,9 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class ShowTime {
 
-    @Column(name = "show_total_minutes", nullable = false)
-    private int totalMinutes;
+	@Column(name = "show_total_minutes", nullable = false)
+	private int totalMinutes;
 
-    @Column(name = "show_intermission_minutes", nullable = false)
-    private int intermissionMinutes;
+	@Column(name = "show_intermission_minutes", nullable = false)
+	private int intermissionMinutes;
+
+	public ShowTime(
+		int totalMinutes,
+		int intermissionMinutes
+	) {
+		this.totalMinutes = totalMinutes;
+		this.intermissionMinutes = intermissionMinutes;
+	}
 }
