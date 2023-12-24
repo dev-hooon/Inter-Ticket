@@ -1,8 +1,11 @@
 package dev.hooon.waitingbooking.domain.entity;
 
+import static dev.hooon.common.exception.CommonValidationError.*;
 import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
+
+import org.springframework.util.Assert;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +24,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WaitingBookingSeat {
 
+	private static final String WAITING_BOOKING_SEAT = "waitingBookingSeat";
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "waiting_booking_seat_id")
@@ -35,4 +40,17 @@ public class WaitingBookingSeat {
 		nullable = false,
 		foreignKey = @ForeignKey(value = NO_CONSTRAINT))
 	private WaitingBooking waitingBooking;
+
+	// 생성 메소드
+	private WaitingBookingSeat(Long seatId, WaitingBooking waitingBooking) {
+		Assert.notNull(seatId, getNotNullMessage(WAITING_BOOKING_SEAT, "seatId"));
+		Assert.notNull(waitingBooking, getNotNullMessage(WAITING_BOOKING_SEAT, "waitingBooking"));
+		this.seatId = seatId;
+		this.waitingBooking = waitingBooking;
+	}
+
+	// 팩토리 메소드
+	public static WaitingBookingSeat of(Long seatId, WaitingBooking waitingBooking) {
+		return new WaitingBookingSeat(seatId, waitingBooking);
+	}
 }
