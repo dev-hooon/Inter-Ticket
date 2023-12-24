@@ -1,7 +1,6 @@
 package dev.hooon.show.application;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -30,10 +29,9 @@ public class ShowService {
 	}
 
 	public ShowDetailsInfoResponse getShowDetailInfo(Long showId) {
-		Optional<Show> showOptional = showRepository.findById(showId);
-		if (showOptional.isEmpty()) {
-			throw new NotFoundException(ShowErrorCode.SHOW_NOT_FOUND);
-		}
-		return ShowMapper.toShowDetailInfoResponse(showOptional.get());
+		Show show = showRepository.findById(showId).orElseThrow(
+			() -> new NotFoundException(ShowErrorCode.SHOW_NOT_FOUND)
+		);
+		return ShowMapper.toShowDetailInfoResponse(show);
 	}
 }
