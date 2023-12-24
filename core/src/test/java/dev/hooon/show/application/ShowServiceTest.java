@@ -29,6 +29,7 @@ import dev.hooon.show.dto.ShowMapper;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
 import dev.hooon.show.dto.response.AbleBookingDateRoundResponse;
 import dev.hooon.show.dto.response.ShowDetailsInfoResponse;
+import dev.hooon.show.exception.ShowErrorCode;
 
 @DisplayName("[ShowService 테스트]")
 @ExtendWith(MockitoExtension.class)
@@ -115,15 +116,13 @@ class ShowServiceTest {
 	@Test
 	@DisplayName("[존재하지 않는 show_id 로 공연 조회 시 NotFoundException을 반환한다]")
 	void getShowDetailInfo_WithNoShowId_Test() {
-		// given
 
-		// when
-
-		// then
-		assertThrows(
+		// when then
+		NotFoundException notFoundException = assertThrows(
 			NotFoundException.class,
 			() -> showService.getShowDetailInfo(1L)
 		);
+		assertEquals(ShowErrorCode.SHOW_NOT_FOUND.getMessage(), notFoundException.getMessage());
 	}
 
 }
