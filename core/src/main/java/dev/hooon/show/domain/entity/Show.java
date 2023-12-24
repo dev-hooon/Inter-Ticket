@@ -17,7 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "show_table")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Show extends TimeBaseEntity {
 
 	@Id
@@ -55,4 +53,22 @@ public class Show extends TimeBaseEntity {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "show_place_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
 	private Place place;
+
+	public Show(
+		String name,
+		ShowCategory category,
+		ShowPeriod showPeriod,
+		ShowTime showTime,
+		String showAgeLimit,
+		int totalSeats,
+		Place place
+	) {
+		this.name = name;
+		this.category = category;
+		this.showPeriod = showPeriod;
+		this.showTime = showTime;
+		this.showAgeLimit = showAgeLimit;
+		this.totalSeats = totalSeats;
+		this.place = place;
+	}
 }

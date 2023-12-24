@@ -8,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "place_table")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Place extends TimeBaseEntity {
 
 	@Id
@@ -35,4 +33,16 @@ public class Place extends TimeBaseEntity {
 
 	@Column(name = "place_url")
 	private String placeUrl;
+
+	public Place(
+		String name,
+		String contactInfo,
+		String address,
+		String placeUrl
+	) {
+		this.name = name;
+		this.contactInfo = contactInfo;
+		this.address = address;
+		this.placeUrl = placeUrl;
+	}
 }

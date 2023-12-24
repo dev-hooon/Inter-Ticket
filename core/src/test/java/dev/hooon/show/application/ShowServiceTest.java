@@ -78,7 +78,6 @@ class ShowServiceTest {
 	void getShowDetailInfoTest() {
 		// given
 		Place place = new Place(
-			1L,
 			"블루스퀘어 신한카드홀",
 			"1544-1591",
 			"서울특별시 용산구 이태원로 294 블루스퀘어(한남동)",
@@ -93,7 +92,6 @@ class ShowServiceTest {
 			15
 		);
 		Show show = new Show(
-			1L,
 			"레미제라블",
 			MUSICAL,
 			showPeriod,

@@ -33,13 +33,18 @@ class ShowRepositoryAdaptorTest extends DataJpaTestSupport {
 	@DisplayName("[show_id 로 해당 공연에 대한 정보를 조회할 수 있다]")
 	void findByIdTest() {
 		// given
-		Place place = new Place(1L, "블루스퀘어 신한카드홀", "1544-1591", "서울특별시 용산구 이태원로 294 블루스퀘어(한남동)",
-			"http://www.bluesquare.kr/index.asp");
+		Place place = new Place(
+			"블루스퀘어 신한카드홀",
+			"1544-1591",
+			"서울특별시 용산구 이태원로 294 블루스퀘어(한남동)",
+			"http://www.bluesquare.kr/index.asp"
+		);
 		Place savedPlace = placeRepository.save(place);
 		ShowPeriod showPeriod = new ShowPeriod(LocalDate.of(2023, 10, 10), LocalDate.of(2023, 10, 12));
 		ShowTime showTime = new ShowTime(150, 15);
 		Show show = new Show
-			(1L, "레미제라블", MUSICAL,
+			("레미제라블",
+				MUSICAL,
 				showPeriod,
 				showTime,
 				"만 8세 이상",
