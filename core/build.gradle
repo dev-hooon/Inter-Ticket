@@ -2,6 +2,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     //테스트 픽쳐에서 사용할 의존성
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
     testFixturesImplementation "org.testcontainers:testcontainers:1.19.3"
