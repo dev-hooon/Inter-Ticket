@@ -22,12 +22,17 @@ public class UserRepositoryAdaptor implements UserRepository {
 	}
 
 	@Override
-	public List<User> findByName(String name) {
+	public Optional<User> findByName(String name) {
 		return userJpaRepository.findByName(name);
 	}
 
 	@Override
 	public Long save(User user) {
 		return userJpaRepository.save(user).getId();
+	}
+
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userJpaRepository.findByEmail(email);
 	}
 }
