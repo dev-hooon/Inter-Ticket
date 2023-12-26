@@ -1,6 +1,6 @@
 package dev.hooon.user.dto.response;
 
-public record UserJoinResponseDto(
+public record UserJoinResponse(
 
 	Long userId
 ) {}
