@@ -1,5 +1,7 @@
 package dev.hooon.waitingbooking.infrastructure.adaptor;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
@@ -17,4 +19,10 @@ public class WaitingBookingRepositoryAdaptor implements WaitingBookingRepository
 	public void save(WaitingBooking waitingBooking) {
 		waitingBookingJpaRepository.save(waitingBooking);
 	}
+
+	@Override
+	public List<WaitingBooking> findAll() {
+		return waitingBookingJpaRepository.findAll();
+	}
+
 }
