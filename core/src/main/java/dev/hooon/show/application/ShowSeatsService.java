@@ -23,21 +23,22 @@ public class ShowSeatsService {
 
 	public ShowSeatsResponse findShowSeatsByShowIdAndDateAndRound(Long showId, LocalDate date, int round) {
 
-		throwIfShowIsNotExist(showId);
+		throwIfShowDoesNotExist(showId);
 
 		List<SeatsInfoDto> seatsInfoDtoList = seatRepository.findSeatInfoByShowIdAndDateAndRound(showId,
 			date, round);
 		seatsInfoDtoList
 			.forEach(it -> {
 				List<SeatsDetailDto> seatsDetailDtoList = seatRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
-					showId, date, round, it.getGrade());
+					showId, date, round, it.getGrade()
+				);
 				it.setSeats(seatsDetailDtoList);
 			});
 
 		return new ShowSeatsResponse(seatsInfoDtoList);
 	}
 
-	private void throwIfShowIsNotExist(Long showId) {
+	private void throwIfShowDoesNotExist(Long showId) {
 		showRepository.findById(showId).orElseThrow(
 			() -> new NotFoundException(ShowErrorCode.SHOW_NOT_FOUND)
 		);
