@@ -7,6 +7,7 @@ import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class WaitingBooking extends TimeBaseEntity {
 	private User user;
 
 	private int seatCount;
+
+	private LocalDateTime expireAt;
 
 	@OneToMany(mappedBy = "waitingBooking", cascade = {REMOVE, PERSIST})
 	List<WaitingBookingSeat> waitingBookingSeats = new ArrayList<>();
@@ -107,5 +110,11 @@ public class WaitingBooking extends TimeBaseEntity {
 		List<Long> seatIds
 	) {
 		return new WaitingBooking(user, seatCount, seatIds);
+	}
+
+	public List<Long> getSelectedSeatIds() {
+		return waitingBookingSeats.stream()
+			.map(WaitingBookingSeat::getSeatId)
+			.toList();
 	}
 }
