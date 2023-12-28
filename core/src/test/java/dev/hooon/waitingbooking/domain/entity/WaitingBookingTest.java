@@ -95,4 +95,24 @@ class WaitingBookingTest {
 			.isInstanceOf(ValidationException.class)
 			.hasMessageContaining(WaitingBookingErrorCode.INVALID_SELECTED_SEAT_COUNT.getMessage());
 	}
+
+	@Test
+	@DisplayName("[선택한 좌석의 ID List 를 응답한다]")
+	void getSelectedSeatIdsTest() {
+		//given
+		List<Long> selectedSeatIds = List.of(1L, 2L, 3L, 4L, 5L);
+		WaitingBooking waitingBooking = WaitingBooking.of(
+			new User(),
+			3,
+			selectedSeatIds
+		);
+
+		//when
+		List<Long> result = waitingBooking.getSelectedSeatIds();
+
+		//then
+		assertThat(result)
+			.hasSameSizeAs(selectedSeatIds)
+			.containsAll(selectedSeatIds);
+	}
 }

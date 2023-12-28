@@ -1,10 +1,13 @@
 package dev.hooon.waitingbooking.infrastructure.adaptor;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
+import dev.hooon.waitingbooking.domain.entity.WaitingStatus;
 import dev.hooon.waitingbooking.domain.repository.WaitingBookingRepository;
 import dev.hooon.waitingbooking.infrastructure.repository.WaitingBookingJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +24,26 @@ public class WaitingBookingRepositoryAdaptor implements WaitingBookingRepository
 	}
 
 	@Override
+	public Optional<WaitingBooking> findById(Long id) {
+		return waitingBookingJpaRepository.findById(id);
+	}
+
+	@Override
 	public List<WaitingBooking> findAll() {
 		return waitingBookingJpaRepository.findAll();
 	}
 
+	@Override
+	public List<WaitingBooking> findByStatusIsWaiting() {
+		return waitingBookingJpaRepository.findByStatusOrderByIdDesc(WaitingStatus.WAITING);
+	}
+
+	@Override
+	public void updateToActiveById(Long id) {
+		waitingBookingJpaRepository.updateStatusAndExpireAt(
+			id,
+			WaitingStatus.ACTIVATION,
+			LocalDateTime.now().plusHours(6)
+		);
+	}
 }

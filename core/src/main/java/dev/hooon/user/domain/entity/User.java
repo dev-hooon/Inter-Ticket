@@ -19,18 +19,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User extends TimeBaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "user_id")
+	private Long id;
 
-    @Column(name = "user_email", nullable = false, unique = true)
-    private String email;
+	@Column(name = "user_email", nullable = false, unique = true)
+	private String email;
 
-    @Column(name = "user_name", nullable = false)
-    private String name;
+	@Column(name = "user_name", nullable = false)
+	private String name;
 
-    @Enumerated(STRING)
-    @Column(name = "user_role", nullable = false)
-    private UserRole userRole;
+	@Enumerated(STRING)
+	@Column(name = "user_role", nullable = false)
+	private UserRole userRole;
+
+	// 테스트용 AllArgsConstructor
+	public User(String email, String name, UserRole userRole) {
+		this.email = email;
+		this.name = name;
+		this.userRole = userRole;
+	}
 }
