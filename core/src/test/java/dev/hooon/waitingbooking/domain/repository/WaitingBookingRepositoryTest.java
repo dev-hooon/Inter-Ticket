@@ -74,6 +74,6 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 		//then
 		WaitingBooking actual = waitingBookingRepository.findById(waitingBooking.getId()).orElseThrow();
 		assertThat(actual.getStatus()).isEqualTo(WaitingStatus.ACTIVATION);
-		assertThat(actual.getExpireAt()).isEqualToIgnoringSeconds(LocalDateTime.now().plusHours(6));
+		assertThat(actual.getExpiredAt()).isEqualToIgnoringSeconds(LocalDateTime.now().plusHours(6));
 	}
 }

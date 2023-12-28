@@ -18,7 +18,7 @@ public interface WaitingBookingJpaRepository extends JpaRepository<WaitingBookin
 	List<WaitingBooking> findByStatusOrderByIdDesc(WaitingStatus status);
 
 	@Modifying
-	@Query("update WaitingBooking w SET w.status = :status, w.expireAt = :expireAt where w.id = :id")
+	@Query("update WaitingBooking w SET w.status = :status, w.expiredAt = :expireAt where w.id = :id")
 	void updateStatusAndExpireAt(
 		@Param("id") Long id,
 		@Param("status") WaitingStatus status,

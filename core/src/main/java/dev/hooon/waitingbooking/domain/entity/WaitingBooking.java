@@ -53,7 +53,7 @@ public class WaitingBooking extends TimeBaseEntity {
 
 	private int seatCount;
 
-	private LocalDateTime expireAt;
+	private LocalDateTime expiredAt;
 
 	@OneToMany(mappedBy = "waitingBooking", cascade = {REMOVE, PERSIST})
 	List<WaitingBookingSeat> waitingBookingSeats = new ArrayList<>();
