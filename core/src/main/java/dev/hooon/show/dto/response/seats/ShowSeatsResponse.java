@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public class ShowSeatsResponse {
 
-	private List<SeatsInfoDto> seatsInfo;
+	private List<SeatsInfoResponse> seatsInfo;
 
-	public ShowSeatsResponse(List<SeatsInfoDto> seatsInfo) {
+	public ShowSeatsResponse(List<SeatsInfoResponse> seatsInfo) {
 		this.seatsInfo = seatsInfo;
 	}
 }

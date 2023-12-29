@@ -8,20 +8,20 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class SeatsInfoDto {
+public class SeatsInfoResponse {
 
 	private SeatGrade grade;
 	private Long leftSeats;
 	private int price;
-	private List<SeatsDetailDto> seats;
+	private List<SeatsDetailResponse> seats;
 
-	public SeatsInfoDto(SeatGrade grade, Long leftSeats, int price) {
+	public SeatsInfoResponse(SeatGrade grade, Long leftSeats, int price) {
 		this.grade = grade;
 		this.leftSeats = leftSeats;
 		this.price = price;
 	}
 
-	public void setSeats(List<SeatsDetailDto> seats) {
+	public void setSeats(List<SeatsDetailResponse> seats) {
 		this.seats = seats;
 	}
 }

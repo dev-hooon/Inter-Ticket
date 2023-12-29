@@ -16,8 +16,8 @@ import dev.hooon.common.support.DataJpaTestSupport;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
-import dev.hooon.show.dto.response.seats.SeatsDetailDto;
-import dev.hooon.show.dto.response.seats.SeatsInfoDto;
+import dev.hooon.show.dto.query.seats.SeatsDetailDto;
+import dev.hooon.show.dto.query.seats.SeatsInfoDto;
 
 @DisplayName("[SeatJpaRepository 테스트]")
 class SeatJpaRepositoryTest extends DataJpaTestSupport {
@@ -81,21 +81,30 @@ class SeatJpaRepositoryTest extends DataJpaTestSupport {
 		seatJpaRepository.saveAll(seatList);
 
 		// when
-		List<SeatsDetailDto> vipSeatsDetailDto = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(showId,
-			date, round,
-			VIP);
-		List<SeatsDetailDto> sSeatsDetailDto = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(showId, date,
+		List<SeatsDetailDto> vipSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
+			showId,
+			date,
 			round,
-			S);
-		List<SeatsDetailDto> aSeatsDetailDto = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(showId, date,
+			VIP
+		);
+		List<SeatsDetailDto> sSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
+			showId,
+			date,
 			round,
-			A);
+			S
+		);
+		List<SeatsDetailDto> aSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
+			showId,
+			date,
+			round,
+			A
+		);
 
 		// then
 		assertAll(
-			() -> assertThat(vipSeatsDetailDto.size()).isEqualTo(2),
-			() -> assertThat(sSeatsDetailDto.size()).isEqualTo(2),
-			() -> assertThat(aSeatsDetailDto.size()).isEqualTo(1)
+			() -> assertThat(vipSeatsDetailResponse.size()).isEqualTo(2),
+			() -> assertThat(sSeatsDetailResponse.size()).isEqualTo(2),
+			() -> assertThat(aSeatsDetailResponse.size()).isEqualTo(1)
 		);
 	}
 }

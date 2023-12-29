@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class SeatsDetailDto {
+public class SeatsDetailResponse {
 
 	private Long id;
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -26,7 +26,7 @@ public class SeatsDetailDto {
 	private int price;
 	private SeatStatus isBookingAvailable;
 
-	public SeatsDetailDto(Long id, LocalDate date, boolean isSeat, String sector, String row, int col, int price,
+	public SeatsDetailResponse(Long id, LocalDate date, boolean isSeat, String sector, String row, int col, int price,
 		SeatStatus isBookingAvailable) {
 		this.id = id;
 		this.date = date;

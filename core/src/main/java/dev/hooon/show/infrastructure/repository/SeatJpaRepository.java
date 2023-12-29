@@ -11,8 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatGrade;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
-import dev.hooon.show.dto.response.seats.SeatsDetailDto;
-import dev.hooon.show.dto.response.seats.SeatsInfoDto;
+import dev.hooon.show.dto.query.seats.SeatsDetailDto;
+import dev.hooon.show.dto.query.seats.SeatsInfoDto;
 
 public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
@@ -27,7 +27,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
 	@Query("""
 		select
-		new dev.hooon.show.dto.response.seats.SeatsInfoDto(seat.seatGrade, COUNT(seat), seat.price)
+		new dev.hooon.show.dto.query.seats.SeatsInfoDto(seat.seatGrade, COUNT(seat), seat.price)
 		from Seat seat
 		join seat.show show
 		where show.id= :showId and seat.showDate= :date and seat.showRound.round= :round
@@ -38,7 +38,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
 	@Query("""
 		select
-		      new dev.hooon.show.dto.response.seats.SeatsDetailDto(seat.id, seat.showDate, seat.isSeat, seat.positionInfo.sector, seat.positionInfo.row, seat.positionInfo.col, seat.price, seat.seatStatus)
+		      new dev.hooon.show.dto.query.seats.SeatsDetailDto(seat.id, seat.showDate, seat.isSeat, seat.positionInfo.sector, seat.positionInfo.row, seat.positionInfo.col, seat.price, seat.seatStatus)
 		      from Seat seat
 		      where seat.show.id = :showId and seat.showDate = :date and seat.showRound.round = :round and seat.seatGrade = :grade
 		""")
