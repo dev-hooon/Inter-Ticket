@@ -129,14 +129,14 @@ public class Seat extends TimeBaseEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Seat seat = (Seat)o;
-		return isSeat == seat.isSeat && price == seat.price && Objects.equals(show, seat.show)
-			&& seatGrade == seat.seatGrade && Objects.equals(positionInfo, seat.positionInfo)
-			&& Objects.equals(showDate, seat.showDate) && Objects.equals(showRound, seat.showRound)
-			&& seatStatus == seat.seatStatus;
+		return isSeat == seat.isSeat && price == seat.price && Objects.equals(id, seat.id)
+			&& Objects.equals(show, seat.show) && seatGrade == seat.seatGrade && Objects.equals(
+			positionInfo, seat.positionInfo) && Objects.equals(showDate, seat.showDate)
+			&& Objects.equals(showRound, seat.showRound) && seatStatus == seat.seatStatus;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
+		return Objects.hash(id, show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
 	}
 }
