@@ -26,8 +26,16 @@ public class SeatsDetailResponse {
 	private int price;
 	private SeatStatus isBookingAvailable;
 
-	public SeatsDetailResponse(Long id, LocalDate date, boolean isSeat, String sector, String row, int col, int price,
-		SeatStatus isBookingAvailable) {
+	public SeatsDetailResponse(
+		Long id,
+		LocalDate date,
+		boolean isSeat,
+		String sector,
+		String row,
+		int col,
+		int price,
+		SeatStatus isBookingAvailable
+	) {
 		this.id = id;
 		this.date = date;
 		this.isSeat = isSeat;
