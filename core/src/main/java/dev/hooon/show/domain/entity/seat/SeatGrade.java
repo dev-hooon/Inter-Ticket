@@ -7,11 +7,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SeatGrade {
 
-    VIP("VIP석"),
-    R("R석"),
-    S("S석"),
-    A("A석"),
-    B("B석");
+	VIP("VIP석"),
+	R("R석"),
+	S("S석"),
+	A("A석"),
+	B("B석");
 
-    private final String description;
+	private final String description;
+
+	public String getDescription() {
+		return description;
+	}
 }
