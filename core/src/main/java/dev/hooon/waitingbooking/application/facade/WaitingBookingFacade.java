@@ -1,5 +1,6 @@
 package dev.hooon.waitingbooking.application.facade;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,7 @@ public class WaitingBookingFacade {
 		return matchSeatIds;
 	}
 
+	// 예약대기 등록
 	public WaitingRegisterResponse registerWaitingBooking(Long userId, WaitingRegisterRequest request) {
 		User user = userService.getUserById(userId);
 		WaitingBooking waitingBooking = waitingBookingService.createWaitingBooking(user, request);
@@ -48,6 +50,7 @@ public class WaitingBookingFacade {
 		return new WaitingRegisterResponse(waitingBooking.getId());
 	}
 
+	// 예약대기 처리
 	public void processWaitingBooking() {
 		// 1. 취소된 좌석을 모두 조회한다 (PK Set 으로)
 		Set<Long> canceledSeatIds = seatService.getCanceledSeatIds();
@@ -73,11 +76,31 @@ public class WaitingBookingFacade {
 			if (matchSeatIds.size() == waitingBooking.getSeatCount()) {
 				matchSeatIds.forEach(canceledSeatIds::remove);
 				seatService.updateSeatToWaiting(matchSeatIds);
-				waitingBookingService.activateWaitingBooking(waitingBooking.getId());
+				waitingBookingService.activateWaitingBooking(waitingBooking.getId(), matchSeatIds);
 				// 메일 알림 이벤트 발행
 			}
 		});
 		// 4. 반복이 끝났는데 남아있는 취소 좌석들은 예약가능 상태로 변경
 		seatService.updateSeatToAvailable(canceledSeatIds);
+	}
+
+	// 6시간동안 예약을 하지않아 만료된 예약대기를 처리
+	public void processExpiredWaitingBooking() {
+		List<WaitingBooking> waitingBookings = waitingBookingService.getWaitingBookingsByStatusIsActivation();
+
+		List<Long> expiredWaitingBookingIds = new ArrayList<>();
+		List<Long> expiredSeatIds = new ArrayList<>();
+		waitingBookings.forEach(waitingBooking -> {
+			// 만료된 예약대기라면 만료리스트에 추가
+			if (waitingBooking.getExpiredAt().isBefore(LocalDateTime.now())) {
+				expiredWaitingBookingIds.add(waitingBooking.getId());
+				expiredSeatIds.addAll(waitingBooking.getConfirmedSeatIds());
+			}
+		});
+
+		if (!expiredWaitingBookingIds.isEmpty()) {
+			waitingBookingService.expireActiveWaitingBooking(expiredWaitingBookingIds);
+			seatService.updateSeatToAvailable(expiredSeatIds);
+		}
 	}
 }

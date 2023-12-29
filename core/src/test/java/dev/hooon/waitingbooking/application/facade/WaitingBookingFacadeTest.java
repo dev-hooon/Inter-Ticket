@@ -3,6 +3,7 @@ package dev.hooon.waitingbooking.application.facade;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,8 +84,31 @@ class WaitingBookingFacadeTest {
 
 		//then
 		verify(seatService, times(2)).updateSeatToWaiting(anyCollection());
-		verify(waitingBookingService, times(1)).activateWaitingBooking(waitingBookings.get(0).getId());
-		verify(waitingBookingService, times(1)).activateWaitingBooking(waitingBookings.get(1).getId());
+		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(0).getId()), anyList());
+		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(1).getId()), anyList());
 		verify(seatService, times(1)).updateSeatToAvailable(anyCollection());
+	}
+
+	@Test
+	@DisplayName("[만료된 활성화 상태인 예약대기를 처리한다]")
+	void processExpiredWaitingBooking_test() {
+		//given
+		LocalDateTime beforeNow = LocalDateTime.now().minusSeconds(10);
+		LocalDateTime afterNow = LocalDateTime.now().plusSeconds(10);
+		List<WaitingBooking> waitingBookings = List.of(
+			WaitingBookingFixture.getActiveWaitingBooking(1L, beforeNow, 2, List.of(1L, 2L)),
+			WaitingBookingFixture.getActiveWaitingBooking(2L, beforeNow, 2, List.of(3L, 4L)),
+			WaitingBookingFixture.getActiveWaitingBooking(3L, afterNow, 2, List.of(5L, 6L))
+		);
+
+		given(waitingBookingService.getWaitingBookingsByStatusIsActivation())
+			.willReturn(waitingBookings);
+
+		//when
+		waitingBookingFacade.processExpiredWaitingBooking();
+
+		//then
+		verify(waitingBookingService, times(1)).expireActiveWaitingBooking(anyList());
+		verify(seatService, times(1)).updateSeatToAvailable(anyList());
 	}
 }
