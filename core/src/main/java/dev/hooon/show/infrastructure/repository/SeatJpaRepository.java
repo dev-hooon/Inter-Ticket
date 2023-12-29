@@ -47,7 +47,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		""")
 	List<SeatsDetailDto> findSeatsByShowIdAndDateAndRoundAndGrade(
 		@Param("showId") Long showId,
-		@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+		@Param("date") LocalDate date,
 		@Param("round") int round,
 		@Param("grade") SeatGrade grade
 	);
