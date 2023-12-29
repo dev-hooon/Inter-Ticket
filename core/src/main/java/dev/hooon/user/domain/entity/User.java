@@ -54,15 +54,12 @@ public class User extends TimeBaseEntity {
 		this.userRole = userRole;
 	}
 
-	private static void validateUser(String email, String name, String password, UserRole userRole) {
-		Assert.notNull(email, getNotNullMessage("User", "email"));
+	private void validateUser(String email, String name, String password, UserRole userRole) {
 		Assert.hasText(email, getNotEmptyPostfix("User", "email"));
-		Assert.notNull(name, getNotNullMessage("User", "name"));
 		Assert.hasText(name, getNotEmptyPostfix("User", "name"));
-		Assert.notNull(password, getNotNullMessage("User", "password"));
 		Assert.hasText(password, getNotEmptyPostfix("User", "password"));
-		Assert.notNull(userRole, getNotNullMessage("User", "userRole"));
 		Assert.hasText(String.valueOf(userRole), getNotEmptyPostfix("User", "userRole"));
+		Assert.notNull(userRole, getNotNullMessage("User", "userRole"));
 	}
 
 	public static User ofBuyer(
