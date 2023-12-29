@@ -35,11 +35,14 @@ public class UserService {
 	@Transactional
 	public Long join(UserJoinRequest userJoinRequest) {
 		validateDuplicateEmail(userJoinRequest.email());
-		String email = userJoinRequest.email();
-		String name = userJoinRequest.name();
 		String password = userJoinRequest.password();
 		String encryptedPassword = encryptHelper.encrypt(password);
-		User user = User.ofBuyer(email, name, encryptedPassword);
+
+		User user = User.ofBuyer(
+			userJoinRequest.email(),
+			userJoinRequest.name(),
+			encryptedPassword
+		);
 		return userRepository.save(user);
 	}
 
