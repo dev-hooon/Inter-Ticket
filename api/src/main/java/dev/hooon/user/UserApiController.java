@@ -1,4 +1,4 @@
-package dev.hooon.auth;
+package dev.hooon.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class JoinApiController {
+public class UserApiController {
 
 	private final UserService userService;
 
-	@PostMapping("/api/auth/new")
+	@PostMapping("/api/users")
 	public ResponseEntity<UserJoinResponse> join(
 		final @Valid @RequestBody UserJoinRequest userJoinRequest
 	) {
