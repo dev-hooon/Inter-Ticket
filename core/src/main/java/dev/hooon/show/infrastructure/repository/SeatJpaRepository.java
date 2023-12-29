@@ -33,16 +33,22 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		where show.id= :showId and seat.showDate= :date and seat.showRound.round= :round
 		group by seat.seatGrade, seat.price
 		""")
-	List<SeatsInfoDto> findSeatInfoByShowIdAndDateAndRound(@Param("showId") Long showId,
-		@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("round") int round);
+	List<SeatsInfoDto> findSeatInfoByShowIdAndDateAndRound(
+		@Param("showId") Long showId,
+		@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+		@Param("round") int round
+	);
 
 	@Query("""
 		select
-		      new dev.hooon.show.dto.query.seats.SeatsDetailDto(seat.id, seat.showDate, seat.isSeat, seat.positionInfo.sector, seat.positionInfo.row, seat.positionInfo.col, seat.price, seat.seatStatus)
-		      from Seat seat
-		      where seat.show.id = :showId and seat.showDate = :date and seat.showRound.round = :round and seat.seatGrade = :grade
+		new dev.hooon.show.dto.query.seats.SeatsDetailDto(seat.id, seat.showDate, seat.isSeat, seat.positionInfo.sector, seat.positionInfo.row, seat.positionInfo.col, seat.price, seat.seatStatus)
+		from Seat seat
+		where seat.show.id = :showId and seat.showDate = :date and seat.showRound.round = :round and seat.seatGrade = :grade
 		""")
-	List<SeatsDetailDto> findSeatsByShowIdAndDateAndRoundAndGrade(@Param("showId") Long showId,
-		@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @Param("round") int round,
-		@Param("grade") SeatGrade grade);
+	List<SeatsDetailDto> findSeatsByShowIdAndDateAndRoundAndGrade(
+		@Param("showId") Long showId,
+		@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+		@Param("round") int round,
+		@Param("grade") SeatGrade grade
+	);
 }
