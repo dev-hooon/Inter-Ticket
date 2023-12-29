@@ -25,8 +25,11 @@ public class ShowSeatsService {
 
 		throwIfShowDoesNotExist(showId);
 
-		List<SeatsInfoDto> seatsInfoDtoList = seatRepository.findSeatInfoByShowIdAndDateAndRound(showId,
-			date, round);
+		List<SeatsInfoDto> seatsInfoDtoList = seatRepository.findSeatInfoByShowIdAndDateAndRound(
+			showId,
+			date,
+			round
+		);
 		seatsInfoDtoList
 			.forEach(it -> {
 				List<SeatsDetailDto> seatsDetailDtoList = seatRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
