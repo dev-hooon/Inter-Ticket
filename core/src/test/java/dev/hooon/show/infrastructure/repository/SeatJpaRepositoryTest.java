@@ -77,34 +77,22 @@ class SeatJpaRepositoryTest extends DataJpaTestSupport {
 		LocalDate date = LocalDate.of(2024, 1, 1);
 		int round = 2;
 
-		List<Seat> seatList = TestFixture.getSeatList(savedShow, date, round);
+		List<Seat> seatList = TestFixture.getVipSeatList(savedShow, date, round);
+		List<SeatsDetailDto> expectedSeatsDetailDtoList = TestFixture.seatListToSeatsDetailDto(seatList);
 		seatJpaRepository.saveAll(seatList);
 
 		// when
-		List<SeatsDetailDto> vipSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
+		List<SeatsDetailDto> seatsDetailDtoList = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
 			showId,
 			date,
 			round,
 			VIP
 		);
-		List<SeatsDetailDto> sSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
-			showId,
-			date,
-			round,
-			S
-		);
-		List<SeatsDetailDto> aSeatsDetailResponse = seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(
-			showId,
-			date,
-			round,
-			A
-		);
 
 		// then
 		assertAll(
-			() -> assertThat(vipSeatsDetailResponse.size()).isEqualTo(2),
-			() -> assertThat(sSeatsDetailResponse.size()).isEqualTo(2),
-			() -> assertThat(aSeatsDetailResponse.size()).isEqualTo(1)
+			() -> assertThat(seatsDetailDtoList).hasSize(2),
+			() -> assertEquals(seatsDetailDtoList, expectedSeatsDetailDtoList)
 		);
 	}
 }

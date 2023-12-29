@@ -13,6 +13,7 @@ import dev.hooon.show.domain.entity.ShowPeriod;
 import dev.hooon.show.domain.entity.ShowTime;
 import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
+import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 
 public class TestFixture {
 
@@ -51,5 +52,28 @@ public class TestFixture {
 		Seat aSeat = Seat.of(show, A, true, "3층", "A", 2, 50000, date, round, LocalTime.of(14, 0),
 			AVAILABLE);
 		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
+	}
+
+	public static List<Seat> getVipSeatList(Show show, LocalDate date, int round) {
+		Seat vipSeat1 = Seat.of(show, VIP, true, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat vipSeat2 = Seat.of(show, VIP, true, "1층", "A", 3, 100000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		return List.of(vipSeat1, vipSeat2);
+	}
+
+	public static List<SeatsDetailDto> seatListToSeatsDetailDto(List<Seat> seatList) {
+		return seatList.stream()
+			.map(it -> new SeatsDetailDto(
+				it.getId(),
+				it.getShowDate(),
+				it.isSeat(),
+				it.getPositionInfo().getSector(),
+				it.getPositionInfo().getRow(),
+				it.getPositionInfo().getCol(),
+				it.getPrice(),
+				it.getSeatStatus()
+			))
+			.toList();
 	}
 }

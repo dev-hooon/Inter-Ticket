@@ -1,15 +1,18 @@
 package dev.hooon.show.infrastructure.repository;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatGrade;
+import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
 import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 import dev.hooon.show.dto.query.seats.SeatsInfoDto;
@@ -24,6 +27,12 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		order by s.showDate, s.showRound.round
 		""")
 	List<SeatDateRoundDto> findSeatDateRoundInfoByShowId(@Param("showId") Long showId);
+
+	List<Seat> findBySeatStatus(SeatStatus status);
+
+	@Modifying
+	@Query("update Seat s SET s.seatStatus = :status where s.id in :ids")
+	void updateStatusByIdIn(@Param("ids") Collection<Long> ids, @Param("status") SeatStatus status);
 
 	@Query("""
 		select
