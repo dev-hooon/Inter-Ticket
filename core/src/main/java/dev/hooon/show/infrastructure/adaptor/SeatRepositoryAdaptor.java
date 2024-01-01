@@ -43,4 +43,9 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 	public void updateStatusByIdIn(Collection<Long> ids, SeatStatus status) {
 		seatJpaRepository.updateStatusByIdIn(ids, status);
 	}
+
+	@Override
+	public String findShowNameById(Long id) {
+		return seatJpaRepository.findShowNameById(id);
+	}
 }

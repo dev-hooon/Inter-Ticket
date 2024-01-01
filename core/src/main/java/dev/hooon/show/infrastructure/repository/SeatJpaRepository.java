@@ -28,4 +28,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 	@Modifying
 	@Query("update Seat s SET s.seatStatus = :status where s.id in :ids")
 	void updateStatusByIdIn(@Param("ids") Collection<Long> ids, @Param("status") SeatStatus status);
+
+	@Query("select show.name from Seat s left join Show show on show.id = s.show.id where s.id = :id")
+	String findShowNameById(@Param("id") Long id);
 }
