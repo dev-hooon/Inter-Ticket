@@ -45,7 +45,7 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 	}
 
 	@Override
-	public String findShowNameById(Long id) {
+	public Optional<String> findShowNameById(Long id) {
 		return seatJpaRepository.findShowNameById(id);
 	}
 }
