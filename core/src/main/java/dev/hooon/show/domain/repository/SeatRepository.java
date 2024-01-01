@@ -19,4 +19,6 @@ public interface SeatRepository {
 	List<Seat> findByStatusIsCanceled();
 
 	void updateStatusByIdIn(Collection<Long> ids, SeatStatus status);
+
+	String findShowNameById(Long id);
 }
