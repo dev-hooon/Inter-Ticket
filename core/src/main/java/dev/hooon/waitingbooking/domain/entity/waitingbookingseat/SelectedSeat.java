@@ -4,13 +4,11 @@ import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Table(name = "selected_seat_table")
 @NoArgsConstructor
+@Table(name = "selected_seat_table")
 @DiscriminatorValue("selected")
 public class SelectedSeat extends WaitingBookingSeat {
 
