@@ -1,7 +1,11 @@
 package dev.hooon.user.domain.entity;
 
+import static dev.hooon.common.exception.CommonValidationError.*;
+import static dev.hooon.user.domain.entity.UserRole.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.GenerationType.*;
+
+import org.springframework.util.Assert;
 
 import dev.hooon.common.entity.TimeBaseEntity;
 import jakarta.persistence.Column;
@@ -15,8 +19,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "user_table")
 @NoArgsConstructor
+@Table(name = "user_table")
 public class User extends TimeBaseEntity {
 
 	@Id
@@ -30,14 +34,40 @@ public class User extends TimeBaseEntity {
 	@Column(name = "user_name", nullable = false)
 	private String name;
 
+	@Column(name = "user_password", nullable = false)
+	private String password;
+
 	@Enumerated(STRING)
 	@Column(name = "user_role", nullable = false)
 	private UserRole userRole;
 
-	// 테스트용 AllArgsConstructor
-	public User(String email, String name, UserRole userRole) {
+	private User(
+		String email,
+		String name,
+		String password,
+		UserRole userRole
+	) {
+		validateUser(email, name, password, userRole);
 		this.email = email;
 		this.name = name;
+		this.password = password;
 		this.userRole = userRole;
 	}
+
+	private void validateUser(String email, String name, String password, UserRole userRole) {
+		Assert.hasText(email, getNotEmptyPostfix("User", "email"));
+		Assert.hasText(name, getNotEmptyPostfix("User", "name"));
+		Assert.hasText(password, getNotEmptyPostfix("User", "password"));
+		Assert.hasText(String.valueOf(userRole), getNotEmptyPostfix("User", "userRole"));
+		Assert.notNull(userRole, getNotNullMessage("User", "userRole"));
+	}
+
+	public static User ofBuyer(
+		String email,
+		String name,
+		String password
+	) {
+		return new User(email, name, password, BUYER);
+	}
+  
 }
