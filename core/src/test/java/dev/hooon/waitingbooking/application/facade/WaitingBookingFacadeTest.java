@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import dev.hooon.common.fixture.WaitingBookingFixture;
@@ -24,6 +25,7 @@ import dev.hooon.waitingbooking.application.WaitingBookingService;
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
 import dev.hooon.waitingbooking.dto.request.WaitingRegisterRequest;
 import dev.hooon.waitingbooking.dto.response.WaitingRegisterResponse;
+import dev.hooon.waitingbooking.event.WaitingBookingActiveEvent;
 
 @DisplayName("[WaitingBookingFacade 테스트]")
 @ExtendWith(MockitoExtension.class)
@@ -37,6 +39,8 @@ class WaitingBookingFacadeTest {
 	private UserService userService;
 	@Mock
 	private SeatService seatService;
+	@Mock
+	private ApplicationEventPublisher eventPublisher;
 
 	@Test
 	@DisplayName("[사용자와 예약대기 정보를 통해 예약대기를 등록한다]")
@@ -87,6 +91,8 @@ class WaitingBookingFacadeTest {
 		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(0).getId()), anyList());
 		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(1).getId()), anyList());
 		verify(seatService, times(1)).updateSeatToAvailable(anyCollection());
+
+		verify(eventPublisher, times(2)).publishEvent(any(WaitingBookingActiveEvent.class));
 	}
 
 	@Test
