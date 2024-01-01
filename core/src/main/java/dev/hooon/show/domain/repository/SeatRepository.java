@@ -20,5 +20,5 @@ public interface SeatRepository {
 
 	void updateStatusByIdIn(Collection<Long> ids, SeatStatus status);
 
-	String findShowNameById(Long id);
+	Optional<String> findShowNameById(Long id);
 }
