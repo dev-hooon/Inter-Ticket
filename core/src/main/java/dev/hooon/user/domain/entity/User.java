@@ -69,4 +69,5 @@ public class User extends TimeBaseEntity {
 	) {
 		return new User(email, name, password, BUYER);
 	}
+  
 }
