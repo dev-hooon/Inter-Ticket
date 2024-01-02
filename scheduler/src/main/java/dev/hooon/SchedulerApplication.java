@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SchedulerApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("spring.config.name", "application-core,application,application-scheduler");
 		SpringApplication.run(SchedulerApplication.class, args);
 	}
 }
