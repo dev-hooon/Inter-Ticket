@@ -8,6 +8,9 @@ build/
 .DS_Store
 core/src/main/resources/application.yml
 scheduler/src/main/resources/application.yml
+api/src/main/resources/application.yml
+application-core.yml
+application-scheduler.yml
 
 ### STS ###
 .apt_generated
