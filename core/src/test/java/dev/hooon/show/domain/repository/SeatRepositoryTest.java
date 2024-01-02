@@ -140,7 +140,7 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 		seatRepository.saveAll(List.of(seat));
 
 		//when
-		String result = seatRepository.findShowNameById(seat.getId());
+		String result = seatRepository.findShowNameById(seat.getId()).orElseThrow();
 
 		//then
 		assertThat(result).isEqualTo(show.getName());
