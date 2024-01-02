@@ -33,16 +33,4 @@ jobs:
       - name: test CI
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: clean test jacocoTestReport jacocoTestCoverageVerification
-
-      - name: Add coverage to PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.6.1
-        with:
-          paths: |
-            ${{ github.workspace }}/interpark/api/build/reports/jacoco/jacocoTestReport.xml,
-            ${{ github.workspace }}/interpark/core/build/reports/jacoco/jacocoTestReport.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: '# :lobster: Test Coverage Report'
-          pass-emoji: ':green_circle:'
-          fail-emoji: ':red_circle:'
+          arguments: clean test
