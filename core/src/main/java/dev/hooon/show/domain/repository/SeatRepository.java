@@ -24,6 +24,8 @@ public interface SeatRepository {
 
 	void updateStatusByIdIn(Collection<Long> ids, SeatStatus status);
 
+	Optional<String> findShowNameById(Long id);
+
 	List<SeatsInfoDto> findSeatInfoByShowIdAndDateAndRound(
 		Long showId,
 		LocalDate date,

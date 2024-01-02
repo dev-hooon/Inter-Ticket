@@ -3,6 +3,7 @@ package dev.hooon.waitingbooking.application.facade;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import dev.hooon.common.fixture.WaitingBookingFixture;
@@ -23,6 +25,7 @@ import dev.hooon.waitingbooking.application.WaitingBookingService;
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
 import dev.hooon.waitingbooking.dto.request.WaitingRegisterRequest;
 import dev.hooon.waitingbooking.dto.response.WaitingRegisterResponse;
+import dev.hooon.waitingbooking.event.WaitingBookingActiveEvent;
 
 @DisplayName("[WaitingBookingFacade 테스트]")
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +39,8 @@ class WaitingBookingFacadeTest {
 	private UserService userService;
 	@Mock
 	private SeatService seatService;
+	@Mock
+	private ApplicationEventPublisher eventPublisher;
 
 	@Test
 	@DisplayName("[사용자와 예약대기 정보를 통해 예약대기를 등록한다]")
@@ -83,8 +88,33 @@ class WaitingBookingFacadeTest {
 
 		//then
 		verify(seatService, times(2)).updateSeatToWaiting(anyCollection());
-		verify(waitingBookingService, times(1)).activateWaitingBooking(waitingBookings.get(0).getId());
-		verify(waitingBookingService, times(1)).activateWaitingBooking(waitingBookings.get(1).getId());
+		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(0).getId()), anyList());
+		verify(waitingBookingService, times(1)).activateWaitingBooking(eq(waitingBookings.get(1).getId()), anyList());
 		verify(seatService, times(1)).updateSeatToAvailable(anyCollection());
+
+		verify(eventPublisher, times(2)).publishEvent(any(WaitingBookingActiveEvent.class));
+	}
+
+	@Test
+	@DisplayName("[만료된 활성화 상태인 예약대기를 처리한다]")
+	void processExpiredWaitingBooking_test() {
+		//given
+		LocalDateTime beforeNow = LocalDateTime.now().minusSeconds(10);
+		LocalDateTime afterNow = LocalDateTime.now().plusSeconds(10);
+		List<WaitingBooking> waitingBookings = List.of(
+			WaitingBookingFixture.getActiveWaitingBooking(1L, beforeNow, 2, List.of(1L, 2L)),
+			WaitingBookingFixture.getActiveWaitingBooking(2L, beforeNow, 2, List.of(3L, 4L)),
+			WaitingBookingFixture.getActiveWaitingBooking(3L, afterNow, 2, List.of(5L, 6L))
+		);
+
+		given(waitingBookingService.getWaitingBookingsByStatusIsActivation())
+			.willReturn(waitingBookings);
+
+		//when
+		waitingBookingFacade.processExpiredWaitingBooking();
+
+		//then
+		verify(waitingBookingService, times(1)).expireActiveWaitingBooking(anyList());
+		verify(seatService, times(1)).updateSeatToAvailable(anyList());
 	}
 }

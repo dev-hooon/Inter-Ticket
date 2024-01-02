@@ -12,8 +12,13 @@ public class WaitingBookingScheduler {
 
 	private final WaitingBookingFacade waitingBookingFacade;
 
-	@Scheduled(cron = "0 */10 * * * *")
+	@Scheduled(cron = "0 0/10 * * * *")
 	public void scheduleWaitingBookingProcess() {
 		waitingBookingFacade.processWaitingBooking();
+	}
+
+	@Scheduled(cron = "0/5 * * * * *")
+	public void scheduleExpiredWaitingBookingProcess() {
+		waitingBookingFacade.processExpiredWaitingBooking();
 	}
 }

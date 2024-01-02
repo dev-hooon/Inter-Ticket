@@ -1,6 +1,7 @@
 package dev.hooon.waitingbooking.infrastructure.adaptor;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,13 @@ public class WaitingBookingRepositoryAdaptor implements WaitingBookingRepository
 	}
 
 	@Override
-	public List<WaitingBooking> findByStatusIsWaiting() {
-		return waitingBookingJpaRepository.findByStatusOrderByIdDesc(WaitingStatus.WAITING);
+	public List<WaitingBooking> findWithSelectedSeatsByStatus(WaitingStatus status) {
+		return waitingBookingJpaRepository.findWithSelectedSeatsByStatusOrderByIdDesc(status);
+	}
+
+	@Override
+	public List<WaitingBooking> findWithConfirmedSeatsByStatus(WaitingStatus status) {
+		return waitingBookingJpaRepository.findWithConfirmedSeatsByStatusOrderByIdDesc(status);
 	}
 
 	@Override
@@ -45,5 +51,10 @@ public class WaitingBookingRepositoryAdaptor implements WaitingBookingRepository
 			WaitingStatus.ACTIVATION,
 			LocalDateTime.now().plusHours(6)
 		);
+	}
+
+	@Override
+	public void updateStatusByIdIn(WaitingStatus status, Collection<Long> targetIds) {
+		waitingBookingJpaRepository.updateStatusByIdIn(status, targetIds);
 	}
 }

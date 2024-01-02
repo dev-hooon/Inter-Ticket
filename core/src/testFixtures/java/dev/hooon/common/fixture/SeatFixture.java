@@ -69,4 +69,20 @@ public class SeatFixture {
 		ReflectionTestUtils.setField(seat, "id", seatId);
 		return seat;
 	}
+
+	public static Seat getSeat(Show show) {
+		return Seat.of(
+			show,
+			SeatGrade.VIP,
+			true,
+			"1층",
+			"A",
+			10,
+			100000,
+			LocalDate.now(),
+			1,
+			LocalTime.now(),
+			SeatStatus.AVAILABLE
+		);
+	}
 }
