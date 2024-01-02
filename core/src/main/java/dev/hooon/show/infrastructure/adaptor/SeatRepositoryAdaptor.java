@@ -49,6 +49,10 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 	}
 
 	@Override
+	public Optional<String> findShowNameById(Long id) {
+		return seatJpaRepository.findShowNameById(id);
+	}
+
 	public List<SeatsInfoDto> findSeatInfoByShowIdAndDateAndRound(
 		Long showId, LocalDate date, int round
 	) {

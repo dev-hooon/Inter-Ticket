@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.hooon.user.domain.entity.User;
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
-import dev.hooon.waitingbooking.domain.entity.WaitingBookingSeat;
+import dev.hooon.waitingbooking.domain.entity.waitingbookingseat.SelectedSeat;
 import dev.hooon.waitingbooking.domain.entity.WaitingStatus;
 import dev.hooon.waitingbooking.domain.repository.WaitingBookingRepository;
 import dev.hooon.waitingbooking.dto.request.WaitingRegisterRequest;
@@ -46,8 +46,8 @@ class WaitingBookingServiceTest {
 			() -> assertThat(result.getStatus()).isEqualTo(WaitingStatus.WAITING),
 			() -> assertThat(result.getUser()).isEqualTo(user),
 			() -> {
-				List<Long> actualSeatIds = result.getWaitingBookingSeats().stream()
-					.map(WaitingBookingSeat::getSeatId)
+				List<Long> actualSeatIds = result.getSelectedSeats().stream()
+					.map(SelectedSeat::getSeatId)
 					.toList();
 				assertThat(actualSeatIds)
 					.hasSameSizeAs(seatIds)

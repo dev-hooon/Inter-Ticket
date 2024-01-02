@@ -14,6 +14,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import dev.hooon.common.fixture.SeatFixture;
 import dev.hooon.common.support.DataJpaTestSupport;
+import dev.hooon.show.domain.entity.Show;
+import dev.hooon.show.domain.entity.ShowCategory;
+import dev.hooon.show.domain.entity.ShowPeriod;
+import dev.hooon.show.domain.entity.ShowTime;
+import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
@@ -25,6 +30,10 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 
 	@Autowired
 	private SeatRepository seatRepository;
+	@Autowired
+	private PlaceRepository placeRepository;
+	@Autowired
+	private ShowRepository showRepository;
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -107,5 +116,33 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 		assertThat(actualIds)
 			.hasSameSizeAs(seatIds)
 			.containsAll(seatIds);
+	}
+
+	@Test
+	@DisplayName("[id 에 해당하는 좌석의 공연 이름을 조회한다]")
+	void findShowNameById_test() {
+		//given
+		Place place = new Place("placeName", null, "address", null);
+		Show show = new Show(
+			"show",
+			ShowCategory.CONCERT,
+			new ShowPeriod(LocalDate.now(), LocalDate.now().plusMonths(1)),
+			new ShowTime(100, 10),
+			"청불",
+			100,
+			place
+		);
+
+		placeRepository.save(place);
+		showRepository.save(show);
+
+		Seat seat = SeatFixture.getSeat(show);
+		seatRepository.saveAll(List.of(seat));
+
+		//when
+		String result = seatRepository.findShowNameById(seat.getId()).orElseThrow();
+
+		//then
+		assertThat(result).isEqualTo(show.getName());
 	}
 }

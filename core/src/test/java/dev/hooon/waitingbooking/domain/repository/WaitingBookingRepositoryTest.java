@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,15 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 
 	private final User user = new User("hello123@naver.com", "name", UserRole.BUYER);
 
+	@BeforeEach
+	void setUp() {
+		userRepository.save(user);
+	}
+
 	@Test
-	@DisplayName("[WAITING 상태인 데이터를 최신순으로 조회한다]")
+	@DisplayName("[WaitingStatus 로 데이터를 최신순으로 조회한다]")
 	void findByStatusIsWaitingTest() {
 		//given
-		userRepository.save(user);
-
 		List<WaitingBooking> waitingBookings = List.of(
 			WaitingBookingFixture.getWaitingBooking(user),
 			WaitingBookingFixture.getWaitingBooking(user),
@@ -49,7 +53,7 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 		waitingBookings.forEach(waitingBooking -> waitingBookingRepository.save(waitingBooking));
 
 		//when
-		List<WaitingBooking> result = waitingBookingRepository.findByStatusIsWaiting();
+		List<WaitingBooking> result = waitingBookingRepository.findWithSelectedSeatsByStatus(WaitingStatus.WAITING);
 
 		//then
 		assertThat(result)
@@ -61,8 +65,6 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 	@DisplayName("[id 에 해당하는 데이터의 status 를 ACTIVATION 으로 변경하고 expireAt 을 6시간뒤로 설정한다]")
 	void updateToActiveByIdTest() {
 		//given
-		userRepository.save(user);
-
 		WaitingBooking waitingBooking = WaitingBookingFixture.getWaitingBooking(user);
 		waitingBookingRepository.save(waitingBooking);
 
@@ -75,5 +77,28 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 		WaitingBooking actual = waitingBookingRepository.findById(waitingBooking.getId()).orElseThrow();
 		assertThat(actual.getStatus()).isEqualTo(WaitingStatus.ACTIVATION);
 		assertThat(actual.getExpiredAt()).isEqualToIgnoringSeconds(LocalDateTime.now().plusHours(6));
+	}
+
+	@Test
+	@DisplayName("[id 컬렉션에 포함되는 WaitingBooking 의 상태를 입력한 상태로 변경한다]")
+	void updateStatusByIdIn_test() {
+		//given
+		List<WaitingBooking> waitingBookings = List.of(
+			WaitingBookingFixture.getWaitingBooking(user),
+			WaitingBookingFixture.getWaitingBooking(user)
+		);
+		waitingBookings.forEach(waitingBooking -> waitingBookingRepository.save(waitingBooking));
+		List<Long> waitingBookingIds = waitingBookings.stream().map(WaitingBooking::getId).toList();
+
+		//when
+		waitingBookingRepository.updateStatusByIdIn(WaitingStatus.FIN, waitingBookingIds);
+		entityManager.flush();
+		entityManager.clear();
+
+		//then
+		List<WaitingBooking> all = waitingBookingRepository.findAll();
+
+		assertThat(all).hasSize(2);
+		all.forEach(waitingBooking -> assertThat(waitingBooking.getStatus()).isEqualTo(WaitingStatus.FIN));
 	}
 }

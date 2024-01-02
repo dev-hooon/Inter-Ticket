@@ -1,4 +1,8 @@
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework:spring-tx:6.1.1'
+
     implementation project(':core')
     testImplementation(testFixtures(project(':core')))
 }

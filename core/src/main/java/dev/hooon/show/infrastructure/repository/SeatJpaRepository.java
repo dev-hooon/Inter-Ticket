@@ -3,6 +3,7 @@ package dev.hooon.show.infrastructure.repository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,6 +34,9 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 	@Modifying
 	@Query("update Seat s SET s.seatStatus = :status where s.id in :ids")
 	void updateStatusByIdIn(@Param("ids") Collection<Long> ids, @Param("status") SeatStatus status);
+
+	@Query("select show.name from Seat s left join Show show on show.id = s.show.id where s.id = :id")
+	Optional<String> findShowNameById(@Param("id") Long id);
 
 	@Query("""
 		select

@@ -1,5 +1,6 @@
 package dev.hooon.common.fixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.test.util.ReflectionTestUtils;
@@ -31,6 +32,33 @@ public final class WaitingBookingFixture {
 			seatIds
 		);
 		ReflectionTestUtils.setField(waitingBooking, "id", waitingBookingId);
+		return waitingBooking;
+	}
+
+	public static WaitingBooking getActiveWaitingBooking(
+		Long id,
+		LocalDateTime expiredAt,
+		int seatCount,
+		List<Long> seatIds
+	) {
+		WaitingBooking waitingBooking = WaitingBooking.of(new User(), seatCount, seatIds);
+		waitingBooking.toActive(seatIds);
+		ReflectionTestUtils.setField(waitingBooking, "id", id);
+		ReflectionTestUtils.setField(waitingBooking, "expiredAt", expiredAt);
+
+		return waitingBooking;
+	}
+
+	public static WaitingBooking getActiveWaitingBooking(
+		User user,
+		LocalDateTime expiredAt,
+		int seatCount,
+		List<Long> seatIds
+	) {
+		WaitingBooking waitingBooking = WaitingBooking.of(user, seatCount, seatIds);
+		waitingBooking.toActive(seatIds);
+		ReflectionTestUtils.setField(waitingBooking, "expiredAt", expiredAt);
+
 		return waitingBooking;
 	}
 }
