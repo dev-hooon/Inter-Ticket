@@ -1,94 +1,37 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.0'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 subprojects {
 
-	apply plugin: 'java'
-	apply plugin: 'java-library'
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
-	apply plugin: 'jacoco'
-	apply plugin: "java-test-fixtures"
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: "java-test-fixtures"
 
-	group = 'dev.hooon'
-	version = '0.0.1-SNAPSHOT'
-	sourceCompatibility = '17'
+    group = 'dev.hooon'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
 
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
 
-	// 공통 dependencies
-	dependencies {
-		compileOnly 'org.projectlombok:lombok'
-		annotationProcessor 'org.projectlombok:lombok'
-		testCompileOnly 'org.projectlombok:lombok'
-		testAnnotationProcessor 'org.projectlombok:lombok'
-		implementation 'org.springframework.boot:spring-boot-starter-validation'
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	}
+    // 공통 dependencies
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
 
-	tasks.named('test') {
-		useJUnitPlatform()
-		finalizedBy 'jacocoTestReport' // test 이후 커버리지 실행
-	}
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 
-	jacoco {
-		toolVersion = '0.8.8'
-	}
-
-	jacocoTestReport {
-		reports {
-			xml.required = true
-			html.required = true
-		}
-
-		def Qdomains = []
-
-		for (qPattern in '**/QA'..'**/QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
-			Qdomains.add(qPattern + '*')
-		}
-
-		afterEvaluate { // report 제외대상 지정
-			classDirectories.setFrom(
-					files(classDirectories.files.collect {
-						fileTree(dir: it, excludes: [] + Qdomains)
-					})
-			)
-		}
-
-		finalizedBy 'jacocoTestCoverageVerification' // 커버리지 이후에 평가
-	}
-
-	jacocoTestCoverageVerification { // 커버리지 상세설정
-		def Qdomains = []
-
-		for (qPattern in '*.QA'..'*.QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
-			Qdomains.add(qPattern + '*')
-		}
-
-		violationRules {
-			rule {
-				enabled = true
-				element = 'CLASS'
-
-				limit {
-					counter = 'LINE'
-					value = 'COVEREDRATIO'
-					minimum = 0.0
-				}
-
-				limit {
-					counter = 'BRANCH'
-					value = 'COVEREDRATIO'
-					minimum = 0.0
-				}
-
-				excludes = [] + Qdomains // 커버리지 평가 제외 대상
-			}
-		}
-	}
 }
