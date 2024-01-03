@@ -12,7 +12,6 @@ import dev.hooon.user.domain.repository.UserRepository;
 import dev.hooon.user.dto.request.UserJoinRequest;
 import dev.hooon.common.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor

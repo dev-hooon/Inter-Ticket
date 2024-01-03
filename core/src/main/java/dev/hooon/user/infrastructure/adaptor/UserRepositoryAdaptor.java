@@ -17,11 +17,6 @@ public class UserRepositoryAdaptor implements UserRepository {
 	private final UserJpaRepository userJpaRepository;
 
 	@Override
-	public User save(User user) {
-		return userJpaRepository.save(user);
-	}
-
-	@Override
 	public Optional<User> findById(Long id) {
 		return userJpaRepository.findById(id);
 	}

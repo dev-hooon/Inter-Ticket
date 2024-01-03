@@ -78,7 +78,7 @@ class WaitingBookingSchedulerTest extends TestContainerSupport {
 		);
 		seatRepository.saveAll(seats);
 
-		User user = new User("hello123@naver.com", "name", UserRole.BUYER);
+		User user = User.ofBuyer("hello123@naver.com", "name", "password");
 		userRepository.save(user);
 
 		List<WaitingBooking> waitingBookings = List.of(
@@ -128,7 +128,7 @@ class WaitingBookingSchedulerTest extends TestContainerSupport {
 		);
 		seatRepository.saveAll(seats);
 
-		User user = new User("hello123@naver.com", "name", UserRole.BUYER);
+		User user = User.ofBuyer("hello123@naver.com", "name", "password");
 		userRepository.save(user);
 
 		LocalDateTime beforeNow = LocalDateTime.now().minusSeconds(10);
