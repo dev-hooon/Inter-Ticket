@@ -17,20 +17,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Place extends TimeBaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "place_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "place_id")
+	private Long id;
 
-    @Column(name = "place_name", nullable = false)
-    private String name;
+	@Column(name = "place_name", nullable = false)
+	private String name;
 
-    @Column(name = "place_contact_info")
-    private String contactInfo;
+	@Column(name = "place_contact_info")
+	private String contactInfo;
 
-    @Column(name = "place_address", nullable = false)
-    private String address;
+	@Column(name = "place_address", nullable = false)
+	private String address;
 
-    @Column(name = "place_url")
-    private String placeUrl;
+	@Column(name = "place_url")
+	private String placeUrl;
+
+	public Place(
+		String name,
+		String contactInfo,
+		String address,
+		String placeUrl
+	) {
+		this.name = name;
+		this.contactInfo = contactInfo;
+		this.address = address;
+		this.placeUrl = placeUrl;
+	}
 }

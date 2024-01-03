@@ -2,10 +2,14 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     //테스트 픽쳐에서 사용할 의존성
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
     testFixturesImplementation "org.testcontainers:testcontainers:1.19.3"
     testFixturesImplementation "org.testcontainers:postgresql:1.19.3"
+    // 패스워드 암호화
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'

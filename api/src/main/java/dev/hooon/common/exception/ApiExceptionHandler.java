@@ -33,4 +33,11 @@ public class ApiExceptionHandler {
 
 		return new ErrorResponseTemplate(message, ARGUMENT_NOT_VALID_ERROR_CODE);
 	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ValidationException.class)
+	public ErrorResponseTemplate handleValidationException(ValidationException e) {
+		log.error("ValidationException : ", e);
+		return new ErrorResponseTemplate(e.getMessage(), e.getCode());
+	}
 }

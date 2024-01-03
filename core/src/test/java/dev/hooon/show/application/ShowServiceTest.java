@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import dev.hooon.common.exception.NotFoundException;
+import dev.hooon.common.fixture.TestFixture;
+import dev.hooon.show.domain.entity.Show;
+import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.repository.SeatRepository;
+import dev.hooon.show.domain.repository.ShowRepository;
+import dev.hooon.show.dto.ShowMapper;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
 import dev.hooon.show.dto.response.AbleBookingDateRoundResponse;
+import dev.hooon.show.dto.response.ShowDetailsInfoResponse;
+import dev.hooon.show.exception.ShowErrorCode;
 
 @DisplayName("[ShowService 테스트]")
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +37,9 @@ class ShowServiceTest {
 	private ShowService showService;
 	@Mock
 	private SeatRepository seatRepository;
+
+	@Mock
+	private ShowRepository showRepository;
 
 	@Test
 	@DisplayName("[show_id 를 통해 예매 가능한 날짜와 회차 정보를 조회한다]")
@@ -58,4 +70,34 @@ class ShowServiceTest {
 			);
 		}
 	}
+
+	@Test
+	@DisplayName("[show_id 를 통해 공연의 세부 정보를 조회할 수 있다]")
+	void getShowDetailInfoTest() {
+		// given
+		Place place = TestFixture.getPlace();
+		Show show = TestFixture.getShow(place);
+
+		given(showRepository.findById(1L))
+			.willReturn(Optional.of(show));
+
+		// when
+		ShowDetailsInfoResponse showDetailsInfoResponse = showService.getShowDetailInfo(1L);
+
+		// then
+		assertEquals(ShowMapper.toShowDetailInfoResponse(show), showDetailsInfoResponse);
+	}
+
+	@Test
+	@DisplayName("[존재하지 않는 show_id 로 공연 조회 시 NotFoundException을 반환한다]")
+	void getShowDetailInfo_WithNoShowId_Test() {
+
+		// when then
+		NotFoundException notFoundException = assertThrows(
+			NotFoundException.class,
+			() -> showService.getShowDetailInfo(1L)
+		);
+		assertEquals(ShowErrorCode.SHOW_NOT_FOUND.getMessage(), notFoundException.getMessage());
+	}
+
 }

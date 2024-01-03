@@ -1,0 +1,11 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework:spring-tx:6.1.1'
+    // shedlock
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:5.1.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:5.1.0'
+
+    implementation project(':core')
+    testImplementation(testFixtures(project(':core')))
+}
