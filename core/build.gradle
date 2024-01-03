@@ -8,6 +8,8 @@ dependencies {
     testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
     testFixturesImplementation "org.testcontainers:testcontainers:1.19.3"
     testFixturesImplementation "org.testcontainers:postgresql:1.19.3"
+    // 패스워드 암호화
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
 }
 
 bootJar { enabled = false }
