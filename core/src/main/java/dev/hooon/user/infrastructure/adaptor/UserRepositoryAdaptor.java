@@ -19,4 +19,10 @@ public class UserRepositoryAdaptor implements UserRepository {
 	public Optional<User> findById(Long id) {
 		return userJpaRepository.findById(id);
 	}
+
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userJpaRepository.findByEmail(email);
+	}
+
 }
