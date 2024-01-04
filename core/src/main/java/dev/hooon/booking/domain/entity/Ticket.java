@@ -37,8 +37,14 @@ public class Ticket extends TimeBaseEntity {
 	@JoinColumn(name = "booking_id")
 	private Booking booking;
 
-	public Ticket(Seat seat) {
+	private Ticket(Seat seat) {
 		this.seat = seat;
+	}
+
+	public static Ticket of(
+		Seat seat
+	) {
+		return new Ticket(seat);
 	}
 
 	public void setBooking(Booking booking) {
