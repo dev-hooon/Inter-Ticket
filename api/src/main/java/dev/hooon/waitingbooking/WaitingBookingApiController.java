@@ -20,8 +20,8 @@ public class WaitingBookingApiController {
 
 	@PostMapping("/api/waiting_bookings")
 	public ResponseEntity<WaitingRegisterResponse> registerWaitingBooking(
-		@Valid @RequestBody WaitingRegisterRequest request,
-		@RequestParam Long userId // TODO 추후에 인증정보 ArgumentResolver 가 구현되면 수정 예정
+		@RequestParam(name = "userId") Long userId, // TODO 추후에 인증정보 ArgumentResolver 가 구현되면 수정 예정
+		@Valid @RequestBody WaitingRegisterRequest request
 	) {
 		WaitingRegisterResponse waitingRegisterResponse = waitingBookingFacade.registerWaitingBooking(userId, request);
 		return ResponseEntity.ok(waitingRegisterResponse);
