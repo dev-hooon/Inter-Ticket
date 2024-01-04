@@ -31,7 +31,7 @@ class WaitingBookingRepositoryTest extends DataJpaTestSupport {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final User user = new User("hello123@naver.com", "name", UserRole.BUYER);
+	private final User user = User.ofBuyer("hello123@naver.com", "name", "password");
 
 	@BeforeEach
 	void setUp() {
