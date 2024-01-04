@@ -72,7 +72,8 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 	void bookingTicket_success_test() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		userRepository.save(user);
 
 		Place place = TestFixture.getPlace();
@@ -103,7 +104,8 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 	void bookingTicket_fail_test_1() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		userRepository.save(user);
 
 		Place place = TestFixture.getPlace();
@@ -131,7 +133,8 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 	void bookingTicket_fail_test_2() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		userRepository.save(user);
 
 		Place place = TestFixture.getPlace();
@@ -161,7 +164,8 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 		// given
 		ExecutorService executorService = Executors.newFixedThreadPool(100);
 
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		userRepository.save(user);
 
 		Place place = TestFixture.getPlace();
@@ -191,7 +195,8 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 		// given
 		ExecutorService executorService = Executors.newFixedThreadPool(3);
 
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		userRepository.save(user);
 
 		Place place = TestFixture.getPlace();

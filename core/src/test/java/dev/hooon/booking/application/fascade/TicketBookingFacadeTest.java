@@ -46,7 +46,8 @@ class TicketBookingFacadeTest {
 	void validateSeatList_test_1() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		TicketBookingRequest ticketBookingRequest = new TicketBookingRequest(List.of());
 
 		when(userService.getUserById(1L)).thenReturn(user);
@@ -64,7 +65,8 @@ class TicketBookingFacadeTest {
 	void validateSeatList_test_2() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		TicketBookingRequest ticketBookingRequest = new TicketBookingRequest(List.of(1L, 2L, 3L));
 
 		when(userService.getUserById(1L)).thenReturn(user);
@@ -83,7 +85,8 @@ class TicketBookingFacadeTest {
 	void validateAvailableSeat_test() {
 
 		// given
-		User user = new User("user@email.com", "user", BUYER);
+		// User user = new User("user@email.com", "user", BUYER);
+		User user = User.ofBuyer("user@email.com", "user", BUYER.toString());
 		Place place = TestFixture.getPlace();
 		Show show = TestFixture.getShow(place);
 		List<Seat> seatList = TestFixture.getSeatList(show, show.getShowPeriod().getStartDate(), 1);
