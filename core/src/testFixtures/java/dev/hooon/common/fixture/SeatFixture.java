@@ -1,5 +1,7 @@
 package dev.hooon.common.fixture;
 
+import static dev.hooon.show.domain.entity.seat.SeatStatus.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -39,13 +41,13 @@ public class SeatFixture {
 			showDate,
 			round,
 			startTime,
-			SeatStatus.AVAILABLE
+			AVAILABLE
 		);
 	}
 
 	// show 에 대한 정보가 필요없는 경우에 사용
 	public static Seat getSeat() {
-		return getSeat(LocalDate.now(), 1, LocalTime.now());
+		return getSeat(LocalDate.of(2023, 11, 16), 1, LocalTime.of(11, 16));
 	}
 
 	public static Seat getSeat(SeatStatus status) {
@@ -57,15 +59,31 @@ public class SeatFixture {
 			"A",
 			10,
 			100000,
-			LocalDate.now(),
+			LocalDate.of(2023, 11, 16),
 			1,
-			LocalTime.now(),
+			LocalTime.of(11, 16),
 			status
 		);
 	}
 
+	public static Seat getSeatWithIsSeat(boolean isSeat) {
+		return Seat.of(
+			SHOW,
+			SeatGrade.VIP,
+			isSeat,
+			"1층",
+			"A",
+			10,
+			100000,
+			LocalDate.of(2023, 11, 16),
+			1,
+			LocalTime.of(11, 16),
+			AVAILABLE
+		);
+	}
+
 	public static Seat getSeat(Long seatId) {
-		Seat seat = getSeat(LocalDate.now(), 1, LocalTime.now());
+		Seat seat = getSeat(LocalDate.of(2023, 11, 16), 1, LocalTime.of(11, 16));
 		ReflectionTestUtils.setField(seat, "id", seatId);
 		return seat;
 	}
@@ -79,10 +97,10 @@ public class SeatFixture {
 			"A",
 			10,
 			100000,
-			LocalDate.now(),
+			LocalDate.of(2023, 11, 16),
 			1,
-			LocalTime.now(),
-			SeatStatus.AVAILABLE
+			LocalTime.of(11, 16),
+			AVAILABLE
 		);
 	}
 }
