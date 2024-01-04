@@ -43,4 +43,7 @@ public class Booking extends TimeBaseEntity {
     @Enumerated(STRING)
     @Column(name = "booking_status", nullable = false)
     private BookingStatus bookingStatus;
+
+    @Column(name = "booking_ticket_count", nullable = false)
+    private int ticketCount;
 }
