@@ -29,6 +29,21 @@ public class TicketBookingFacade {
 	private final SeatService seatService;
 	private final UserService userService;
 
+	private static void validateAvailableSeat(Seat seat) {
+		if (!seat.isBookingAvailable()) {
+			throw new ValidationException(NOT_AVAILABLE_SEAT);
+		}
+	}
+
+	private static void validateSeatList(int seatIdsSize, List<Seat> seatList) {
+		if (seatList.isEmpty()) {
+			throw new ValidationException(INVALID_EMPTY_SEAT);
+		}
+		if (seatList.size() != seatIdsSize) {
+			throw new ValidationException(INVALID_SELECTED_SEAT);
+		}
+	}
+
 	@Transactional
 	public TicketBookingResponse bookingTicket(
 		Long userId,
@@ -62,20 +77,5 @@ public class TicketBookingFacade {
 		Booking savedbooking = bookingService.bookingTicket(booking);
 
 		return BookingMapper.toTicketBookingResponse(savedbooking);
-	}
-
-	private static void validateAvailableSeat(Seat seat) {
-		if (!seat.isBookingAvailable()) {
-			throw new ValidationException(NOT_AVAILABLE_SEAT);
-		}
-	}
-
-	private static void validateSeatList(int seatIdsSize, List<Seat> seatList) {
-		if (seatList.isEmpty()) {
-			throw new ValidationException(INVALID_EMPTY_SEAT);
-		}
-		if (seatList.size() != seatIdsSize) {
-			throw new ValidationException(INVALID_SELECTED_SEAT);
-		}
 	}
 }
