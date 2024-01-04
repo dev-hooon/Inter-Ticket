@@ -29,7 +29,7 @@ public class TicketBookingFacade {
 	private final SeatService seatService;
 	private final UserService userService;
 
-	private void validateAvailableSeat(Seat seat) {
+	private static void validateAvailableSeat(Seat seat) {
 		if (!seat.isBookingAvailable()) {
 			throw new ValidationException(NOT_AVAILABLE_SEAT);
 		}
