@@ -14,7 +14,7 @@ import dev.hooon.show.dto.query.seats.SeatsInfoDto;
 
 public interface SeatRepository {
 
-	void saveAll(Iterable<Seat> seats);
+	List<Seat> saveAll(Iterable<Seat> seats);
 
 	Optional<Seat> findById(Long id);
 
@@ -38,4 +38,6 @@ public interface SeatRepository {
 		int round,
 		SeatGrade grade
 	);
+
+	List<Seat> findByIdIn(List<Long> idList);
 }

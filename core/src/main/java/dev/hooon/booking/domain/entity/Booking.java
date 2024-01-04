@@ -1,14 +1,19 @@
 package dev.hooon.booking.domain.entity;
 
+import static dev.hooon.booking.domain.entity.BookingStatus.*;
 import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.hooon.common.entity.TimeBaseEntity;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.user.domain.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -17,6 +22,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,20 +33,41 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class Booking extends TimeBaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "booking_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "booking_id")
+	private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "booking_user_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
-    private User user;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "booking_user_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
+	private User user;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "booking_show_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
-    private Show show;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "booking_show_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
+	private Show show;
 
-    @Enumerated(STRING)
-    @Column(name = "booking_status", nullable = false)
-    private BookingStatus bookingStatus;
+	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Ticket> tickets = new ArrayList<>();
+
+	@Enumerated(STRING)
+	@Column(name = "booking_status", nullable = false)
+	private BookingStatus bookingStatus;
+
+	public void addTicket(Ticket ticket) {
+		tickets.add(ticket);
+		ticket.setBooking(this);
+	}
+
+	private Booking(User user, Show show) {
+		this.user = user;
+		this.show = show;
+		this.bookingStatus = BOOKED;
+	}
+
+	public static Booking of(
+		User user,
+		Show show
+	) {
+		return new Booking(user, show);
+	}
 }
