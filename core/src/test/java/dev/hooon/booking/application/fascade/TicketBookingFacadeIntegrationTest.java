@@ -219,6 +219,13 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 		assertEquals(2, bookingList.size());
 	}
 
+	/**
+	 * 동시에 같은 좌석들을 예매하는 다중 스레드를 요청합니다
+	 *
+	 * @param user
+	 * @param idList
+	 * @return
+	 */
 	private List<Callable<TicketBookingResponse>> getCallables1(User user, List<Long> idList) {
 		List<Callable<TicketBookingResponse>> callables = new ArrayList<>();
 		for (int i = 0; i < 100; i++) {
@@ -227,6 +234,13 @@ class TicketBookingFacadeIntegrationTest extends TestContainerSupport {
 		return callables;
 	}
 
+	/**
+	 * 겹치는 좌석들을 예매하는 다중 스레드를 요청합니다
+	 *
+	 * @param user
+	 * @param idList
+	 * @return
+	 */
 	private List<Callable<TicketBookingResponse>> getCallables2(User user, List<Long> idList) {
 		List<Callable<TicketBookingResponse>> callables = new ArrayList<>();
 		callables.add(
