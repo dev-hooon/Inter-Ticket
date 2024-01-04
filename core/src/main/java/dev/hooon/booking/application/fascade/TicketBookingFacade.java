@@ -29,13 +29,13 @@ public class TicketBookingFacade {
 	private final SeatService seatService;
 	private final UserService userService;
 
-	private static void validateAvailableSeat(Seat seat) {
+	private void validateAvailableSeat(Seat seat) {
 		if (!seat.isBookingAvailable()) {
 			throw new ValidationException(NOT_AVAILABLE_SEAT);
 		}
 	}
 
-	private static void validateSeatList(int seatIdsSize, List<Seat> seatList) {
+	private void validateSeatList(int seatIdsSize, List<Seat> seatList) {
 		if (seatList.isEmpty()) {
 			throw new ValidationException(INVALID_EMPTY_SEAT);
 		}
