@@ -50,12 +50,12 @@ public class TicketBookingFacade {
 		seatList.forEach(TicketBookingFacade::validateAvailableSeat);
 
 		// 예매 생성
-		Booking booking = new Booking(user, show);
+		Booking booking = Booking.of(user, show);
 
 		// 예매에 티켓리스트 넣기
 		seatList.forEach(seat -> {
 			seat.markSeatStatusAsBooked();
-			booking.addTicket(new Ticket(seat));
+			booking.addTicket(Ticket.of(seat));
 		});
 
 		// 예매 저장
