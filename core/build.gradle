@@ -10,6 +10,9 @@ dependencies {
     testFixturesImplementation "org.testcontainers:postgresql:1.19.3"
     // 패스워드 암호화
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+    // 레디스 LocalDateTime 역직렬화
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 bootJar { enabled = false }
