@@ -145,4 +145,26 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 		//then
 		assertThat(result).isEqualTo(show.getName());
 	}
+
+	@Test
+	@DisplayName("[id 리스트에 포함된 좌석들을 조회할 수 있다]")
+	void findByIdInTest() {
+
+		// given
+		List<Seat> seats = List.of(
+			SeatFixture.getSeat(),
+			SeatFixture.getSeat(),
+			SeatFixture.getSeat()
+		);
+		seatRepository.saveAll(seats);
+
+		List<Long> idList = seats.stream().map(Seat::getId).toList();
+
+		// when
+		List<Seat> seatList = seatRepository.findByIdIn(idList);
+
+		// then
+		assertEquals(seatList, seats);
+	}
+
 }
