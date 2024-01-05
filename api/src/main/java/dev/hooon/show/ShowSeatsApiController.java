@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.hooon.auth.NeedAuth;
 import dev.hooon.show.application.ShowSeatsService;
 import dev.hooon.show.dto.response.seats.ShowSeatsResponse;
 import lombok.RequiredArgsConstructor;

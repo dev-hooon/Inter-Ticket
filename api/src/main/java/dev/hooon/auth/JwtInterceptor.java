@@ -3,8 +3,6 @@ package dev.hooon.auth;
 import static dev.hooon.auth.domain.entity.TokenType.*;
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 
-import java.io.IOException;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,9 +21,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 	private final JwtProvider jwtProvider;
 
-	private boolean checkAnnotation(Object handler, Class cls) {
+	private boolean checkAnnotationIsNotPresent(Object handler, Class cls) {
 		HandlerMethod handlerMethod = (HandlerMethod)handler;
-		if (handlerMethod.getMethodAnnotation(cls) != null) { //해당 어노테이션이 존재하면 true.
+		if (handlerMethod.getMethodAnnotation(cls) == null) { //해당 어노테이션이 존재하지 않으면 true
 			return true;
 		}
 		return false;
@@ -37,7 +35,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 		HttpServletResponse response,
 		Object handler
 	) {
-		boolean check = checkAnnotation(handler, NoAuth.class);
+		boolean check = checkAnnotationIsNotPresent(handler, NeedAuth.class);
 		if (check) {
 			return true;
 		}

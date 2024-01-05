@@ -22,7 +22,6 @@ public class AuthApiController {
 
 	private final AuthService authService;
 
-	@NoAuth
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(
 		@Valid @RequestBody AuthRequest authRequest
@@ -31,6 +30,7 @@ public class AuthApiController {
 		return ResponseEntity.ok(authResponse);
 	}
 
+	@NeedAuth
 	@PostMapping("/token")
 	public ResponseEntity<String> reIssueAccessToken(
 		@RequestBody RefreshTokenForReIssue refreshTokenForReIssue
