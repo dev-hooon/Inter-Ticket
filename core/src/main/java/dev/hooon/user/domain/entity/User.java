@@ -54,6 +54,20 @@ public class User extends TimeBaseEntity {
 		this.userRole = userRole;
 	}
 
+	private User(
+		Long id,
+		String email,
+		String name,
+		String password,
+		UserRole userRole
+	) {
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.userRole = userRole;
+	}
+
 	private void validateUser(String email, String name, String password, UserRole userRole) {
 		Assert.hasText(email, getNotEmptyPostfix("User", "email"));
 		Assert.hasText(name, getNotEmptyPostfix("User", "name"));
@@ -69,5 +83,21 @@ public class User extends TimeBaseEntity {
 	) {
 		return new User(email, name, password, BUYER);
 	}
-  
+
+	/**
+	 * 테스트 용 유저 생성자
+	 *
+	 * @param id
+	 * @return
+	 */
+	public static User testUser(
+		Long id,
+		String email,
+		String name,
+		String password,
+		UserRole userRole
+	) {
+		return new User(id, email, name, password, userRole);
+	}
+
 }

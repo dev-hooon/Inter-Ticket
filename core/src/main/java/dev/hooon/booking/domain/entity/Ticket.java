@@ -50,4 +50,8 @@ public class Ticket extends TimeBaseEntity {
 	public void setBooking(Booking booking) {
 		this.booking = booking;
 	}
+
+	public void markSeatStatusAsCanceled() {
+		this.seat.markSeatStatusAsCanceled();
+	}
 }
