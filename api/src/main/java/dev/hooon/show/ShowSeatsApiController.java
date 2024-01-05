@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.hooon.auth.NoAuth;
 import dev.hooon.show.application.ShowSeatsService;
 import dev.hooon.show.dto.response.seats.ShowSeatsResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class ShowSeatsApiController {
 
 	private final ShowSeatsService showSeatsService;
 
+	@NoAuth
 	@GetMapping("/api/shows/{showId}/seats")
 	public ResponseEntity<ShowSeatsResponse> getShowSeatsInfo(
 		@PathVariable("showId") Long showId,
