@@ -8,7 +8,9 @@ import dev.hooon.auth.domain.entity.Auth;
 import dev.hooon.auth.domain.repository.AuthRepository;
 import dev.hooon.auth.infrastructure.AuthJpaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class AuthRepositoryAdaptor implements AuthRepository {
@@ -21,8 +23,18 @@ public class AuthRepositoryAdaptor implements AuthRepository {
 	}
 
 	@Override
+	public Optional<Auth> findByUserId(Long userId) {
+		return authJpaRepository.findByUserId(userId);
+	}
+
+	@Override
 	public Auth save(Auth auth) {
 		return authJpaRepository.save(auth);
+	}
+
+	@Override
+	public void updateRefreshToken(Long id, String refreshToken) {
+		authJpaRepository.updateRefreshToken(id, refreshToken);
 	}
 
 	@Override

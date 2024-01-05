@@ -1,7 +1,11 @@
 package dev.hooon.auth.domain.entity;
 
+import static dev.hooon.common.exception.CommonValidationError.*;
 import static jakarta.persistence.GenerationType.*;
 
+import org.springframework.util.Assert;
+
+import dev.hooon.user.domain.entity.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

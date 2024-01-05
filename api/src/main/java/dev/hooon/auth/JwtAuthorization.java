@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface JwtAuthorization {
 
-	boolean required() default true;
+	// boolean required() default true;
 }
