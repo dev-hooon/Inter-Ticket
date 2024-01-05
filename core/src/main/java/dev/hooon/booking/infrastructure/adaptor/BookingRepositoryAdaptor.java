@@ -1,6 +1,7 @@
 package dev.hooon.booking.infrastructure.adaptor;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,10 @@ public class BookingRepositoryAdaptor implements BookingRepository {
 	@Override
 	public List<Booking> findAll() {
 		return bookingJpaRepository.findAll();
+	}
+
+	@Override
+	public Optional<Booking> findById(Long id) {
+		return bookingJpaRepository.findById(id);
 	}
 }
