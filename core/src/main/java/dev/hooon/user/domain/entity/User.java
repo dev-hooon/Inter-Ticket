@@ -69,8 +69,4 @@ public class User extends TimeBaseEntity {
 	) {
 		return new User(email, name, password, BUYER);
 	}
-
-	public boolean isEqualPassword(String password) {
-		return this.password.equals(password);
-	}
 }

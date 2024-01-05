@@ -31,6 +31,11 @@ public class UserService {
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID));
 	}
 
+	public User getUserByEmail(String email) {
+		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_EMAIL));
+	}
+
 	@Transactional
 	public Long join(UserJoinRequest userJoinRequest) {
 		validateDuplicateEmail(userJoinRequest.email());
@@ -43,11 +48,5 @@ public class UserService {
 			encryptedPassword
 		);
 		return userRepository.save(user);
-	}
-
-
-	public User getUserByEmail(String email) {
-		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_EMAIL));
 	}
 }
