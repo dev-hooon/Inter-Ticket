@@ -1,29 +1,65 @@
 package dev.hooon.auth;
 
+import static dev.hooon.auth.domain.entity.TokenType.*;
+import static dev.hooon.auth.exception.AuthErrorCode.*;
+
 import java.io.IOException;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import dev.hooon.auth.application.JwtProvider;
+import dev.hooon.auth.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
 
+	private final JwtProvider jwtProvider;
+
+	private boolean checkAnnotation(Object handler, Class cls) {
+		HandlerMethod handlerMethod = (HandlerMethod)handler;
+		if (handlerMethod.getMethodAnnotation(cls) != null) { //해당 어노테이션이 존재하면 true.
+			return true;
+		}
+		return false;
+	}
+
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
-		IOException {
-		String token = request.getHeader("Authorization");
+	public boolean preHandle(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		Object handler
+	) {
+		boolean check = checkAnnotation(handler, NoAuth.class);
+		if (check) {
+			return true;
+		}
 
-		// if (token != null && jwtUtil.validateToken(token)) {
-		// 	// 토큰 검증 로직
-		// 	return true;
-		// } else {
-		// 	response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-		// 	return false;
-		// }
+		String accessToken = request.getHeader(ACCESS.getHeaderKey());
+		String refreshToken = request.getHeader(REFRESH.getHeaderKey());
 
-		return true;
+		if (accessToken != null) {
+			if (jwtProvider.validateToken(accessToken, ACCESS)) {
+				return true;
+			} else {
+				throw new AuthException(INVALID_ACCESS_TOKEN);
+			}
+		} else {
+			if (refreshToken != null) {    // 액세스 토큰이 만료되어서 재발급해야 할 때
+				if (jwtProvider.validateToken(refreshToken, REFRESH)) {
+					return true;
+				} else {
+					throw new AuthException(INVALID_REFRESH_TOKEN);
+				}
+			}
+			throw new AuthException(NOT_INCLUDE_ACCESS_TOKEN);
+		}
 	}
 }
