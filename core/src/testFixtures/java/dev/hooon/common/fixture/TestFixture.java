@@ -9,13 +9,17 @@ import java.time.LocalTime;
 import java.util.List;
 
 import dev.hooon.show.domain.entity.Show;
+import dev.hooon.show.domain.entity.ShowCategory;
 import dev.hooon.show.domain.entity.ShowPeriod;
 import dev.hooon.show.domain.entity.ShowTime;
 import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 
-public class TestFixture {
+public final class TestFixture {
+
+	private TestFixture() {
+	}
 
 	public static Place getPlace() {
 		return new Place(
@@ -32,6 +36,20 @@ public class TestFixture {
 		return new Show(
 			"레미제라블",
 			MUSICAL,
+			showPeriod,
+			showTime,
+			"만 8세 이상",
+			300,
+			place
+		);
+	}
+
+	public static Show getShow(Place place, String showName, ShowCategory category) {
+		ShowPeriod showPeriod = new ShowPeriod(LocalDate.of(2023, 10, 10), LocalDate.of(2023, 10, 12));
+		ShowTime showTime = new ShowTime(150, 15);
+		return new Show(
+			showName,
+			category,
 			showPeriod,
 			showTime,
 			"만 8세 이상",
