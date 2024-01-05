@@ -6,6 +6,7 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import dev.hooon.auth.domain.entity.TokenType;
 import dev.hooon.auth.domain.repository.AuthRepository;
 import dev.hooon.auth.dto.request.AuthRequest;
 import dev.hooon.auth.dto.response.AuthResponse;
+import dev.hooon.auth.entity.EncryptHelper;
 import dev.hooon.common.exception.NotFoundException;
 import dev.hooon.user.application.UserService;
 import dev.hooon.user.domain.entity.User;
@@ -27,6 +29,12 @@ public class AuthService {
 	private final UserService userService;
 	private final JwtProvider jwtProvider;
 	private final AuthRepository authRepository;
+	private final EncryptHelper encryptHelper;
+
+	private Auth getAuthByRefreshToken(String refreshToken) {
+		return authRepository.findByRefreshToken(refreshToken)
+			.orElseThrow(() -> new NotFoundException(NOT_FOUND_REFRESH_TOKEN));
+	}
 
 	private Map<TokenType, String> createTokensWhenLogin(User user) {
 		Map<TokenType, String> tokens = new EnumMap<>(TokenType.class);
@@ -35,8 +43,17 @@ public class AuthService {
 		tokens.put(ACCESS, accessToken);
 		tokens.put(REFRESH, refreshToken);
 
-		Auth auth = Auth.of(user.getId(), refreshToken);
-		authRepository.save(auth);
+		Long userId = user.getId();
+		Optional<Auth> auth = authRepository.findByUserId(userId);
+
+		auth.ifPresentOrElse(
+			(none) -> authRepository.updateRefreshToken(auth.get().getId(), refreshToken),
+			() -> {
+				Auth newAuth = Auth.of(userId, refreshToken);
+				authRepository.save(newAuth);
+			}
+		);
+
 		return tokens;
 	}
 
@@ -45,7 +62,10 @@ public class AuthService {
 		User user = userService.getUserByEmail(authRequest.email());
 		Map<TokenType, String> tokens = createTokensWhenLogin(user);
 
-		if (user.isEqualPassword(authRequest.password())) {
+		String plainPassword = authRequest.password();
+		String hashedPassword = userService.getUserById(user.getId()).getPassword();
+
+		if (encryptHelper.isMatch(plainPassword, hashedPassword)) {
 			return AuthResponse.of(
 				user.getName(),
 				user.getEmail(),
@@ -54,6 +74,12 @@ public class AuthService {
 			);
 		}
 		throw new NotFoundException(FAILED_LOGIN_BY_ANYTHING);
+	}
+
+	public String generateAccessTokenFromRefreshToken(String refreshToken) {
+		Auth auth = getAuthByRefreshToken(refreshToken);
+		User user = userService.getUserById(auth.getUserId());
+		return jwtProvider.createToken(user, ACCESS);
 	}
 
 }

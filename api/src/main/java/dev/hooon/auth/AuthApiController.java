@@ -1,14 +1,12 @@
 package dev.hooon.auth;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.hooon.auth.application.AuthService;
-import dev.hooon.auth.domain.entity.UserInfo;
 import dev.hooon.auth.dto.request.AuthRequest;
 
 import dev.hooon.auth.dto.response.AuthResponse;
@@ -24,6 +22,7 @@ public class AuthApiController {
 
 	private final AuthService authService;
 
+	@NoAuth
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(
 		@Valid @RequestBody AuthRequest authRequest
@@ -32,11 +31,11 @@ public class AuthApiController {
 		return ResponseEntity.ok(authResponse);
 	}
 
-	@GetMapping("/token/required")
-	public String required(
-		@JwtAuthorization UserInfo userInfo
+	@PostMapping("/token")
+	public ResponseEntity<String> reIssueAccessToken(
+		@RequestBody RefreshTokenForReIssue refreshTokenForReIssue
 	) {
-		log.info("token payload : {}, {}, {}", userInfo.getId(), userInfo.getEmail(), userInfo.getName());
-		return "success";
+		String accessToken = authService.generateAccessTokenFromRefreshToken(refreshTokenForReIssue.refreshToken());
+		return ResponseEntity.ok(accessToken);
 	}
 }
