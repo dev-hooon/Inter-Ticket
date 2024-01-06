@@ -41,7 +41,7 @@ public class BookingService {
 		// 1. bookingId로 booking 가져오기
 		// 1.1 해당 userId와 동일한지 확인
 		// 1.2 bookingStatus 확인
-		Booking booking = findById(bookingId);
+		Booking booking = getById(bookingId);
 		validateIdenticalUser(userId, booking);
 		validateBookingStatus(booking);
 
@@ -59,7 +59,7 @@ public class BookingService {
 		return bookingRepository.save(booking);
 	}
 
-	public Booking findById(Long id) {
+	public Booking getById(Long id) {
 		return bookingRepository.findByIdWithTickets(id).orElseThrow(
 			() -> new NotFoundException(BOOKING_NOT_FOUND)
 		);
