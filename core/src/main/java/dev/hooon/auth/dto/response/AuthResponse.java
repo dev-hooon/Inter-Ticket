@@ -1,17 +1,13 @@
 package dev.hooon.auth.dto.response;
 
 public record AuthResponse(
-	String name,
-	String email,
-	String accessToken,
-	String refreshToken
+	String refreshToken,
+	String accessToken
 ) {
 	public static AuthResponse of(
-		String name,
-		String email,
-		String accessToken,
-		String refreshToken
+		String refreshToken,
+		String accessToken
 	) {
-		return new AuthResponse(name, email, accessToken, refreshToken);
+		return new AuthResponse(refreshToken, accessToken);
 	}
 }
