@@ -55,6 +55,7 @@ class TicketBookingApiControllerTest extends ApiTestSupport {
 		resultActions.andExpectAll(
 			status().isOk(),
 
+			jsonPath("$.bookingId").isNumber(),
 			jsonPath("$.bookingTickets").isArray(),
 
 			jsonPath("$.bookingTickets[0].ticketId").isNumber(),

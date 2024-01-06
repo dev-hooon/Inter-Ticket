@@ -122,9 +122,8 @@ class WaitingBookingSchedulerTest extends IntegrationTestSupport {
 		User user = User.ofBuyer("hello123@naver.com", "name", "password");
 		userRepository.save(user);
 
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime beforeNow = now.minusMinutes(10);
-		LocalDateTime afterNow = now.plusMinutes(10);
+		LocalDateTime beforeNow = LocalDateTime.now().minusMinutes(10);
+		LocalDateTime afterNow = LocalDateTime.now().plusMinutes(10);
 
 		List<WaitingBooking> waitingBookings = List.of(
 			WaitingBookingFixture.getActiveWaitingBooking(

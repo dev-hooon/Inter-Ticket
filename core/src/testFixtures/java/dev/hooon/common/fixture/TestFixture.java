@@ -3,6 +3,7 @@ package dev.hooon.common.fixture;
 import static dev.hooon.show.domain.entity.ShowCategory.*;
 import static dev.hooon.show.domain.entity.seat.SeatGrade.*;
 import static dev.hooon.show.domain.entity.seat.SeatStatus.*;
+import static dev.hooon.user.domain.entity.UserRole.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +16,7 @@ import dev.hooon.show.domain.entity.ShowTime;
 import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.dto.query.seats.SeatsDetailDto;
+import dev.hooon.user.domain.entity.User;
 
 public final class TestFixture {
 
@@ -86,6 +88,20 @@ public final class TestFixture {
 		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
 	}
 
+	public static List<Seat> getAllBookedSeats(Show show, LocalDate date, int round) {
+		Seat vipSeat1 = Seat.of(1L, show, VIP, true, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat vipSeat2 = Seat.of(2L, show, VIP, true, "1층", "A", 3, 100000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat sSeat1 = Seat.of(3L, show, S, true, "2층", "A", 2, 70000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat sSeat2 = Seat.of(4L, show, S, true, "2층", "A", 3, 70000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat aSeat = Seat.of(5L, show, A, true, "3층", "A", 2, 50000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
+	}
+
 	public static List<Seat> getNonValidSeats(Show show, LocalDate date, int round) {
 		Seat vipSeat1 = Seat.of(show, VIP, false, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
 			AVAILABLE);
@@ -121,5 +137,15 @@ public final class TestFixture {
 				it.getSeatStatus()
 			))
 			.toList();
+	}
+
+	public static User getUser(Long id) {
+		return User.testUser(
+			id,
+			"user@email.com",
+			"user",
+			"password",
+			BUYER
+		);
 	}
 }

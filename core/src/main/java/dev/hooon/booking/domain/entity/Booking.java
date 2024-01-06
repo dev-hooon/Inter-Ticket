@@ -74,4 +74,12 @@ public class Booking extends TimeBaseEntity {
 	) {
 		return new Booking(user, show);
 	}
+
+	public void markBookingStatusAsCanceled() {
+		this.bookingStatus = CANCELED;
+	}
+
+	public long getUserId() {
+		return this.user.getId();
+	}
 }

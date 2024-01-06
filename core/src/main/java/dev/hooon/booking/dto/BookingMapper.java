@@ -3,8 +3,10 @@ package dev.hooon.booking.dto;
 import java.util.List;
 
 import dev.hooon.booking.domain.entity.Booking;
+import dev.hooon.booking.dto.response.BookingCancelResponse;
 import dev.hooon.booking.dto.response.TicketBookingResponse;
 import dev.hooon.booking.dto.response.TicketResponse;
+import dev.hooon.booking.dto.response.TicketSeatResponse;
 import dev.hooon.show.domain.entity.Show;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,21 @@ public final class BookingMapper {
 				ticket.getSeat().getRound()
 			))
 			.toList();
-		return new TicketBookingResponse(ticketResponseList);
+		return new TicketBookingResponse(booking.getId(), ticketResponseList);
+	}
+
+	public static BookingCancelResponse toBookingCancelResponse(Booking booking) {
+		List<TicketSeatResponse> ticketSeatResponseList = booking.getTickets().stream()
+			.map(
+				ticket -> new TicketSeatResponse(
+					ticket.getSeat().getId(),
+					ticket.getSeat().getSeatStatus().toString()
+				)
+			)
+			.toList();
+		return new BookingCancelResponse(
+			booking.getBookingStatus().toString(),
+			ticketSeatResponseList
+		);
 	}
 }
