@@ -27,7 +27,7 @@ public class BookingRepositoryAdaptor implements BookingRepository {
 	}
 
 	@Override
-	public Optional<Booking> findById(Long id) {
-		return bookingJpaRepository.findById(id);
+	public Optional<Booking> findByIdWithTickets(Long id) {
+		return bookingJpaRepository.findByIdWithTickets(id);
 	}
 }

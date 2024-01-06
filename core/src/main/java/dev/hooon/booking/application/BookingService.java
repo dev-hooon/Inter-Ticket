@@ -60,7 +60,7 @@ public class BookingService {
 	}
 
 	public Booking findById(Long id) {
-		return bookingRepository.findById(id).orElseThrow(
+		return bookingRepository.findByIdWithTickets(id).orElseThrow(
 			() -> new NotFoundException(BOOKING_NOT_FOUND)
 		);
 	}

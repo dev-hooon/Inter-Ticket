@@ -11,5 +11,5 @@ public interface BookingRepository {
 
 	List<Booking> findAll();
 
-	Optional<Booking> findById(Long id);
+	Optional<Booking> findByIdWithTickets(Long id);
 }

@@ -44,7 +44,7 @@ class BookingServiceTest {
 		// given
 		long userId = 1L;
 		long bookingId = 1L;
-		given(bookingRepository.findById(1L)).willReturn(Optional.empty());
+		given(bookingRepository.findByIdWithTickets(1L)).willReturn(Optional.empty());
 
 		// when, then
 		assertThrows(
@@ -64,7 +64,7 @@ class BookingServiceTest {
 		User user = TestFixture.getUser(userId);
 		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()));
 
-		given(bookingRepository.findById(bookingId)).willReturn(Optional.of(booking));
+		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
 
 		// when, then
 		assertThrows(
@@ -84,7 +84,7 @@ class BookingServiceTest {
 		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()));
 		booking.markBookingStatusAsCanceled();
 
-		given(bookingRepository.findById(bookingId)).willReturn(Optional.of(booking));
+		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
 
 		// when, then
 		assertThrows(
@@ -112,7 +112,7 @@ class BookingServiceTest {
 		allBookedSeats.forEach(
 			seat -> booking.addTicket(Ticket.of(seat))
 		);
-		given(bookingRepository.findById(bookingId)).willReturn(Optional.of(booking));
+		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
 
 		// when
 		BookingCancelResponse bookingCancelResponse = bookingService.cancelBooking(userId, bookingId);
