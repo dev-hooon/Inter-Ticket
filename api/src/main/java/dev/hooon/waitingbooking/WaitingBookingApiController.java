@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.hooon.auth.JwtAuthorization;
 import dev.hooon.auth.NoAuth;
+import dev.hooon.auth.JwtAuthorization;
 import dev.hooon.waitingbooking.application.facade.WaitingBookingFacade;
 import dev.hooon.waitingbooking.dto.request.WaitingRegisterRequest;
 import dev.hooon.waitingbooking.dto.response.WaitingRegisterResponse;
