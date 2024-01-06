@@ -1,7 +1,7 @@
 package dev.hooon.auth;
 
 
-public record RefreshTokenForReIssue(
+public record TokenForReIssue(
 	String refreshToken
 ) {
 }
