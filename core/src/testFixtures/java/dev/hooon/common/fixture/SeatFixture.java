@@ -47,7 +47,7 @@ public class SeatFixture {
 
 	// show 에 대한 정보가 필요없는 경우에 사용
 	public static Seat getSeat() {
-		return getSeat(LocalDate.now(), 1, LocalTime.now());
+		return getSeat(LocalDate.of(2023, 11, 16), 1, LocalTime.of(11, 16));
 	}
 
 	public static Seat getSeat(SeatStatus status) {
@@ -59,9 +59,9 @@ public class SeatFixture {
 			"A",
 			10,
 			100000,
-			LocalDate.now(),
+			LocalDate.of(2023, 11, 16),
 			1,
-			LocalTime.now(),
+			LocalTime.of(11, 16),
 			status
 		);
 	}
@@ -75,15 +75,15 @@ public class SeatFixture {
 			"A",
 			10,
 			100000,
-			LocalDate.now(),
+			LocalDate.of(2023, 11, 16),
 			1,
-			LocalTime.now(),
+			LocalTime.of(11, 16),
 			AVAILABLE
 		);
 	}
 
 	public static Seat getSeat(Long seatId) {
-		Seat seat = getSeat(LocalDate.now(), 1, LocalTime.now());
+		Seat seat = getSeat(LocalDate.of(2023, 11, 16), 1, LocalTime.of(11, 16));
 		ReflectionTestUtils.setField(seat, "id", seatId);
 		return seat;
 	}
@@ -97,9 +97,9 @@ public class SeatFixture {
 			"A",
 			10,
 			100000,
-			LocalDate.now(),
+			LocalDate.of(2023, 11, 16),
 			1,
-			LocalTime.now(),
+			LocalTime.of(11, 16),
 			AVAILABLE
 		);
 	}

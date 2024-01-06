@@ -10,16 +10,12 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.event.RecordApplicationEvents;
-import org.springframework.transaction.annotation.Transactional;
 
 import dev.hooon.common.fixture.SeatFixture;
 import dev.hooon.common.fixture.WaitingBookingFixture;
-import dev.hooon.common.support.TestContainerSupport;
+import dev.hooon.common.support.IntegrationTestSupport;
 import dev.hooon.mail.event.WaitingBookingMailEventListener;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatStatus;
@@ -33,11 +29,7 @@ import dev.hooon.waitingbooking.event.WaitingBookingActiveEvent;
 import jakarta.mail.MessagingException;
 
 @DisplayName("[WaitingBookingScheduler 테스트]")
-@SpringBootTest
-@AutoConfigureTestEntityManager
-@Transactional
-@RecordApplicationEvents
-class WaitingBookingSchedulerTest extends TestContainerSupport {
+class WaitingBookingSchedulerTest extends IntegrationTestSupport {
 
 	@Autowired
 	private WaitingBookingScheduler waitingBookingScheduler;

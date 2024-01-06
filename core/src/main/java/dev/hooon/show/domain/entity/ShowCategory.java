@@ -1,5 +1,10 @@
 package dev.hooon.show.domain.entity;
 
+import static dev.hooon.show.exception.ShowErrorCode.*;
+
+import java.util.Arrays;
+
+import dev.hooon.common.exception.NotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +17,11 @@ public enum ShowCategory {
 	PLAY("연극");
 
 	private final String description;
+
+	public static ShowCategory of(String category) {
+		return Arrays.stream(ShowCategory.values())
+			.filter(showCategory -> showCategory.name().equalsIgnoreCase(category))
+			.findAny()
+			.orElseThrow(() -> new NotFoundException(SHOW_CATEGORY_NOT_FOUND));
+	}
 }

@@ -46,16 +46,20 @@ public class Booking extends TimeBaseEntity {
 	@JoinColumn(name = "booking_show_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
 	private Show show;
 
-	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Ticket> tickets = new ArrayList<>();
+    @Enumerated(STRING)
+    @Column(name = "booking_status", nullable = false)
+    private BookingStatus bookingStatus;
 
-	@Enumerated(STRING)
-	@Column(name = "booking_status", nullable = false)
-	private BookingStatus bookingStatus;
+    @Column(name = "booking_ticket_count", nullable = false)
+    private int ticketCount = 0;
+
+	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<Ticket> tickets = new ArrayList<>();
 
 	public void addTicket(Ticket ticket) {
 		tickets.add(ticket);
 		ticket.setBooking(this);
+		this.ticketCount++;
 	}
 
 	private Booking(User user, Show show) {
