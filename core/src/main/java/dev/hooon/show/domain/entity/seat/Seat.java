@@ -99,6 +99,31 @@ public class Seat extends TimeBaseEntity {
 		this.seatStatus = seatStatus;
 	}
 
+	private Seat(
+		Long id,
+		Show show,
+		SeatGrade seatGrade,
+		boolean isSeat,
+		String sector,
+		String row,
+		int col,
+		int price,
+		LocalDate showDate,
+		int round,
+		LocalTime startTime,
+		SeatStatus seatStatus
+	) {
+		this.id = id;
+		this.show = show;
+		this.seatGrade = seatGrade;
+		this.isSeat = isSeat;
+		this.positionInfo = new SeatPositionInfo(sector, row, col);
+		this.price = price;
+		this.showDate = showDate;
+		this.showRound = new ShowRound(round, startTime);
+		this.seatStatus = seatStatus;
+	}
+
 	public static Seat of(
 		Show show,
 		SeatGrade seatGrade,
@@ -115,6 +140,23 @@ public class Seat extends TimeBaseEntity {
 		return new Seat(show, seatGrade, isSeat, sector, row, col, price, showDate, round, startTime, seatStatus);
 	}
 
+	public static Seat of(
+		Long id,
+		Show show,
+		SeatGrade seatGrade,
+		boolean isSeat,
+		String sector,
+		String row,
+		int col,
+		int price,
+		LocalDate showDate,
+		int round,
+		LocalTime startTime,
+		SeatStatus seatStatus
+	) {
+		return new Seat(id, show, seatGrade, isSeat, sector, row, col, price, showDate, round, startTime, seatStatus);
+	}
+
 	public int getRound() {
 		return showRound.getRound();
 	}
@@ -129,6 +171,10 @@ public class Seat extends TimeBaseEntity {
 
 	public void markSeatStatusAsBooked() {
 		this.seatStatus = BOOKED;
+	}
+
+	public void markSeatStatusAsCanceled() {
+		this.seatStatus = CANCELED;
 	}
 
 	@Override
