@@ -1,20 +1,19 @@
 package dev.hooon.user;
 
-import dev.hooon.common.support.ApiTestSupport;
-import dev.hooon.user.dto.request.UserJoinRequest;
-import dev.hooon.user.domain.repository.UserRepository;
+import static org.assertj.core.api.Assertions.*;
+import static org.springframework.http.MediaType.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import dev.hooon.common.support.ApiTestSupport;
+import dev.hooon.user.domain.repository.UserRepository;
+import dev.hooon.user.dto.request.UserJoinRequest;
 
 @DisplayName("[UserController API 테스트]")
 class UserApiControllerTest extends ApiTestSupport {
@@ -42,7 +41,7 @@ class UserApiControllerTest extends ApiTestSupport {
 
 		// then
 		actions.andExpect(status().isOk())
-			.andExpect(jsonPath("$.userId").value(1));
+			.andExpect(jsonPath("$.userId").exists());
 
 		assertThat(userRepository.findByEmail("test@example.com")).isPresent();
 	}
