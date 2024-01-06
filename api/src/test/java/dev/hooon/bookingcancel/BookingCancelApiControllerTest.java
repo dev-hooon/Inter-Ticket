@@ -32,6 +32,24 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 	@MockBean
 	private UserService userService;
 
+	private long getBookingId(ResultActions resultActions) throws Exception {
+		String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
+		JSONObject jsonObject = new JSONObject(contentAsString);
+		return Long.parseLong(jsonObject.getString("bookingId"));
+	}
+
+	private ResultActions doBooking() throws Exception {
+		TicketBookingRequest ticketBookingRequest = new TicketBookingRequest(List.of(1L, 2L, 3L));
+		return mockMvc.perform(
+			MockMvcRequestBuilders
+				.post("/api/bookings")
+				.queryParam("userId", "1") // TODO: 인증 구현되면 수정할 것
+				.accept(APPLICATION_JSON)
+				.contentType(APPLICATION_JSON)
+				.content(toJson(ticketBookingRequest))
+		);
+	}
+
 	@DisplayName("사용자는 예매한 티켓을 취소할 수 있다.")
 	@Test
 	void cancelBookingTest() throws Exception {
@@ -41,8 +59,9 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 		ReflectionTestUtils.setField(user, "id", 1L);
 		given(userService.getUserById(1L)).willReturn(user);
 
-		// 예약 API 먼저
-		long bookingId = doBooking();
+		// 예약 API 먼저 수행
+		ResultActions bookingResultActions = doBooking();
+		long bookingId = getBookingId(bookingResultActions);
 
 		// when
 		ResultActions resultActions = mockMvc.perform(
@@ -67,22 +86,6 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 			jsonPath("$.canceledTickets[2].seatId").isNumber(),
 			jsonPath("$.canceledTickets[2].seatStatus").isString()
 		);
-	}
-
-	private long doBooking() throws Exception {
-		TicketBookingRequest ticketBookingRequest = new TicketBookingRequest(List.of(1L, 2L, 3L));
-		ResultActions resultActions = mockMvc.perform(
-			MockMvcRequestBuilders
-				.post("/api/bookings")
-				.queryParam("userId", "1") // TODO: 인증 구현되면 수정할 것
-				.accept(APPLICATION_JSON)
-				.contentType(APPLICATION_JSON)
-				.content(toJson(ticketBookingRequest))
-		);
-		String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
-		JSONObject jsonObject = new JSONObject(contentAsString);
-		String bookingId = jsonObject.getString("bookingId");
-		return Long.parseLong(bookingId);
 	}
 
 }
