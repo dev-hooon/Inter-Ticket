@@ -1,12 +1,17 @@
 package dev.hooon.show.dto;
 
+import static dev.hooon.show.dto.response.RankingResponse.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
+import dev.hooon.show.dto.query.ShowStatisticDto;
 import dev.hooon.show.dto.response.AbleBookingDateRoundResponse;
 import dev.hooon.show.dto.response.AbleBookingDateRoundResponse.AvailableDate;
 import dev.hooon.show.dto.response.PlaceDetailsInfo;
+import dev.hooon.show.dto.response.RankingResponse;
 import dev.hooon.show.dto.response.ShowDetailsInfoResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -39,6 +44,27 @@ public final class ShowMapper {
 				show.getPlace().getAddress(),
 				show.getPlace().getPlaceUrl()
 			)
+		);
+	}
+
+	public static RankingResponse toRankingResponse(
+		List<ShowStatisticDto> showStatistic,
+		LocalDateTime startAt,
+		LocalDateTime endAt
+	) {
+		List<RankingShowInfo> rankingShowInfos = showStatistic.stream()
+			.map(dto -> new RankingShowInfo(
+				dto.showName(),
+				dto.placeName(),
+				dto.showStartDate(),
+				dto.showEndDate(),
+				dto.totalTicketCount()
+			)).toList();
+
+		return new RankingResponse(
+			startAt,
+			endAt,
+			rankingShowInfos
 		);
 	}
 }

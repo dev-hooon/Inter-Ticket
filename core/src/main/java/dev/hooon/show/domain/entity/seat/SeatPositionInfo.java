@@ -14,22 +14,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class SeatPositionInfo {
 
-    @Column(name = "seat_sector")
-    private String sector;
+	@Column(name = "seat_sector")
+	private String sector;
 
-    @Column(name = "seat_row", nullable = false)
-    private String row;
+	@Column(name = "seat_row", nullable = false)
+	private String row;
 
-    @Column(name = "seat_col", nullable = false)
-    private int col;
+	@Column(name = "seat_col", nullable = false)
+	private int col;
 
-    public SeatPositionInfo(
-        String sector,
-        String row,
-        int col
-    ) {
-        this.sector = sector;
-        this.row = row;
-        this.col = col;
-    }
+	public SeatPositionInfo(
+		String sector,
+		String row,
+		int col
+	) {
+		this.sector = sector;
+		this.row = row;
+		this.col = col;
+	}
+
+	@Override
+	public String toString() {
+		return sector + " " + row + "열 " + col + "행";
+	}
 }

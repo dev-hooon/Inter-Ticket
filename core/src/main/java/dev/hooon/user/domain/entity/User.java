@@ -41,14 +41,6 @@ public class User extends TimeBaseEntity {
 	@Column(name = "user_role", nullable = false)
 	private UserRole userRole;
 
-	private void validateUser(String email, String name, String password, UserRole userRole) {
-		Assert.hasText(email, getNotEmptyPostfix("User", "email"));
-		Assert.hasText(name, getNotEmptyPostfix("User", "name"));
-		Assert.hasText(password, getNotEmptyPostfix("User", "password"));
-		Assert.hasText(String.valueOf(userRole), getNotEmptyPostfix("User", "userRole"));
-		Assert.notNull(userRole, getNotNullMessage("User", "userRole"));
-	}
-
 	private User(
 		String email,
 		String name,
@@ -62,7 +54,6 @@ public class User extends TimeBaseEntity {
 		this.userRole = userRole;
 	}
 
-	// 테스트를 위한 생성자
 	private User(
 		Long id,
 		String email,
@@ -70,12 +61,19 @@ public class User extends TimeBaseEntity {
 		String password,
 		UserRole userRole
 	) {
-		validateUser(email, name, password, userRole);
 		this.id = id;
 		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.userRole = userRole;
+	}
+
+	private void validateUser(String email, String name, String password, UserRole userRole) {
+		Assert.hasText(email, getNotEmptyPostfix("User", "email"));
+		Assert.hasText(name, getNotEmptyPostfix("User", "name"));
+		Assert.hasText(password, getNotEmptyPostfix("User", "password"));
+		Assert.hasText(String.valueOf(userRole), getNotEmptyPostfix("User", "userRole"));
+		Assert.notNull(userRole, getNotNullMessage("User", "userRole"));
 	}
 
 	public static User ofBuyer(
@@ -86,13 +84,20 @@ public class User extends TimeBaseEntity {
 		return new User(email, name, password, BUYER);
 	}
 
-	// 테스트를 위한 팩토리 메서드
-	public static User ofBuyer(
+	/**
+	 * 테스트 용 유저 생성자
+	 *
+	 * @param id
+	 * @return
+	 */
+	public static User testUser(
 		Long id,
 		String email,
 		String name,
-		String password
+		String password,
+		UserRole userRole
 	) {
-		return new User(id, email, name, password, BUYER);
+		return new User(id, email, name, password, userRole);
 	}
+
 }

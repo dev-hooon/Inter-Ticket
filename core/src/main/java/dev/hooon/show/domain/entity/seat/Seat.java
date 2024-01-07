@@ -1,6 +1,7 @@
 package dev.hooon.show.domain.entity.seat;
 
 import static dev.hooon.common.exception.CommonValidationError.*;
+import static dev.hooon.show.domain.entity.seat.SeatStatus.*;
 import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
@@ -98,6 +99,31 @@ public class Seat extends TimeBaseEntity {
 		this.seatStatus = seatStatus;
 	}
 
+	private Seat(
+		Long id,
+		Show show,
+		SeatGrade seatGrade,
+		boolean isSeat,
+		String sector,
+		String row,
+		int col,
+		int price,
+		LocalDate showDate,
+		int round,
+		LocalTime startTime,
+		SeatStatus seatStatus
+	) {
+		this.id = id;
+		this.show = show;
+		this.seatGrade = seatGrade;
+		this.isSeat = isSeat;
+		this.positionInfo = new SeatPositionInfo(sector, row, col);
+		this.price = price;
+		this.showDate = showDate;
+		this.showRound = new ShowRound(round, startTime);
+		this.seatStatus = seatStatus;
+	}
+
 	public static Seat of(
 		Show show,
 		SeatGrade seatGrade,
@@ -114,12 +140,41 @@ public class Seat extends TimeBaseEntity {
 		return new Seat(show, seatGrade, isSeat, sector, row, col, price, showDate, round, startTime, seatStatus);
 	}
 
+	public static Seat of(
+		Long id,
+		Show show,
+		SeatGrade seatGrade,
+		boolean isSeat,
+		String sector,
+		String row,
+		int col,
+		int price,
+		LocalDate showDate,
+		int round,
+		LocalTime startTime,
+		SeatStatus seatStatus
+	) {
+		return new Seat(id, show, seatGrade, isSeat, sector, row, col, price, showDate, round, startTime, seatStatus);
+	}
+
 	public int getRound() {
 		return showRound.getRound();
 	}
 
 	public LocalTime getStartTime() {
 		return showRound.getStartTime();
+	}
+
+	public boolean isBookingAvailable() {
+		return (isSeat) && (seatStatus == SeatStatus.AVAILABLE);
+	}
+
+	public void markSeatStatusAsBooked() {
+		this.seatStatus = BOOKED;
+	}
+
+	public void markSeatStatusAsCanceled() {
+		this.seatStatus = CANCELED;
 	}
 
 	@Override
@@ -129,14 +184,14 @@ public class Seat extends TimeBaseEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Seat seat = (Seat)o;
-		return isSeat == seat.isSeat && price == seat.price && Objects.equals(id, seat.id)
-			&& Objects.equals(show, seat.show) && seatGrade == seat.seatGrade && Objects.equals(
-			positionInfo, seat.positionInfo) && Objects.equals(showDate, seat.showDate)
-			&& Objects.equals(showRound, seat.showRound) && seatStatus == seat.seatStatus;
+		return isSeat == seat.isSeat && price == seat.price && Objects.equals(show, seat.show)
+			&& seatGrade == seat.seatGrade && Objects.equals(positionInfo, seat.positionInfo)
+			&& Objects.equals(showDate, seat.showDate) && Objects.equals(showRound, seat.showRound)
+			&& seatStatus == seat.seatStatus;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
+		return Objects.hash(show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
 	}
 }
