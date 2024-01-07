@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-	private final AuthRepository authRepository;
 	private final String secretKey;
 	private final int tokenValidSeconds;
 	private final Key key;
@@ -34,7 +33,6 @@ public class JwtProvider {
 		@Value("${jwt.secret}") String secretKey,
 		@Value("${jwt.token-validity-in-seconds}") int tokenValidSeconds
 	) {
-		this.authRepository = authRepository;
 		this.secretKey = secretKey;
 		this.tokenValidSeconds = tokenValidSeconds;
 
