@@ -6,6 +6,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -25,20 +25,23 @@ import lombok.RequiredArgsConstructor;
 public class JwtProvider {
 
 	private final AuthRepository authRepository;
-
-	@Value(value = "${jwt.secret}")
-	private String secretKey;
-
-	@Value(value = "${jwt.token-validity-in-seconds}")
-	private int tokenValidSeconds;
-
-	private Key key;
+	private final String secretKey;
+	private final int tokenValidSeconds;
+	private final Key key;
 	private static final String USER_ID = "userId";
 
-	@PostConstruct
-	public void init() {
-		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-		key = Keys.hmacShaKeyFor(keyBytes);
+	@Autowired
+	public JwtProvider(
+		AuthRepository authRepository,
+		@Value("${jwt.secret}") String secretKey,
+		@Value("${jwt.token-validity-in-seconds}") int tokenValidSeconds
+	) {
+		this.authRepository = authRepository;
+		this.secretKey = secretKey;
+		this.tokenValidSeconds = tokenValidSeconds;
+
+		byte[] keyBytes = Decoders.BASE64.decode(this.secretKey);
+		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
 	public String createAccessToken(Long userId) {
@@ -65,7 +68,7 @@ public class JwtProvider {
 			.compact();
 	}
 
-	public String[] createTokensWhenLogin(Long userId){
+	public String[] createTokensWhenLogin(Long userId) {
 		String refreshToken = createRefreshToken(userId);
 		String accessToken = createAccessToken(userId);
 		Optional<Auth> auth = authRepository.findByUserId(userId);
