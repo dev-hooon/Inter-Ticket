@@ -16,6 +16,7 @@ import dev.hooon.auth.entity.EncryptHelper;
 import dev.hooon.common.exception.NotFoundException;
 import dev.hooon.user.application.UserService;
 import dev.hooon.user.domain.entity.User;
+import dev.hooon.user.domain.entity.UserRole;
 
 @DisplayName("[AuthService 테스트]")
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +36,7 @@ class AuthServiceTest {
 	void createTokensWhenLoginSuccessTest() {
 		// given
 		AuthRequest authRequest = new AuthRequest("user@example.com", "password");
-		User user = User.ofBuyer(1L, "user@example.com", "name", "password");
+		User user = User.testUser(1L, "user@example.com", "name", "password", UserRole.BUYER);
 
 		when(userService.getUserByEmail(authRequest.email())).thenReturn(user);
 		when(userService.getUserById(1L)).thenReturn(user);
@@ -55,7 +56,7 @@ class AuthServiceTest {
 	void createTokensWhenLoginFailTest() {
 		// given
 		AuthRequest authRequest = new AuthRequest("user@example.com", "wrong-password");
-		User user = User.ofBuyer(1L, "user@example.com", "name", "password");
+		User user = User.testUser(1L, "user@example.com", "name", "password", UserRole.BUYER);
 
 		when(userService.getUserByEmail(authRequest.email())).thenReturn(user);
 		when(userService.getUserById(1L)).thenReturn(user);
