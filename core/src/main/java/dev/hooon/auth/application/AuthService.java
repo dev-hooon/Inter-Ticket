@@ -24,7 +24,7 @@ public class AuthService {
 	private final AuthRepository authRepository;
 	private final EncryptHelper encryptHelper;
 
-	public Auth getAuthByRefreshToken(String refreshToken) {
+	private Auth getAuthByRefreshToken(String refreshToken) {
 		return authRepository.findByRefreshToken(refreshToken)
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_REFRESH_TOKEN));
 	}

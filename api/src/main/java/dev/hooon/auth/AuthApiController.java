@@ -12,9 +12,7 @@ import dev.hooon.auth.dto.request.AuthRequest;
 import dev.hooon.auth.dto.response.AuthResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequestMapping("/api/auth")
 @RestController
 @RequiredArgsConstructor
@@ -34,9 +32,9 @@ public class AuthApiController {
 	@NoAuth
 	@PostMapping("/token")
 	public ResponseEntity<String> reIssueAccessToken(
-		@RequestBody TokenForReIssue tokenForReIssue
+		@RequestBody TokenReIssueRequest tokenReIssueRequest
 	) {
-		String accessToken = authService.createAccessTokenByRefreshToken(tokenForReIssue.refreshToken());
+		String accessToken = authService.createAccessTokenByRefreshToken(tokenReIssueRequest.refreshToken());
 		return ResponseEntity.ok(accessToken);
 	}
 }
