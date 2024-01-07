@@ -54,6 +54,34 @@ public class TestFixture {
 		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
 	}
 
+	public static List<Seat> getReservedSeats(Show show, LocalDate date, int round) {
+		Seat vipSeat1 = Seat.of(show, VIP, true, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat vipSeat2 = Seat.of(show, VIP, true, "1층", "A", 3, 100000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat sSeat1 = Seat.of(show, S, true, "2층", "A", 2, 70000, date, round, LocalTime.of(14, 0),
+			BOOKED);
+		Seat sSeat2 = Seat.of(show, S, true, "2층", "A", 3, 70000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat aSeat = Seat.of(show, A, true, "3층", "A", 2, 50000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
+	}
+
+	public static List<Seat> getNonValidSeats(Show show, LocalDate date, int round) {
+		Seat vipSeat1 = Seat.of(show, VIP, false, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat vipSeat2 = Seat.of(show, VIP, false, "1층", "A", 3, 100000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat sSeat1 = Seat.of(show, S, true, "2층", "A", 2, 70000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat sSeat2 = Seat.of(show, S, true, "2층", "A", 3, 70000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		Seat aSeat = Seat.of(show, A, true, "3층", "A", 2, 50000, date, round, LocalTime.of(14, 0),
+			AVAILABLE);
+		return List.of(vipSeat1, vipSeat2, sSeat1, sSeat2, aSeat);
+	}
+
 	public static List<Seat> getVipSeatList(Show show, LocalDate date, int round) {
 		Seat vipSeat1 = Seat.of(show, VIP, true, "1층", "A", 2, 100000, date, round, LocalTime.of(14, 0),
 			AVAILABLE);
