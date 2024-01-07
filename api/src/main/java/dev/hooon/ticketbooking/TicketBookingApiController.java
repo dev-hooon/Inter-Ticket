@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.hooon.auth.NoAuth;
 import dev.hooon.booking.application.fascade.TicketBookingFacade;
 import dev.hooon.booking.dto.request.TicketBookingRequest;
 import dev.hooon.booking.dto.response.TicketBookingResponse;
@@ -18,6 +19,7 @@ public class TicketBookingApiController {
 
 	private final TicketBookingFacade ticketBookingFacade;
 
+	@NoAuth
 	@PostMapping("/api/bookings")
 	public ResponseEntity<TicketBookingResponse> bookingTicket(
 		@RequestParam(name = "userId") Long userId, // TODO
