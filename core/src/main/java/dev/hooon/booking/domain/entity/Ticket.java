@@ -24,30 +24,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class Ticket extends TimeBaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ticket_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "ticket_id")
+    private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "ticket_seat_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
-	private Seat seat;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "ticket_booking_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
+    private Booking booking;
 
-	@ManyToOne
-	@JoinColumn(name = "booking_id")
-	private Booking booking;
-
-	private Ticket(Seat seat) {
-		this.seat = seat;
-	}
-
-	public static Ticket of(
-		Seat seat
-	) {
-		return new Ticket(seat);
-	}
-
-	public void setBooking(Booking booking) {
-		this.booking = booking;
-	}
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "ticket_seat_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
+    private Seat seat;
 }

@@ -24,8 +24,8 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 	private final SeatJpaRepository seatJpaRepository;
 
 	@Override
-	public List<Seat> saveAll(Iterable<Seat> seats) {
-		return seatJpaRepository.saveAll(seats);
+	public void saveAll(Iterable<Seat> seats) {
+		seatJpaRepository.saveAll(seats);
 	}
 
 	@Override
@@ -64,10 +64,5 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 		Long showId, LocalDate date, int round, SeatGrade grade
 	) {
 		return seatJpaRepository.findSeatsByShowIdAndDateAndRoundAndGrade(showId, date, round, grade);
-	}
-
-	@Override
-	public List<Seat> findByIdIn(List<Long> idList) {
-		return seatJpaRepository.findByIdIn(idList);
 	}
 }
