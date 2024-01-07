@@ -1,7 +1,5 @@
 package dev.hooon.common.fixture;
 
-import static dev.hooon.show.domain.entity.seat.SeatStatus.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -41,7 +39,7 @@ public class SeatFixture {
 			showDate,
 			round,
 			startTime,
-			AVAILABLE
+			SeatStatus.AVAILABLE
 		);
 	}
 
@@ -66,22 +64,6 @@ public class SeatFixture {
 		);
 	}
 
-	public static Seat getSeatWithIsSeat(boolean isSeat) {
-		return Seat.of(
-			SHOW,
-			SeatGrade.VIP,
-			isSeat,
-			"1층",
-			"A",
-			10,
-			100000,
-			LocalDate.now(),
-			1,
-			LocalTime.now(),
-			AVAILABLE
-		);
-	}
-
 	public static Seat getSeat(Long seatId) {
 		Seat seat = getSeat(LocalDate.now(), 1, LocalTime.now());
 		ReflectionTestUtils.setField(seat, "id", seatId);
@@ -100,7 +82,7 @@ public class SeatFixture {
 			LocalDate.now(),
 			1,
 			LocalTime.now(),
-			AVAILABLE
+			SeatStatus.AVAILABLE
 		);
 	}
 }

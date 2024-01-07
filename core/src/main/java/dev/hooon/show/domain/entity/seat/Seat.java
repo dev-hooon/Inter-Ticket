@@ -1,7 +1,6 @@
 package dev.hooon.show.domain.entity.seat;
 
 import static dev.hooon.common.exception.CommonValidationError.*;
-import static dev.hooon.show.domain.entity.seat.SeatStatus.*;
 import static jakarta.persistence.ConstraintMode.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
@@ -123,14 +122,6 @@ public class Seat extends TimeBaseEntity {
 		return showRound.getStartTime();
 	}
 
-	public boolean isBookingAvailable() {
-		return (isSeat) && (seatStatus == SeatStatus.AVAILABLE);
-	}
-
-	public void markSeatStatusAsBooked() {
-		this.seatStatus = BOOKED;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -138,14 +129,14 @@ public class Seat extends TimeBaseEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Seat seat = (Seat)o;
-		return isSeat == seat.isSeat && price == seat.price && Objects.equals(show, seat.show)
-			&& seatGrade == seat.seatGrade && Objects.equals(positionInfo, seat.positionInfo)
-			&& Objects.equals(showDate, seat.showDate) && Objects.equals(showRound, seat.showRound)
-			&& seatStatus == seat.seatStatus;
+		return isSeat == seat.isSeat && price == seat.price && Objects.equals(id, seat.id)
+			&& Objects.equals(show, seat.show) && seatGrade == seat.seatGrade && Objects.equals(
+			positionInfo, seat.positionInfo) && Objects.equals(showDate, seat.showDate)
+			&& Objects.equals(showRound, seat.showRound) && seatStatus == seat.seatStatus;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
+		return Objects.hash(id, show, seatGrade, isSeat, positionInfo, price, showDate, showRound, seatStatus);
 	}
 }
