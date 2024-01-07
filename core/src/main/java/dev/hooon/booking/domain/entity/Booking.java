@@ -7,7 +7,9 @@ import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +103,22 @@ public class Booking extends TimeBaseEntity {
 
 	public String getShowName() {
 		return this.getShow().getName();
+	}
+
+	public LocalDate getShowDate() {
+		return getFirstTicket().getShowDate();
+	}
+
+	public int getRound() {
+		return getFirstTicket().getRound();
+	}
+
+	public LocalTime getStartTime() {
+		return getFirstTicket().getStartTime();
+	}
+
+	public Ticket getFirstTicket() {
+		return this.getTickets().get(0);
 	}
 
 }
