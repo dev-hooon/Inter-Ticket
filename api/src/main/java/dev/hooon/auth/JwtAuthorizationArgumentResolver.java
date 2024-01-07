@@ -2,8 +2,8 @@ package dev.hooon.auth;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,17 +15,12 @@ import dev.hooon.auth.application.JwtProvider;
 import dev.hooon.common.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationArgumentResolver implements HandlerMethodArgumentResolver {
 
 	private final JwtProvider jwtProvider;
-
-	@Value(value = "${jwt.header}")
-	private String jwtHeader;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -42,7 +37,7 @@ public class JwtAuthorizationArgumentResolver implements HandlerMethodArgumentRe
 		HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
 
 		if (httpServletRequest != null) {
-			String accessToken = httpServletRequest.getHeader(jwtHeader);
+			String accessToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 			return jwtProvider.getClaim(accessToken);
 		}
 

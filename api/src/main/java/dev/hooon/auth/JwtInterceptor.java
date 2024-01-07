@@ -2,7 +2,7 @@ package dev.hooon.auth;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -22,9 +22,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 	private final JwtProvider jwtProvider;
 
-	@Value(value = "${jwt.header}")
-	private String jwtHeader;
-
 	private boolean isAnnotationPresent(Object handler) {
 		HandlerMethod handlerMethod = (HandlerMethod)handler;
 		return handlerMethod.getMethodAnnotation(NoAuth.class) != null;
@@ -40,7 +37,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
-		String accessToken = request.getHeader(jwtHeader);
+		String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (accessToken == null) {
 			throw new AuthException(NOT_INCLUDE_ACCESS_TOKEN);
 		}
