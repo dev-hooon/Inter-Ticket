@@ -3,6 +3,8 @@ package dev.hooon.auth.application;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,18 +31,31 @@ public class AuthService {
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_REFRESH_TOKEN));
 	}
 
+	public AuthResponse saveAuth(Long userId) {
+		String refreshToken = jwtProvider.createRefreshToken(userId);
+		String accessToken = jwtProvider.createAccessToken(userId);
+		Optional<Auth> auth = authRepository.findByUserId(userId);
+
+		auth.ifPresentOrElse(
+			(none) -> authRepository.updateRefreshToken(auth.get().getId(), refreshToken),
+			() -> {
+				Auth newAuth = Auth.of(userId, refreshToken);
+				authRepository.save(newAuth);
+			}
+		);
+
+		return AuthResponse.of(refreshToken, accessToken);
+	}
+
 	@Transactional
 	public AuthResponse login(AuthRequest authRequest) {
 		Long userId = userService.getUserByEmail(authRequest.email()).getId();
-		String[] tokensWhenLogin = jwtProvider.createTokensWhenLogin(userId);
+		AuthResponse authResponse = saveAuth(userId);
 		String plainPassword = authRequest.password();
 		String hashedPassword = userService.getUserById(userId).getPassword();
 
 		if (encryptHelper.isMatch(plainPassword, hashedPassword)) {
-			return AuthResponse.of(
-				tokensWhenLogin[0],
-				tokensWhenLogin[1]
-			);
+			return authResponse;
 		}
 		throw new NotFoundException(FAILED_LOGIN_BY_ANYTHING);
 	}

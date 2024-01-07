@@ -4,13 +4,11 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import dev.hooon.auth.domain.entity.Auth;
 import dev.hooon.auth.domain.repository.AuthRepository;
 import dev.hooon.auth.exception.AuthException;
 import io.jsonwebtoken.Claims;
@@ -66,22 +64,6 @@ public class JwtProvider {
 			.setExpiration(new Date(now.getTime() + tokenValidSeconds * 30L))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
-	}
-
-	public String[] createTokensWhenLogin(Long userId) {
-		String refreshToken = createRefreshToken(userId);
-		String accessToken = createAccessToken(userId);
-		Optional<Auth> auth = authRepository.findByUserId(userId);
-
-		auth.ifPresentOrElse(
-			(none) -> authRepository.updateRefreshToken(auth.get().getId(), refreshToken),
-			() -> {
-				Auth newAuth = Auth.of(userId, refreshToken);
-				authRepository.save(newAuth);
-			}
-		);
-
-		return new String[] {refreshToken, accessToken};
 	}
 
 	public void validateToken(String token) {
