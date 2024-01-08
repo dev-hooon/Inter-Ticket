@@ -13,9 +13,7 @@ import dev.hooon.auth.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
@@ -42,12 +40,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 			throw new AuthException(NOT_INCLUDE_ACCESS_TOKEN);
 		}
 
-		try {
-			jwtProvider.validateToken(accessToken);
-		} catch (AuthException e) {
-			return false;
-		}
-
+		jwtProvider.validateToken(accessToken);
 		return true;
 	}
 }
