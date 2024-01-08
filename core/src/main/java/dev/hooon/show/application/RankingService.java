@@ -2,6 +2,7 @@ package dev.hooon.show.application;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +20,14 @@ import lombok.RequiredArgsConstructor;
 public class RankingService {
 
 	private final ShowRepository showRepository;
+	private final Supplier<LocalDateTime> nowLocalDateTime;
 
 	@Transactional(readOnly = true)
 	public RankingResponse getShowRanking(RankingRequest rankingRequest) {
 		ShowCategory category = ShowCategory.of(rankingRequest.category());
-		LocalDateTime startAt = PeriodType.of(rankingRequest.period()).getStartAt();
-		LocalDateTime endAt = LocalDateTime.now();
+		LocalDateTime startAt = PeriodType.of(rankingRequest.period())
+			.getStartAt(nowLocalDateTime.get());
+		LocalDateTime endAt = nowLocalDateTime.get();
 
 		List<ShowStatisticDto> showStatistic = showRepository.findShowStatistic(category, startAt, endAt);
 

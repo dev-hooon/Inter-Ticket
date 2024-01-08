@@ -9,6 +9,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ class RankingServiceTest {
 	private RankingService rankingService;
 	@Mock
 	private ShowRepository showRepository;
+	@Mock
+	private Supplier<LocalDateTime> nowLocalDateTime;
 
 	@Test
 	@DisplayName("[카테고리, 집계기간 별 랭킹을 조회한다]")
@@ -48,12 +51,15 @@ class RankingServiceTest {
 			any(LocalDateTime.class))
 		).willReturn(showStatistic);
 
+		LocalDateTime baseTime = LocalDateTime.of(2023, 11, 16, 12, 12);
+		given(nowLocalDateTime.get()).willReturn(baseTime);
+
 		//when
 		RankingResponse result = rankingService.getShowRanking(rankingRequest);
 
 		//then
-		assertThat(result.aggregateStartAt()).isEqualTo(PeriodType.DAY.getStartAt());
-		assertThat(result.aggregateEndAt()).isEqualToIgnoringMinutes(LocalDateTime.now());
+		assertThat(result.aggregateStartAt()).isEqualTo(PeriodType.DAY.getStartAt(baseTime));
+		assertThat(result.aggregateEndAt()).isEqualToIgnoringMinutes(baseTime);
 		assertThat(result.showInfos()).hasSameSizeAs(showStatistic);
 
 		for (int i = 0; i < showStatistic.size(); i++) {
