@@ -87,14 +87,14 @@ public class WaitingBookingFacade {
 	}
 
 	// 6시간동안 예약을 하지않아 만료된 예약대기를 처리
-	public void processExpiredWaitingBooking() {
+	public void processExpiredWaitingBooking(LocalDateTime now) {
 		List<WaitingBooking> waitingBookings = waitingBookingService.getWaitingBookingsByStatusIsActivation();
 
 		List<Long> expiredWaitingBookingIds = new ArrayList<>();
 		List<Long> expiredSeatIds = new ArrayList<>();
 		waitingBookings.forEach(waitingBooking -> {
 			// 만료된 예약대기라면 만료리스트에 추가
-			if (waitingBooking.getExpiredAt().isBefore(LocalDateTime.now())) {
+			if (waitingBooking.getExpiredAt().isBefore(now)) {
 				expiredWaitingBookingIds.add(waitingBooking.getId());
 				expiredSeatIds.addAll(waitingBooking.getConfirmedSeatIds());
 			}
