@@ -5,6 +5,7 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,15 @@ public class JwtProvider {
 	private final Key key;
 	private static final String USER_ID = "userId";
 
+	/**
+	 * 테스트를 위한 생성자
+	 */
+	public JwtProvider(Key key, int tokenValidSeconds) {
+		this.key = key;
+		this.tokenValidSeconds = tokenValidSeconds;
+	}
+
+	@Autowired
 	public JwtProvider(
 		@Value("${jwt.secret}") String secretKey,
 		@Value("${jwt.token-validity-in-seconds}") int tokenValidSeconds
@@ -30,6 +40,16 @@ public class JwtProvider {
 
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
+	}
+
+	public Long getClaim(String token) {
+		Claims claimsBody = Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
+
+		return Long.valueOf((Integer)claimsBody.get(USER_ID));
 	}
 
 	public String createAccessToken(Long userId) {
@@ -74,15 +94,17 @@ public class JwtProvider {
 		}
 	}
 
-	public Long getClaim(String token) {
-		Claims claimsBody = Jwts.parserBuilder()
-			.setSigningKey(key)
-			.build()
-			.parseClaimsJws(token)
-			.getBody();
+	/**
+	 * 테스트를 위한 메서드
+	 */
+	public String createTokenWithCustomExpiration(Long userId, long customExpirationMillis) {
+		Date now = new Date();
 
-		// return
-		return Long.valueOf((Integer)claimsBody.getOrDefault(USER_ID, 0L));
+		return Jwts.builder()
+			.claim(USER_ID, userId)
+			.setIssuedAt(now)
+			.setExpiration(new Date(now.getTime() + customExpirationMillis))
+			.signWith(key, SignatureAlgorithm.HS256)
+			.compact();
 	}
-
 }
