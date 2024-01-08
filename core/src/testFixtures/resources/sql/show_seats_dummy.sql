@@ -32,3 +32,13 @@ INSERT INTO seat_table
 (seat_show_id, seat_grade, seat_is_seat, seat_sector, seat_row, seat_col, seat_price, seat_show_date,
  seat_show_round, seat_start_time, seat_status)
 VALUES (1, 'A', true, '3층', 'A', 2, 50000, '2024-01-01', 2, '13:00:00', 'AVAILABLE');
+
+INSERT INTO seat_table
+(seat_show_id, seat_grade, seat_is_seat, seat_sector, seat_row, seat_col, seat_price, seat_show_date,
+ seat_show_round, seat_start_time, seat_status)
+VALUES (1, 'S', true, '1층', 'A', 7, 70000, '2024-01-01', 2, '13:00:00', 'BOOKED');
+
+INSERT INTO seat_table
+(seat_show_id, seat_grade, seat_is_seat, seat_sector, seat_row, seat_col, seat_price, seat_show_date,
+ seat_show_round, seat_start_time, seat_status)
+VALUES (1, 'A', true, '1층', 'A', 8, 50000, '2024-01-01', 2, '13:00:00', 'BOOKED');

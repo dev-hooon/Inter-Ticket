@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import dev.hooon.common.support.ApiTestSupport;
+import dev.hooon.show.domain.entity.seat.SeatStatus;
 
 @DisplayName("[ShowSeatsApiController API 테스트]")
 @Sql("/sql/show_seats_dummy.sql")
@@ -71,4 +72,37 @@ class ShowSeatsApiControllerTest extends ApiTestSupport {
 		);
 	}
 
+	@Test
+	@DisplayName("[[공연 아이디, 날짜, 회차]를 통해 API 를 호출하면 해당 공연의 취소된 좌석 정보를 조회할 수 있다]")
+	void getBookedSeatInfo_test() throws Exception {
+		//when
+		ResultActions resultActions = mockMvc.perform(
+			MockMvcRequestBuilders
+				.get("/api/shows/seats/booked?date=2024-01-01&round=2&showId=1")
+		);
+
+		//then
+		resultActions.andExpectAll(
+			status().isOk(),
+
+			jsonPath("$.seatsDetailInfos.size()").value(2),
+			jsonPath("$.seatsDetailInfos[0].id").exists(),
+			jsonPath("$.seatsDetailInfos[0].date").value("2024-01-01"),
+			jsonPath("$.seatsDetailInfos[0].isSeat").value(true),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_sector").value("1층"),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_row").value("A"),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_col").value("7"),
+			jsonPath("$.seatsDetailInfos[0].price").value(70000),
+			jsonPath("$.seatsDetailInfos[0].status").value(SeatStatus.BOOKED.name()),
+
+			jsonPath("$.seatsDetailInfos[1].id").exists(),
+			jsonPath("$.seatsDetailInfos[1].date").value("2024-01-01"),
+			jsonPath("$.seatsDetailInfos[1].isSeat").value(true),
+			jsonPath("$.seatsDetailInfos[1].positionInfo_sector").value("1층"),
+			jsonPath("$.seatsDetailInfos[1].positionInfo_row").value("A"),
+			jsonPath("$.seatsDetailInfos[1].positionInfo_col").value("8"),
+			jsonPath("$.seatsDetailInfos[1].price").value(50000),
+			jsonPath("$.seatsDetailInfos[1].status").value(SeatStatus.BOOKED.name())
+		);
+	}
 }
