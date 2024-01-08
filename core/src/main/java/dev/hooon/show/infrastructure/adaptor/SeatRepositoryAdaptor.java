@@ -70,4 +70,18 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 	public List<Seat> findByIdIn(List<Long> idList) {
 		return seatJpaRepository.findByIdIn(idList);
 	}
+
+	@Override
+	public List<SeatsDetailDto> findBookedSeatsByShowIdAndDateAndRound(
+		Long showId,
+		LocalDate date,
+		int round
+	) {
+		return seatJpaRepository.findSeatsDetailByStatusAndDateAndRound(
+			showId,
+			SeatStatus.BOOKED,
+			date,
+			round
+		);
+	}
 }

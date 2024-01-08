@@ -40,4 +40,10 @@ public interface SeatRepository {
 	);
 
 	List<Seat> findByIdIn(List<Long> idList);
+
+	List<SeatsDetailDto> findBookedSeatsByShowIdAndDateAndRound(
+		Long showId,
+		LocalDate date,
+		int round
+	);
 }

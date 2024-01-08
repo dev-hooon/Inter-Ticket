@@ -69,4 +69,20 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	List<Seat> findByIdIn(List<Long> idList);
+
+	@Query("""
+		select new dev.hooon.show.dto.query.seats.SeatsDetailDto(
+		s.id, s.showDate, s.isSeat, s.positionInfo.sector, s.positionInfo.row, s.positionInfo.col, s.price, s.seatStatus)
+		from Seat s
+		where s.show.id = :showId
+		and s.seatStatus = :status
+		and s.showDate = :date
+		and s.showRound.round = :round
+		""")
+	List<SeatsDetailDto> findSeatsDetailByStatusAndDateAndRound(
+		@Param("showId") Long showId,
+		@Param("status") SeatStatus status,
+		@Param("date") LocalDate date,
+		@Param("round") int round
+	);
 }
