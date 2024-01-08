@@ -1,8 +1,6 @@
 package dev.hooon.booking.infrastructure.repository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,14 +8,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import dev.hooon.booking.domain.entity.Booking;
 import dev.hooon.booking.domain.entity.Ticket;
 import dev.hooon.common.fixture.SeatFixture;
 import dev.hooon.common.fixture.TestFixture;
-import dev.hooon.common.support.TestContainerSupport;
+import dev.hooon.common.support.DataJpaTestSupport;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
@@ -28,9 +24,7 @@ import dev.hooon.user.domain.entity.User;
 import dev.hooon.user.infrastructure.repository.UserJpaRepository;
 import jakarta.transaction.Transactional;
 
-@SpringBootTest
-@AutoConfigureTestDatabase(replace = NONE)
-class BookingJpaRepositoryTest extends TestContainerSupport {
+class BookingJpaRepositoryTest extends DataJpaTestSupport {
 
 	@Autowired
 	private BookingJpaRepository bookingRepository;
@@ -70,10 +64,9 @@ class BookingJpaRepositoryTest extends TestContainerSupport {
 		Optional<Booking> bookingWithTickets = bookingRepository.findByIdWithTickets(savedBooking.getId());
 
 		// then
-		assertAll(
-			() -> assertThat(bookingWithTickets).isPresent(),
-			() -> assertThat(bookingWithTickets.get().getTickets()).hasSize(2)
-		);
+		assertThat(bookingWithTickets).isPresent();
+		assertThat(bookingWithTickets.get().getTickets()).hasSize(2);
+
 		List<Ticket> tickets = bookingWithTickets.get().getTickets();
 		List<Seat> seats = tickets.stream().map(Ticket::getSeat).toList();
 		assertThat(seats).containsExactlyInAnyOrderElementsOf(List.of(seat1, seat2));
