@@ -36,14 +36,16 @@ class RankingCacheFacadeTest {
 	@Mock
 	private ObjectMapper objectMapper;
 
+	private final LocalDateTime baseTime = LocalDateTime.of(2023, 11, 16, 12, 12);
+
 	@Test
 	@DisplayName("[캐시에 해당 카테고리, 집계기간에 대한 데이터가 있어서 캐시에서 데이터를 조회한다]")
 	void getShowRankingWithCache_test_1() {
 		//given
 		RankingRequest rankingRequest = new RankingRequest("concert", "day");
 		RankingResponse rankingResponse = new RankingResponse(
-			PeriodType.DAY.getStartAt(),
-			LocalDateTime.now(),
+			PeriodType.DAY.getStartAt(baseTime),
+			baseTime,
 			new ArrayList<>()
 		);
 
@@ -67,7 +69,7 @@ class RankingCacheFacadeTest {
 		//given
 		RankingRequest rankingRequest = new RankingRequest("concert", "day");
 		RankingResponse rankingResponse = new RankingResponse(
-			PeriodType.DAY.getStartAt(),
+			PeriodType.DAY.getStartAt(baseTime),
 			LocalDateTime.now(),
 			new ArrayList<>()
 		);

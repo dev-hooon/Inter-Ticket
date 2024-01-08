@@ -4,7 +4,6 @@ import static dev.hooon.show.exception.ShowErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
@@ -50,16 +49,18 @@ class PeriodTypeTest {
 		PeriodType week = PeriodType.WEEK;
 		PeriodType month = PeriodType.MONTH;
 
+		LocalDateTime baseTime = LocalDateTime.of(2023, 11, 16, 12, 12);
+
 		//when
-		LocalDateTime dayStartAt = day.getStartAt();
-		LocalDateTime weekStartAt = week.getStartAt();
-		LocalDateTime monthStartAt = month.getStartAt();
+		LocalDateTime dayStartAt = day.getStartAt(baseTime);
+		LocalDateTime weekStartAt = week.getStartAt(baseTime);
+		LocalDateTime monthStartAt = month.getStartAt(baseTime);
 
 		//then
 		assertAll(
-			() -> assertThat(dayStartAt.toLocalDate()).isEqualTo(LocalDate.now()),
-			() -> assertThat(weekStartAt).isBefore(LocalDateTime.now()),
-			() -> assertThat(monthStartAt).isBefore(LocalDateTime.now())
+			() -> assertThat(dayStartAt.toLocalDate()).isEqualTo(baseTime.toLocalDate()),
+			() -> assertThat(weekStartAt).isBefore(baseTime),
+			() -> assertThat(monthStartAt).isBefore(baseTime)
 		);
 
 		log.info("dayStartAt : {}, weekStartAt : {}, monthStartAt : {}", dayStartAt, weekStartAt, monthStartAt);

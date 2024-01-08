@@ -1,7 +1,9 @@
 package dev.hooon.show.scheduler;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +63,8 @@ class RankingSchedulerTest extends IntegrationTestSupport {
 			Booking.of(user, shows.get(2))
 		);
 		bookings.forEach(booking -> bookingRepository.save(booking));
+
+		given(nowLocalDateTime.get()).willReturn(LocalDateTime.of(2023, 11, 16, 12, 12));
 
 		//when
 		rankingScheduler.cacheEvictRanking();

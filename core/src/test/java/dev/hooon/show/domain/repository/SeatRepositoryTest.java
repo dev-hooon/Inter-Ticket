@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import dev.hooon.common.fixture.SeatFixture;
+import dev.hooon.common.fixture.TestFixture;
 import dev.hooon.common.support.DataJpaTestSupport;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.ShowCategory;
@@ -22,6 +23,7 @@ import dev.hooon.show.domain.entity.place.Place;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
+import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -149,7 +151,6 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 	@Test
 	@DisplayName("[id 리스트에 포함된 좌석들을 조회할 수 있다]")
 	void findByIdInTest() {
-
 		// given
 		List<Seat> seats = List.of(
 			SeatFixture.getSeat(),
@@ -167,4 +168,31 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 		assertEquals(seatList, seats);
 	}
 
+	@Test
+	@DisplayName("[공연 id 와 공연날짜, 회차 정보로 예매된 좌석 정보를 조회한다]")
+	void findBookedSeatsByShowIdAndDateAndRound_test() {
+		//given
+		List<Seat> seats = List.of(
+			SeatFixture.getSeat(),
+			SeatFixture.getSeat(),
+			SeatFixture.getSeat()
+		);
+		seats.get(1).markSeatStatusAsBooked();
+		seats.get(2).markSeatStatusAsBooked();
+		seatRepository.saveAll(seats);
+
+		List<SeatsDetailDto> expected = TestFixture.seatListToSeatsDetailDto(seats);
+
+		//when
+		List<SeatsDetailDto> result = seatRepository.findBookedSeatsByShowIdAndDateAndRound(
+			1L,
+			seats.get(0).getShowDate(),
+			seats.get(0).getRound()
+		);
+
+		//then
+		assertThat(result)
+			.hasSize(2)
+			.contains(expected.get(1), expected.get(2));
+	}
 }
