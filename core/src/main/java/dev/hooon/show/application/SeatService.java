@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.domain.repository.SeatRepository;
+import dev.hooon.show.dto.SeatMapper;
+import dev.hooon.show.dto.query.seats.SeatsDetailDto;
+import dev.hooon.show.dto.request.BookedSeatQueryRequest;
+import dev.hooon.show.dto.response.ShowSeatResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -41,5 +45,15 @@ public class SeatService {
 
 	public List<Seat> findByIdIn(List<Long> idList) {
 		return seatRepository.findByIdIn(idList);
+	}
+
+	public ShowSeatResponse getBookedSeatsInfo(BookedSeatQueryRequest request) {
+		List<SeatsDetailDto> seatDetails = seatRepository.findBookedSeatsByShowIdAndDateAndRound(
+			request.showId(),
+			request.date(),
+			request.round()
+		);
+
+		return SeatMapper.toShowSeatResponse(seatDetails);
 	}
 }

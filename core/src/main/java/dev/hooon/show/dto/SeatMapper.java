@@ -1,9 +1,12 @@
 package dev.hooon.show.dto;
 
+import static dev.hooon.show.dto.response.ShowSeatResponse.*;
+
 import java.util.List;
 
 import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 import dev.hooon.show.dto.query.seats.SeatsInfoDto;
+import dev.hooon.show.dto.response.ShowSeatResponse;
 import dev.hooon.show.dto.response.seats.SeatsDetailResponse;
 import dev.hooon.show.dto.response.seats.SeatsInfoResponse;
 import lombok.AccessLevel;
@@ -37,4 +40,19 @@ public class SeatMapper {
 			.toList();
 	}
 
+	public static ShowSeatResponse toShowSeatResponse(List<SeatsDetailDto> seatsDetailDtoList) {
+		List<SeatsDetailInfo> seatsDetailInfos = seatsDetailDtoList.stream()
+			.map(dto -> new SeatsDetailInfo(
+				dto.id(),
+				dto.date(),
+				dto.isSeat(),
+				dto.sector(),
+				dto.row(),
+				dto.col(),
+				dto.price(),
+				dto.isBookingAvailable()
+			)).toList();
+
+		return new ShowSeatResponse(seatsDetailInfos);
+	}
 }
