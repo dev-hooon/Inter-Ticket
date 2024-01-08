@@ -5,38 +5,30 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 import java.security.Key;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import dev.hooon.auth.domain.repository.AuthRepository;
 import dev.hooon.auth.exception.AuthException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class JwtProvider {
 
-	private final String secretKey;
 	private final int tokenValidSeconds;
 	private final Key key;
 	private static final String USER_ID = "userId";
 
-	@Autowired
 	public JwtProvider(
-		AuthRepository authRepository,
 		@Value("${jwt.secret}") String secretKey,
 		@Value("${jwt.token-validity-in-seconds}") int tokenValidSeconds
 	) {
-		this.secretKey = secretKey;
 		this.tokenValidSeconds = tokenValidSeconds;
 
-		byte[] keyBytes = Decoders.BASE64.decode(this.secretKey);
+		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
@@ -71,8 +63,14 @@ public class JwtProvider {
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
+		} catch (io.jsonwebtoken.ExpiredJwtException e) {
+			throw new AuthException(TOKEN_EXPIRED);
+		} catch (io.jsonwebtoken.UnsupportedJwtException e) {
+			throw new AuthException(UNSUPPORTED_TOKEN);
+		} catch (io.jsonwebtoken.MalformedJwtException e) {
+			throw new AuthException(MALFORMED_TOKEN);
 		} catch (Exception e) {
-			throw new AuthException(INVALID_TOKEN);
+			throw new AuthException(INVALID_TOKEN_ETC);
 		}
 	}
 
@@ -83,6 +81,7 @@ public class JwtProvider {
 			.parseClaimsJws(token)
 			.getBody();
 
+		// return
 		return Long.valueOf((Integer)claimsBody.getOrDefault(USER_ID, 0L));
 	}
 
