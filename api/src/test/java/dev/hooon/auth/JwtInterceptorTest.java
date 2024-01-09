@@ -43,7 +43,8 @@ class JwtInterceptorTest extends ApiTestSupport {
 		when(handlerMethod.getMethodAnnotation(NoAuth.class))
 			.thenReturn(mock(NoAuth.class));
 		// then
-		assertThat(jwtInterceptor.preHandle(request, response, handlerMethod)).isTrue();
+		assertThat(jwtInterceptor.preHandle(request, response, handlerMethod))
+			.isTrue();
 	}
 
 	@Test
@@ -54,15 +55,14 @@ class JwtInterceptorTest extends ApiTestSupport {
 		// when
 		doNothing().when(jwtProvider).validateToken("validToken");
 		// then
-		assertThat(jwtInterceptor.preHandle(request, response, handlerMethod)).isTrue();
+		assertThat(jwtInterceptor.preHandle(request, response, handlerMethod))
+			.isTrue();
 	}
 
 	@Test
 	@DisplayName("[토큰이 없고 @NoAuth 없으면 -> 실패]")
 	void shouldThrowExceptionWhenTokenIsMissing() {
-		assertThatThrownBy(
-			() -> jwtInterceptor.preHandle(request, response, handlerMethod)
-		)
+		assertThatThrownBy(() -> jwtInterceptor.preHandle(request, response, handlerMethod))
 			.isInstanceOf(AuthException.class)
 			.hasMessageContaining(NOT_INCLUDE_ACCESS_TOKEN.getMessage());
 	}
@@ -76,9 +76,7 @@ class JwtInterceptorTest extends ApiTestSupport {
 			.when(jwtProvider).validateToken("invalidToken");
 
 		// when, then
-		assertThatThrownBy(
-			() -> jwtInterceptor.preHandle(request, response, handlerMethod)
-		)
+		assertThatThrownBy(() -> jwtInterceptor.preHandle(request, response, handlerMethod))
 			.isInstanceOf(AuthException.class)
 			.hasMessageContaining(TOKEN_EXPIRED.getMessage());
 	}
