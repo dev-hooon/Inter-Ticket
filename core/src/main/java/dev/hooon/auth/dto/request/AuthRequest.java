@@ -1,16 +1,15 @@
-package dev.hooon.user.dto.request;
+package dev.hooon.auth.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record UserJoinRequest(
+public record AuthRequest(
 
 	@Email
 	@NotBlank
 	String email,
+
 	@NotBlank
-	String password,
-	@NotBlank
-	String name
+	String password
 ) {
 }

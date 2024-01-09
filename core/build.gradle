@@ -11,6 +11,10 @@ dependencies {
     testFixturesImplementation 'org.springframework:spring-tx:6.1.1'
     // 패스워드 암호화
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     // 레디스 LocalDateTime 역직렬화
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
