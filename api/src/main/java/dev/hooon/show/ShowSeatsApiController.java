@@ -39,6 +39,7 @@ public class ShowSeatsApiController {
 		return ResponseEntity.ok(showSeatsResponse);
 	}
 
+	@NoAuth
 	@GetMapping("/api/shows/seats/booked")
 	public ResponseEntity<ShowSeatResponse> getBookedSeatInfo(
 		@Valid @ModelAttribute BookedSeatQueryRequest request
