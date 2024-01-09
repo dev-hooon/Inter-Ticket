@@ -13,7 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import dev.hooon.auth.application.AuthService;
+import dev.hooon.auth.dto.TokenReIssueRequest;
 import dev.hooon.auth.dto.request.AuthRequest;
+import dev.hooon.auth.dto.response.AuthResponse;
 import dev.hooon.common.support.ApiTestSupport;
 import dev.hooon.user.application.UserService;
 import dev.hooon.user.dto.request.UserJoinRequest;
@@ -27,12 +29,11 @@ class AuthApiControllerTest extends ApiTestSupport {
 	private UserService userService;
 	@Autowired
 	private AuthService authService;
-	private Long testUserId;
 
 	@BeforeEach
 	void setUp() {
 		UserJoinRequest userJoinRequest = new UserJoinRequest("user@example.com", "password123", "name123");
-		testUserId = userService.join(userJoinRequest);
+		userService.join(userJoinRequest);
 	}
 
 	@Test
@@ -58,7 +59,9 @@ class AuthApiControllerTest extends ApiTestSupport {
 	@DisplayName("[토큰 재발급 API를 호출하면 새로운 엑세스 토큰이 응답된다]")
 	void reIssueAccessTokenTest() throws Exception {
 		// given
-		String refreshToken = authService.saveAuth(testUserId).refreshToken();
+		AuthRequest authRequest = new AuthRequest("user@example.com", "password123");
+		AuthResponse authResponse = authService.login(authRequest);
+		String refreshToken = authResponse.refreshToken();
 		TokenReIssueRequest tokenReIssueRequest = new TokenReIssueRequest(refreshToken);
 
 		// when

@@ -31,7 +31,7 @@ public class AuthService {
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_REFRESH_TOKEN));
 	}
 
-	public AuthResponse saveAuth(Long userId) {
+	private AuthResponse saveAuth(Long userId) {
 		String refreshToken = jwtProvider.createRefreshToken(userId);
 		String accessToken = jwtProvider.createAccessToken(userId);
 		Optional<Auth> auth = authRepository.findByUserId(userId);
