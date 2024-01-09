@@ -17,6 +17,7 @@ import dev.hooon.auth.exception.AuthException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @DisplayName("[JwtProvider 테스트]")
@@ -26,13 +27,15 @@ class JwtProviderTest {
 	private JwtProvider jwtProvider;
 	private Key key;
 	private int tokenValidSeconds;
+	private String secretKey;
 
 	@BeforeEach
 	void setUp() {
-		String secretKey = "fdflsjhflkwejfblkjhvuixochvuhsofiuesafbidsfab223411";
-		key = Keys.hmacShaKeyFor(secretKey.getBytes());
+		secretKey = "fdflsjhflkwejfblkjhvuixochvuhsofiuesafbidsfab223411";
+		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+		this.key = Keys.hmacShaKeyFor(keyBytes);
 		tokenValidSeconds = 3600;
-		jwtProvider = new JwtProvider(key, tokenValidSeconds);
+		jwtProvider = new JwtProvider(secretKey, tokenValidSeconds);
 	}
 
 	@Test
@@ -57,7 +60,6 @@ class JwtProviderTest {
 		assertThat(claims.getExpiration()).isNotNull();
 		assertThat(claims.getExpiration().getTime() - claims.getIssuedAt().getTime())
 			.isCloseTo(tokenValidSeconds, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
-
 	}
 
 	@Test
@@ -82,7 +84,6 @@ class JwtProviderTest {
 		assertThat(claims.getExpiration()).isNotNull();
 		assertThat(claims.getExpiration().getTime() - claims.getIssuedAt().getTime())
 			.isCloseTo(tokenValidSeconds * 30L, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
-
 	}
 
 	@Test
@@ -129,7 +130,8 @@ class JwtProviderTest {
 	void validateExpiredTokenTest() {
 		// given
 		Long userId = 123L;
-		String expiredToken = jwtProvider.createTokenWithCustomExpiration(userId, -1000000L);
+		jwtProvider = new JwtProvider(secretKey, -1000000);
+		String expiredToken = jwtProvider.createAccessToken(userId);
 
 		// when, then
 		assertThatThrownBy(
