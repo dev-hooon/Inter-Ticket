@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.hooon.auth.NoAuth;
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.show.application.SeatService;
 import dev.hooon.show.application.ShowSeatsService;
 import dev.hooon.show.dto.request.BookedSeatQueryRequest;

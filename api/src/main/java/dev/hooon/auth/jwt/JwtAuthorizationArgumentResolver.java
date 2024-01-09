@@ -1,4 +1,4 @@
-package dev.hooon.auth;
+package dev.hooon.auth.jwt;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 

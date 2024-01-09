@@ -7,8 +7,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import dev.hooon.auth.JwtAuthorizationArgumentResolver;
-import dev.hooon.auth.JwtInterceptor;
+import dev.hooon.auth.jwt.JwtAuthorizationArgumentResolver;
+import dev.hooon.auth.jwt.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

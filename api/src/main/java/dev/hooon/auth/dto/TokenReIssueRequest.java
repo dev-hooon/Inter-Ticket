@@ -1,4 +1,4 @@
-package dev.hooon.auth;
+package dev.hooon.auth.dto;
 
 
 public record TokenReIssueRequest(

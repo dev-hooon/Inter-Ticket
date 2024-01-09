@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.hooon.auth.NoAuth;
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.user.application.UserService;
 import dev.hooon.user.dto.request.UserJoinRequest;
 import dev.hooon.user.dto.response.UserJoinResponse;

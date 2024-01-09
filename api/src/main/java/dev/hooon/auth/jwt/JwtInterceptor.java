@@ -1,4 +1,4 @@
-package dev.hooon.auth;
+package dev.hooon.auth.jwt;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
 
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.auth.application.JwtProvider;
 import dev.hooon.auth.exception.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
