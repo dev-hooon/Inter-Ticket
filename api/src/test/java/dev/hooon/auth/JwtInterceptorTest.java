@@ -4,37 +4,35 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.method.HandlerMethod;
 
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.auth.application.JwtProvider;
 import dev.hooon.auth.exception.AuthException;
-import dev.hooon.common.support.ApiTestSupport;
+import dev.hooon.auth.jwt.JwtInterceptor;
 import jakarta.servlet.http.HttpServletResponse;
 
 @DisplayName("[JwtInterceptor 테스트]")
-class JwtInterceptorTest extends ApiTestSupport {
+@ExtendWith(MockitoExtension.class)
+class JwtInterceptorTest {
 
 	@InjectMocks
 	private JwtInterceptor jwtInterceptor;
 	@Mock
 	private JwtProvider jwtProvider;
-	private MockHttpServletRequest request;
+	private final MockHttpServletRequest request = new MockHttpServletRequest();
 	@Mock
 	private HttpServletResponse response;
 	@Mock
 	private HandlerMethod handlerMethod;
-
-	@BeforeEach
-	void setUp() {
-		request = new MockHttpServletRequest();
-	}
 
 	@Test
 	@DisplayName("[토큰이 없고 @NoAuth 있으면 -> 통과]")

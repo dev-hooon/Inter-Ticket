@@ -4,11 +4,12 @@ import static dev.hooon.auth.exception.AuthErrorCode.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -17,12 +18,13 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import dev.hooon.auth.application.JwtProvider;
+import dev.hooon.auth.jwt.JwtAuthorizationArgumentResolver;
 import dev.hooon.common.exception.NotFoundException;
-import dev.hooon.common.support.ApiTestSupport;
 import jakarta.servlet.http.HttpServletRequest;
 
 @DisplayName("[JwtAuthorizationArgumentResolver 테스트]")
-class JwtAuthorizationArgumentResolverTest extends ApiTestSupport {
+@ExtendWith(MockitoExtension.class)
+class JwtAuthorizationArgumentResolverTest {
 
 	@InjectMocks
 	private JwtAuthorizationArgumentResolver resolver;
@@ -32,17 +34,11 @@ class JwtAuthorizationArgumentResolverTest extends ApiTestSupport {
 	private MethodParameter parameter;
 	@Mock
 	private ModelAndViewContainer mavContainer;
-	private MockHttpServletRequest mockHttpServletRequest;
+	private final MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 	@Mock
 	private NativeWebRequest webRequest;
 	@Mock
 	private WebDataBinderFactory binderFactory;
-
-	@BeforeEach
-	void setUp() {
-		mockHttpServletRequest = new MockHttpServletRequest();
-		resolver = new JwtAuthorizationArgumentResolver(jwtProvider);
-	}
 
 	@Test
 	@DisplayName("[토큰이 유효하면 claim 의 userId를 반환한다]")
