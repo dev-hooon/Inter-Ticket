@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.show.application.SeatService;
 import dev.hooon.show.application.ShowSeatsService;
 import dev.hooon.show.dto.request.BookedSeatQueryRequest;
@@ -25,6 +26,7 @@ public class ShowSeatsApiController {
 	private final ShowSeatsService showSeatsService;
 	private final SeatService seatService;
 
+	@NoAuth
 	@GetMapping("/api/shows/{showId}/seats")
 	public ResponseEntity<ShowSeatsResponse> getShowSeatsInfo(
 		@PathVariable("showId") Long showId,
@@ -37,6 +39,7 @@ public class ShowSeatsApiController {
 		return ResponseEntity.ok(showSeatsResponse);
 	}
 
+	@NoAuth
 	@GetMapping("/api/shows/seats/booked")
 	public ResponseEntity<ShowSeatResponse> getBookedSeatInfo(
 		@Valid @ModelAttribute BookedSeatQueryRequest request

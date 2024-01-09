@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.show.application.ShowService;
 import dev.hooon.show.dto.response.AbleBookingDateRoundResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class ShowApiController {
 
 	private final ShowService showService;
 
+	@NoAuth
 	@GetMapping("/api/shows/{show_id}/available")
 	public ResponseEntity<AbleBookingDateRoundResponse> getAbleBookingDateRoundInfo(
 		@PathVariable("show_id") Long showId
