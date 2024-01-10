@@ -1,4 +1,4 @@
-package dev.hooon.common.exception.config;
+package dev.hooon.common.config;
 
 import java.util.List;
 
