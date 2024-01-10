@@ -49,7 +49,7 @@ public class JwtProvider {
 			.setHeaderParam("type", "jwt")
 			.claim(USER_ID, userId)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + tokenValidSeconds))
+			.setExpiration(new Date(now.getTime() + tokenValidSeconds * 1000L))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 	}
@@ -61,7 +61,7 @@ public class JwtProvider {
 			.setHeaderParam("type", "jwt")
 			.claim(USER_ID, userId)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + tokenValidSeconds * 30L))
+			.setExpiration(new Date(now.getTime() + tokenValidSeconds * 1000L * 30))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 	}
