@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.ShowCategory;
 import dev.hooon.show.dto.query.ShowStatisticDto;
@@ -19,4 +22,6 @@ public interface ShowRepository {
 		LocalDateTime startAt,
 		LocalDateTime endAt
 	);
+
+	Page<Show> findByCategory(ShowCategory category, Pageable pageable);
 }
