@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import dev.hooon.common.support.ApiTestSupport;
@@ -17,9 +16,6 @@ import dev.hooon.user.dto.request.UserJoinRequest;
 
 @DisplayName("[UserController API 테스트]")
 class UserApiControllerTest extends ApiTestSupport {
-
-	@Autowired
-	private MockMvc mockMvc;
 
 	@Autowired
 	private UserRepository userRepository;
