@@ -123,8 +123,8 @@ class WaitingBookingSchedulerTest extends IntegrationTestSupport {
 		userRepository.save(user);
 
 		LocalDateTime now = LocalDateTime.of(2023, 11, 16, 12, 12);
-		LocalDateTime beforeNow = now.minusSeconds(10);
-		LocalDateTime afterNow = now.plusSeconds(10);
+		LocalDateTime beforeNow = now.minusSeconds(100);
+		LocalDateTime afterNow = now.plusSeconds(100);
 		// 스케줄러 기준시간 동적으로 조정
 		given(nowLocalDateTime.get()).willReturn(now);
 

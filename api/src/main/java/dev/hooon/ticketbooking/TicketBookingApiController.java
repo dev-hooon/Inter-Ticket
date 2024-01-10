@@ -10,9 +10,13 @@ import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.booking.application.fascade.TicketBookingFacade;
 import dev.hooon.booking.dto.request.TicketBookingRequest;
 import dev.hooon.booking.dto.response.TicketBookingResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Booking API")
 @RestController
 @RequiredArgsConstructor
 public class TicketBookingApiController {
@@ -21,6 +25,8 @@ public class TicketBookingApiController {
 
 	@NoAuth
 	@PostMapping("/api/bookings")
+	@Operation(summary = "티켓 예매 API", description = "티켓을 예매한다")
+	@ApiResponse(responseCode = "200", useReturnTypeSchema = true)
 	public ResponseEntity<TicketBookingResponse> bookingTicket(
 		@RequestParam(name = "userId") Long userId, // TODO
 		@Valid @RequestBody TicketBookingRequest ticketBookingRequest
