@@ -12,9 +12,13 @@ import dev.hooon.auth.dto.TokenReIssueRequest;
 import dev.hooon.auth.dto.request.AuthRequest;
 
 import dev.hooon.auth.dto.response.AuthResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Auth API")
 @RequestMapping("/api/auth")
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +28,8 @@ public class AuthApiController {
 
 	@NoAuth
 	@PostMapping("/login")
+	@Operation(summary = "로그인 API", description = "로그인을 한다")
+	@ApiResponse(responseCode = "200", useReturnTypeSchema = true)
 	public ResponseEntity<AuthResponse> login(
 		@Valid @RequestBody AuthRequest authRequest
 	) {
@@ -33,6 +39,8 @@ public class AuthApiController {
 
 	@NoAuth
 	@PostMapping("/token")
+	@Operation(summary = "토큰 재발급 API", description = "토큰을 재발급한다")
+	@ApiResponse(responseCode = "200", useReturnTypeSchema = true)
 	public ResponseEntity<String> reIssueAccessToken(
 		@RequestBody TokenReIssueRequest tokenReIssueRequest
 	) {
