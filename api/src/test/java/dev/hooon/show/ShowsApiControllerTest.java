@@ -21,12 +21,9 @@ import dev.hooon.show.domain.repository.ShowRepository;
 class ShowsApiControllerTest extends ApiTestSupport {
 
 	@Autowired
-	private MockMvc mockMvc;
-	@Autowired
 	private ShowRepository showRepository;
 	@Autowired
 	private PlaceRepository placeRepository;
-
 
 	@DisplayName("[올바른 공연 목록이 반환된다]")
 	@Test
@@ -65,4 +62,35 @@ class ShowsApiControllerTest extends ApiTestSupport {
 			jsonPath("$[1].placeName").value(placeName)
 		);
 	}
+
+	@Test
+	@DisplayName("[0보다 작은 페이지 번호가 주어지면 400 오류를 반환한다]")
+	void givenInvalidPage_whenGetShowsByCategory_thenReturnsBadRequest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/shows")
+				.param("page", "-1")
+				.param("size", "3")
+				.param("category", "PLAY"))
+			.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@DisplayName("[1보다 작은 사이즈가 주어지면 400 오류를 반환한다]")
+	void givenInvalidSize_whenGetShowsByCategory_thenReturnsBadRequest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/shows")
+				.param("page", "0")
+				.param("size", "0")
+				.param("category", "PLAY"))
+			.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@DisplayName("[비어있는 String 이 카테고리로 주어지면 400 오류를 반환한다]")
+	void givenInvalidCategory_whenGetShowsByCategory_thenReturnsBadRequest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/shows")
+				.param("page", "0")
+				.param("size", "3")
+				.param("category", ""))
+			.andExpect(status().isBadRequest());
+	}
+
 }
