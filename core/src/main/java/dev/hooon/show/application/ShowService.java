@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import dev.hooon.common.dto.PagedResponse;
 import dev.hooon.common.exception.NotFoundException;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.ShowCategory;
@@ -39,11 +40,18 @@ public class ShowService {
 		return ShowMapper.toShowDetailInfoResponse(show);
 	}
 
-	public List<ShowInfoResponse> getShowsByCategory(int page, int size, String category) {
+	public PagedResponse<ShowInfoResponse> getShowsByCategory(int page, int size, String category) {
 		ShowCategory showCategory = ShowCategory.of(category);
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<Show> showsPage = showRepository.findByCategory(showCategory, pageRequest);
+		List<ShowInfoResponse> content = showsPage.map(ShowMapper::toShowInfoResponse).getContent();
 
-		return showsPage.map(ShowMapper::toShowInfoResponse).getContent();
+		return new PagedResponse<>(
+			content,
+			showsPage.getTotalPages(),
+			showsPage.getNumberOfElements(),
+			showsPage.getNumber(),
+			showsPage.getSize()
+		);
 	}
 }

@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -55,11 +54,11 @@ class ShowsApiControllerTest extends ApiTestSupport {
 		// Then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.size()").value(2),
-			jsonPath("$[0].showName").value("서울의 봄"),
-			jsonPath("$[0].placeName").value(placeName),
-			jsonPath("$[1].showName").value("노량"),
-			jsonPath("$[1].placeName").value(placeName)
+			jsonPath("$.content.size()").value(2),
+			jsonPath("$.content[0].showName").value("서울의 봄"),
+			jsonPath("$.content[0].placeName").value(placeName),
+			jsonPath("$.content[1].showName").value("노량"),
+			jsonPath("$.content[1].placeName").value(placeName)
 		);
 	}
 
