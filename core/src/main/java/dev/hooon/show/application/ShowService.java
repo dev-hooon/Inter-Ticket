@@ -18,9 +18,7 @@ import dev.hooon.show.dto.response.ShowDetailsInfoResponse;
 import dev.hooon.show.dto.response.ShowInfoResponse;
 import dev.hooon.show.exception.ShowErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShowService {
@@ -46,10 +44,6 @@ public class ShowService {
 		PageRequest pageRequest = PageRequest.of(page, size);
 		Page<Show> showsPage = showRepository.findByCategory(showCategory, pageRequest);
 
-		if (showsPage.hasContent()) {
-			return showsPage.map(ShowInfoResponse::of).getContent();
-		} else {
-			return List.of();
-		}
+		return showsPage.map(ShowMapper::toShowInfoResponse).getContent();
 	}
 }
