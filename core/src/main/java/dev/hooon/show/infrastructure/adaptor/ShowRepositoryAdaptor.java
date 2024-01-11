@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import dev.hooon.show.domain.entity.Show;
@@ -37,4 +39,10 @@ public class ShowRepositoryAdaptor implements ShowRepository {
 	) {
 		return showJpaRepository.findBookingStatisticByCategoryAndPeriod(category, startAt, endAt);
 	}
+
+	@Override
+	public Page<Show> findByCategoryOrderByIdDesc(ShowCategory category, Pageable pageable) {
+		return showJpaRepository.findByCategoryOrderByIdDesc(category, pageable);
+	}
+
 }

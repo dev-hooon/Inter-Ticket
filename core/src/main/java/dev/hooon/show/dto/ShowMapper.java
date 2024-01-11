@@ -13,6 +13,7 @@ import dev.hooon.show.dto.response.AbleBookingDateRoundResponse.AvailableDate;
 import dev.hooon.show.dto.response.PlaceDetailsInfo;
 import dev.hooon.show.dto.response.RankingResponse;
 import dev.hooon.show.dto.response.ShowDetailsInfoResponse;
+import dev.hooon.show.dto.response.ShowInfoResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -65,6 +66,13 @@ public final class ShowMapper {
 			startAt,
 			endAt,
 			rankingShowInfos
+		);
+	}
+
+	public static ShowInfoResponse toShowInfoResponse(Show show) {
+		return new ShowInfoResponse(
+			show.getName(),
+			show.getPlace().getName()
 		);
 	}
 }
