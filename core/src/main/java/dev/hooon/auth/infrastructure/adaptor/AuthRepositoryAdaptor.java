@@ -8,9 +8,7 @@ import dev.hooon.auth.domain.entity.Auth;
 import dev.hooon.auth.domain.repository.AuthRepository;
 import dev.hooon.auth.infrastructure.AuthJpaRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class AuthRepositoryAdaptor implements AuthRepository {
