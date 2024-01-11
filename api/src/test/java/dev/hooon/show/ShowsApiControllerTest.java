@@ -49,7 +49,7 @@ class ShowsApiControllerTest extends ApiTestSupport {
 		// When
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders
-				.get("/api/shows/")
+				.get("/api/shows")
 				.param("page", String.valueOf(page))
 				.param("size", String.valueOf(size))
 				.param("category", categoryPicked)

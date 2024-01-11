@@ -19,7 +19,7 @@ public class ShowsApiController {
 	private final ShowService showService;
 
 	@NoAuth
-	@GetMapping("/api/shows/")
+	@GetMapping("/api/shows")
 	public ResponseEntity<List<ShowInfoResponse>> getAbleBookingDateRoundInfo(
 		@RequestParam("page") int page,
 		@RequestParam("size") int size,
