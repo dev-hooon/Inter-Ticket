@@ -32,6 +32,6 @@ public interface ShowJpaRepository extends JpaRepository<Show, Long> {
 		@Param("endAt") LocalDateTime endAt
 	);
 
-	Page<Show> findByCategory(ShowCategory category, Pageable pageable);
+	Page<Show> findByCategoryOrderByIdDesc(ShowCategory category, Pageable pageable);
 
 }

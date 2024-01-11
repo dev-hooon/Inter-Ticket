@@ -55,10 +55,14 @@ class ShowsApiControllerTest extends ApiTestSupport {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.content.size()").value(2),
-			jsonPath("$.content[0].showName").value("서울의 봄"),
+			jsonPath("$.content[0].showName").value("노량"),
 			jsonPath("$.content[0].placeName").value(placeName),
-			jsonPath("$.content[1].showName").value("노량"),
-			jsonPath("$.content[1].placeName").value(placeName)
+			jsonPath("$.content[1].showName").value("서울의 봄"),
+			jsonPath("$.content[1].placeName").value(placeName),
+			jsonPath("$.totalPages").value(1),
+			jsonPath("$.totalItems").value(2),
+			jsonPath("$.currentPage").value(0),
+			jsonPath("$.pageSize").value(3)
 		);
 	}
 
