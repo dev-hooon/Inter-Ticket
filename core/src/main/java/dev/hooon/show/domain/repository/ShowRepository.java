@@ -23,5 +23,5 @@ public interface ShowRepository {
 		LocalDateTime endAt
 	);
 
-	Page<Show> findByCategory(ShowCategory category, Pageable pageable);
+	Page<Show> findByCategoryOrderByIdDesc(ShowCategory category, Pageable pageable);
 }

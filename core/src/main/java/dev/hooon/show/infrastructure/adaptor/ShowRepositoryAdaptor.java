@@ -41,7 +41,7 @@ public class ShowRepositoryAdaptor implements ShowRepository {
 	}
 
 	@Override
-	public Page<Show> findByCategory(ShowCategory category, Pageable pageable) {
+	public Page<Show> findByCategoryOrderByIdDesc(ShowCategory category, Pageable pageable) {
 		return showJpaRepository.findByCategoryOrderByIdDesc(category, pageable);
 	}
 

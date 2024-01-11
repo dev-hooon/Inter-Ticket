@@ -43,7 +43,7 @@ public class ShowService {
 	public PagedResponse<ShowInfoResponse> getShowsByCategory(int page, int size, String category) {
 		ShowCategory showCategory = ShowCategory.of(category);
 		PageRequest pageRequest = PageRequest.of(page, size);
-		Page<Show> showsPage = showRepository.findByCategory(showCategory, pageRequest);
+		Page<Show> showsPage = showRepository.findByCategoryOrderByIdDesc(showCategory, pageRequest);
 		List<ShowInfoResponse> content = showsPage.map(ShowMapper::toShowInfoResponse).getContent();
 
 		return new PagedResponse<>(
