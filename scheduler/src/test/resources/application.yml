@@ -27,4 +27,4 @@ logging:
 
 jwt:
   secret: fdflsjhflkwejfblkjhvuixochvuhsofiuesafbidsfab223411
-  token-validity-in-seconds: 2400
+  token-validity-in-seconds: 2400000

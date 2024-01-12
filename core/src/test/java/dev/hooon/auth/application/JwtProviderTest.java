@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.Key;
-import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +58,7 @@ class JwtProviderTest {
 		assertThat(claims.getIssuedAt()).isNotNull();
 		assertThat(claims.getExpiration()).isNotNull();
 		assertThat(claims.getExpiration().getTime() - claims.getIssuedAt().getTime())
-			.isCloseTo(tokenValidSeconds, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
+			.isCloseTo(tokenValidSeconds * 1000L, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
 	}
 
 	@Test
@@ -83,7 +82,7 @@ class JwtProviderTest {
 		assertThat(claims.getIssuedAt()).isNotNull();
 		assertThat(claims.getExpiration()).isNotNull();
 		assertThat(claims.getExpiration().getTime() - claims.getIssuedAt().getTime())
-			.isCloseTo(tokenValidSeconds * 30L, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
+			.isCloseTo(tokenValidSeconds * 1000L * 30, within(1000L));    // 토큰 생성 자체에 드는 시간 고려
 	}
 
 	@Test

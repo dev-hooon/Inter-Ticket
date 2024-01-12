@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import dev.hooon.auth.application.AuthService;
@@ -22,9 +21,7 @@ import dev.hooon.user.dto.request.UserJoinRequest;
 
 @DisplayName("[AuthApiController API 테스트]")
 class AuthApiControllerTest extends ApiTestSupport {
-
-	@Autowired
-	private MockMvc mockMvc;
+	
 	@Autowired
 	private UserService userService;
 	@Autowired
