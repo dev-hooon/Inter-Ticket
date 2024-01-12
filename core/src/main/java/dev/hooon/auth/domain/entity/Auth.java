@@ -1,11 +1,8 @@
 package dev.hooon.auth.domain.entity;
 
-import static dev.hooon.common.exception.CommonValidationError.*;
 import static jakarta.persistence.GenerationType.*;
 
-import org.springframework.util.Assert;
-
-import dev.hooon.user.domain.entity.UserRole;
+import dev.hooon.common.entity.TimeBaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "auth_table")
-public class Auth {
+public class Auth extends TimeBaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
