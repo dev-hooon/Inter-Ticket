@@ -1,8 +1,3 @@
-INSERT INTO user_table
-    (user_id, user_email, user_name, user_password, user_role)
-VALUES (1, 'user@email.com', 'user', 'password', 'BUYER');
---
---
 INSERT INTO place_table
     (place_id, place_name, place_contact_info, place_address, place_url)
 VALUES (1, '블루스퀘어 신한카드홀', '1544-1591', '서울특별시 용산구 이태원로 294 블루스퀘어(한남동)', 'http://www.bluesquare.kr/index.asp');
