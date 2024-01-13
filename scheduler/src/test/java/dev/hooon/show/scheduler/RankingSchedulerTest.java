@@ -1,7 +1,9 @@
 package dev.hooon.show.scheduler;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +16,7 @@ import dev.hooon.booking.domain.entity.Booking;
 import dev.hooon.booking.domain.repository.BookingRepository;
 import dev.hooon.common.fixture.TestFixture;
 import dev.hooon.common.fixture.UserFixture;
-import dev.hooon.common.support.IntegrationTestSupport;
+import dev.hooon.common.support.SchedulerTestSupport;
 import dev.hooon.show.application.PeriodType;
 import dev.hooon.show.domain.entity.Show;
 import dev.hooon.show.domain.entity.ShowCategory;
@@ -25,7 +27,7 @@ import dev.hooon.user.domain.entity.User;
 import dev.hooon.user.domain.repository.UserRepository;
 
 @DisplayName("[RankingScheduler 테스트]")
-class RankingSchedulerTest extends IntegrationTestSupport {
+class RankingSchedulerTest extends SchedulerTestSupport {
 
 	@Autowired
 	private RankingScheduler rankingScheduler;
@@ -61,6 +63,8 @@ class RankingSchedulerTest extends IntegrationTestSupport {
 			Booking.of(user, shows.get(2))
 		);
 		bookings.forEach(booking -> bookingRepository.save(booking));
+
+		given(nowLocalDateTime.get()).willReturn(LocalDateTime.of(2023, 11, 16, 12, 12));
 
 		//when
 		rankingScheduler.cacheEvictRanking();

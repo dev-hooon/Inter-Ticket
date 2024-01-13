@@ -99,8 +99,9 @@ class WaitingBookingFacadeTest {
 	@DisplayName("[만료된 활성화 상태인 예약대기를 처리한다]")
 	void processExpiredWaitingBooking_test() {
 		//given
-		LocalDateTime beforeNow = LocalDateTime.now().minusSeconds(10);
-		LocalDateTime afterNow = LocalDateTime.now().plusSeconds(10);
+		LocalDateTime now = LocalDateTime.of(2023, 11, 16, 12, 12);
+		LocalDateTime beforeNow = now.minusSeconds(10);
+		LocalDateTime afterNow = now.plusSeconds(10);
 		List<WaitingBooking> waitingBookings = List.of(
 			WaitingBookingFixture.getActiveWaitingBooking(1L, beforeNow, 2, List.of(1L, 2L)),
 			WaitingBookingFixture.getActiveWaitingBooking(2L, beforeNow, 2, List.of(3L, 4L)),
@@ -111,7 +112,7 @@ class WaitingBookingFacadeTest {
 			.willReturn(waitingBookings);
 
 		//when
-		waitingBookingFacade.processExpiredWaitingBooking();
+		waitingBookingFacade.processExpiredWaitingBooking(now);
 
 		//then
 		verify(waitingBookingService, times(1)).expireActiveWaitingBooking(anyList());

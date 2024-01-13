@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 public class BcryptImpl implements EncryptHelper {
 
 	@Override
-	public String encrypt(String password) {
-		return BCrypt.hashpw(password, BCrypt.gensalt());
+	public String encrypt(String plainPassword) {
+		return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
 	}
 
 	@Override
-	public boolean isMatch(String password, String hashed) {
-		return BCrypt.checkpw(password, hashed);
+	public boolean isMatch(String plainPassword, String hashedPassword) {
+		return BCrypt.checkpw(plainPassword, hashedPassword);
 	}
 }
