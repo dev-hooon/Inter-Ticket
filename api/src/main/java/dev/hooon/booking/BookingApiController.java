@@ -20,12 +20,12 @@ public class BookingApiController {
 	@GetMapping("/api/users/booking")
 	public ResponseEntity<BookingListResponse> getBookings(
 		@RequestParam(name = "userId") Long userId, // TODO
-		@RequestParam(name = "duration") int days,
+		@RequestParam(name = "duration") int duration,
 		@PageableDefault(size = 10) Pageable pageable
 	) {
 		BookingListResponse bookingListResponse = bookingService.getBookings(
 			userId,
-			days,
+			duration,
 			pageable
 		);
 		return ResponseEntity.ok(bookingListResponse);
