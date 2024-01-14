@@ -71,7 +71,10 @@ public class BookingApiController {
 		@Parameter(hidden = true) @JwtAuthorization Long userId,
 		@Valid @RequestBody TicketBookingRequest ticketBookingRequest
 	) {
-		TicketBookingResponse ticketBookingResponse = ticketBookingFacade.bookingTicket(userId, ticketBookingRequest);
+		TicketBookingResponse ticketBookingResponse = ticketBookingFacade.bookingTicket(
+			userId,
+			ticketBookingRequest.seatIds()
+		);
 		return ResponseEntity.ok(ticketBookingResponse);
 	}
 }

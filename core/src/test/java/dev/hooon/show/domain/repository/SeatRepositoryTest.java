@@ -152,10 +152,15 @@ class SeatRepositoryTest extends DataJpaTestSupport {
 	@DisplayName("[id 리스트에 포함된 좌석들을 조회할 수 있다]")
 	void findByIdInTest() {
 		// given
+		Place place = TestFixture.getPlace();
+		placeRepository.save(place);
+		Show show = TestFixture.getShow(place);
+		showRepository.save(show);
+
 		List<Seat> seats = List.of(
-			SeatFixture.getSeat(),
-			SeatFixture.getSeat(),
-			SeatFixture.getSeat()
+			SeatFixture.getSeat(show),
+			SeatFixture.getSeat(show),
+			SeatFixture.getSeat(show)
 		);
 		seatRepository.saveAll(seats);
 

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,9 +95,9 @@ class ShowRepositoryTest extends DataJpaTestSupport {
 		shows.forEach(show -> showRepository.save(show));
 
 		List<Booking> bookings = List.of(
-			Booking.of(user, shows.get(1)),
-			Booking.of(user, shows.get(2)),
-			Booking.of(user, shows.get(1))
+			Booking.of(user, shows.get(1), new ArrayList<>()),
+			Booking.of(user, shows.get(2), new ArrayList<>()),
+			Booking.of(user, shows.get(1), new ArrayList<>())
 		);
 		bookings.forEach(this::setTicketCount);
 		bookings.forEach(booking -> bookingRepository.save(booking));

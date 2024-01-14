@@ -4,6 +4,7 @@ import static dev.hooon.booking.exception.BookingErrorCode.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.hooon.booking.domain.entity.Booking;
 import dev.hooon.booking.domain.entity.BookingStatus;
-import dev.hooon.booking.domain.entity.Ticket;
 import dev.hooon.booking.domain.repository.BookingRepository;
 import dev.hooon.booking.dto.response.BookingCancelResponse;
 import dev.hooon.common.exception.NotFoundException;
@@ -62,7 +62,7 @@ class BookingServiceTest {
 		long anotherUserId = 2L;
 		long userId = 1L;
 		User user = TestFixture.getUser(userId);
-		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()));
+		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()), new ArrayList<>());
 
 		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
 
@@ -81,7 +81,7 @@ class BookingServiceTest {
 		long bookingId = 1L;
 		long userId = 1L;
 		User user = TestFixture.getUser(userId);
-		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()));
+		Booking booking = Booking.of(user, TestFixture.getShow(TestFixture.getPlace()), new ArrayList<>());
 		booking.markBookingStatusAsCanceled();
 
 		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
@@ -108,10 +108,7 @@ class BookingServiceTest {
 			show.getShowPeriod().getStartDate(),
 			1
 		);
-		Booking booking = Booking.of(user, show);
-		allBookedSeats.forEach(
-			seat -> booking.addTicket(Ticket.of(seat))
-		);
+		Booking booking = Booking.of(user, show, allBookedSeats);
 		given(bookingRepository.findByIdWithTickets(bookingId)).willReturn(Optional.of(booking));
 
 		// when

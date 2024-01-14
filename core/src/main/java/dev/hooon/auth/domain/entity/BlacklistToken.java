@@ -14,26 +14,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "auth_table")
-public class Auth extends TimeBaseEntity {
+@Table(name = "blacklist_token_table")
+public class BlacklistToken extends TimeBaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "auth_id")
+	@Column(name = "blacklist_token_id")
 	private Long id;
 
-	@Column(name = "auth_user_id", nullable = false, unique = true)
-	private Long userId;
-
-	@Column(name = "auth_refresh_token", nullable = false, unique = true)
+	@Column(name = "blacklist_token_refresh_token", nullable = false, unique = true)
 	private String refreshToken;
 
-	private Auth(Long userId, String refreshToken) {
-		this.userId = userId;
+	private BlacklistToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 
-	public static Auth of(Long userId, String refreshToken) {
-		return new Auth(userId, refreshToken);
+	public static BlacklistToken of(String refreshToken) {
+		return new BlacklistToken(refreshToken);
 	}
 }

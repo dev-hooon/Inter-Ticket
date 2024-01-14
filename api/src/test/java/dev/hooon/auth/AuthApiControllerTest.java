@@ -26,19 +26,18 @@ class AuthApiControllerTest extends ApiTestSupport {
 	private UserService userService;
 	@Autowired
 	private AuthService authService;
+	private AuthRequest authRequest;
 
 	@BeforeEach
 	void setUp() {
 		UserJoinRequest userJoinRequest = new UserJoinRequest("user@example.com", "password123", "name123");
 		userService.join(userJoinRequest);
+		authRequest = new AuthRequest("user@example.com", "password123");
 	}
 
 	@Test
 	@DisplayName("[로그인 API를 호출하면 토큰이 응답된다]")
 	void loginTest() throws Exception {
-		// given
-		AuthRequest authRequest = new AuthRequest("user@example.com", "password123");
-
 		// when
 		ResultActions actions = mockMvc.perform(
 			post("/api/auth/login")
@@ -56,7 +55,6 @@ class AuthApiControllerTest extends ApiTestSupport {
 	@DisplayName("[토큰 재발급 API를 호출하면 새로운 엑세스 토큰이 응답된다]")
 	void reIssueAccessTokenTest() throws Exception {
 		// given
-		AuthRequest authRequest = new AuthRequest("user@example.com", "password123");
 		AuthResponse authResponse = authService.login(authRequest);
 		String refreshToken = authResponse.refreshToken();
 		TokenReIssueRequest tokenReIssueRequest = new TokenReIssueRequest(refreshToken);
@@ -71,5 +69,22 @@ class AuthApiControllerTest extends ApiTestSupport {
 		// then
 		actions.andExpect(status().isOk())
 			.andExpect(content().string(not(emptyOrNullString())));
+	}
+
+	@Test
+	@DisplayName("[로그아웃 API를 호출하면 200 OK 응답이 반환된다]")
+	void logoutTest() throws Exception {
+		// given
+		AuthResponse authResponse = authService.login(authRequest);
+		String accessToken = authResponse.accessToken();
+
+		// when
+		ResultActions actions = mockMvc.perform(
+			post("/api/auth/logout")
+				.header("Authorization", accessToken)
+		);
+
+		// then
+		actions.andExpect(status().isOk());
 	}
 }
