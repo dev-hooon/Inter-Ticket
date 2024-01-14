@@ -41,7 +41,7 @@ class TicketBookingFacadeTest {
 	@Mock
 	private UserService userService;
 
-	@DisplayName("seatList가 비어있으면 예외가 발생한다")
+	@DisplayName("seatList 가 비어있으면 예외가 발생한다")
 	@Test
 	void validateSeatList_test_1() {
 
@@ -55,7 +55,7 @@ class TicketBookingFacadeTest {
 		// when, then
 		assertThrows(
 			ValidationException.class,
-			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest),
+			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest.seatIds()),
 			INVALID_EMPTY_SEAT.getMessage()
 		);
 	}
@@ -75,7 +75,7 @@ class TicketBookingFacadeTest {
 		// when, then
 		assertThrows(
 			ValidationException.class,
-			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest),
+			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest.seatIds()),
 			INVALID_SELECTED_SEAT.getMessage()
 		);
 	}
@@ -100,9 +100,8 @@ class TicketBookingFacadeTest {
 		// when, then
 		assertThrows(
 			ValidationException.class,
-			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest),
+			() -> ticketBookingFacade.bookingTicket(1L, ticketBookingRequest.seatIds()),
 			NOT_AVAILABLE_SEAT.getMessage()
 		);
 	}
-
 }

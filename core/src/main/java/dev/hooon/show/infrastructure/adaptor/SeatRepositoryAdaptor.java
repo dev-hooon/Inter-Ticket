@@ -68,7 +68,7 @@ public class SeatRepositoryAdaptor implements SeatRepository {
 
 	@Override
 	public List<Seat> findByIdIn(List<Long> idList) {
-		return seatJpaRepository.findByIdIn(idList);
+		return seatJpaRepository.findWithShowByIdIn(idList);
 	}
 
 	@Override
