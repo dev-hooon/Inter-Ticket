@@ -1,5 +1,7 @@
 package dev.hooon.auth.application;
 
+import static dev.hooon.auth.exception.AuthErrorCode.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -13,7 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.hooon.auth.domain.entity.Auth;
+import dev.hooon.auth.domain.entity.BlacklistToken;
 import dev.hooon.auth.domain.repository.AuthRepository;
+import dev.hooon.auth.domain.repository.BlacklistRepository;
 import dev.hooon.auth.dto.request.AuthRequest;
 import dev.hooon.auth.dto.response.AuthResponse;
 import dev.hooon.auth.entity.EncryptHelper;
@@ -36,6 +40,8 @@ class AuthServiceTest {
 	private JwtProvider jwtProvider;
 	@Mock
 	private EncryptHelper encryptHelper;
+	@Mock
+	private BlacklistRepository blacklistRepository;
 
 	@Test
 	@DisplayName("[로그인 성공 시 토큰을 발급한다]")
@@ -73,5 +79,33 @@ class AuthServiceTest {
 
 		// when & then
 		assertThrows(NotFoundException.class, () -> authService.login(authRequest));
+	}
+
+	@Test
+	@DisplayName("로그아웃 성공 시 블랙리스트에 토큰을 추가한다")
+	void logoutSuccessTest() {
+		// given
+		Long userId = 1L;
+		Auth auth = Auth.of(userId, "refresh-token");
+		when(authRepository.findByUserId(userId)).thenReturn(Optional.of(auth));
+
+		// when
+		authService.logout(userId);
+
+		// then
+		verify(blacklistRepository).save(any(BlacklistToken.class));
+	}
+
+	@Test
+	@DisplayName("로그아웃 실패 시 NotFoundException을 던진다")
+	void logoutFailTest() {
+		// given
+		Long userId = 1L;
+		when(authRepository.findByUserId(userId)).thenReturn(Optional.empty());
+
+		// when & then
+		assertThatThrownBy(() -> authService.logout(userId))
+			.isInstanceOf(NotFoundException.class)
+			.hasMessageContaining(NOT_FOUND_USER_ID.getMessage());
 	}
 }

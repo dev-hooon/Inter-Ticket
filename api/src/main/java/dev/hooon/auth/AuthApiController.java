@@ -1,5 +1,6 @@
 package dev.hooon.auth;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,9 +11,10 @@ import dev.hooon.auth.annotation.NoAuth;
 import dev.hooon.auth.application.AuthService;
 import dev.hooon.auth.dto.TokenReIssueRequest;
 import dev.hooon.auth.dto.request.AuthRequest;
-
 import dev.hooon.auth.dto.response.AuthResponse;
+import dev.hooon.auth.jwt.JwtAuthorization;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -35,6 +37,16 @@ public class AuthApiController {
 	) {
 		AuthResponse authResponse = authService.login(authRequest);
 		return ResponseEntity.ok(authResponse);
+	}
+
+	@PostMapping("/logout")
+	@Operation(summary = "로그아웃 API", description = "로그아웃을 한다")
+	@ApiResponse(responseCode = "200", useReturnTypeSchema = true)
+	public ResponseEntity<HttpStatus> logout(
+		@Parameter(hidden = true) @JwtAuthorization Long userId
+	) {
+		authService.logout(userId);
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
 	@NoAuth
