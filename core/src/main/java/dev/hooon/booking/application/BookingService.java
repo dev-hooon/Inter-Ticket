@@ -2,7 +2,12 @@ package dev.hooon.booking.application;
 
 import static dev.hooon.booking.exception.BookingErrorCode.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.hooon.booking.domain.entity.Booking;
 import dev.hooon.booking.domain.entity.BookingStatus;
@@ -10,9 +15,9 @@ import dev.hooon.booking.domain.entity.Ticket;
 import dev.hooon.booking.domain.repository.BookingRepository;
 import dev.hooon.booking.dto.BookingMapper;
 import dev.hooon.booking.dto.response.BookingCancelResponse;
+import dev.hooon.booking.dto.response.BookingListResponse;
 import dev.hooon.common.exception.NotFoundException;
 import dev.hooon.common.exception.ValidationException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -65,4 +70,15 @@ public class BookingService {
 		);
 	}
 
+	@Transactional(readOnly = true)
+	public BookingListResponse getBookings(
+		Long userId,
+		int days,
+		Pageable pageable
+	) {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		LocalDateTime createdDateTime = currentDateTime.minusDays(days);
+		List<Booking> bookingList = bookingRepository.findByUserIdAndDays(userId, createdDateTime, pageable);
+		return BookingMapper.toBookingListResponse(bookingList);
+	}
 }

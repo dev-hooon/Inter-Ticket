@@ -11,12 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import dev.hooon.common.fixture.SeatFixture;
 import dev.hooon.common.fixture.WaitingBookingFixture;
-import dev.hooon.common.support.IntegrationTestSupport;
-import dev.hooon.mail.event.WaitingBookingMailEventListener;
+import dev.hooon.common.support.SchedulerTestSupport;
 import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.domain.repository.SeatRepository;
@@ -29,7 +27,7 @@ import dev.hooon.waitingbooking.event.WaitingBookingActiveEvent;
 import jakarta.mail.MessagingException;
 
 @DisplayName("[WaitingBookingScheduler 테스트]")
-class WaitingBookingSchedulerTest extends IntegrationTestSupport {
+class WaitingBookingSchedulerTest extends SchedulerTestSupport {
 
 	@Autowired
 	private WaitingBookingScheduler waitingBookingScheduler;
@@ -41,8 +39,6 @@ class WaitingBookingSchedulerTest extends IntegrationTestSupport {
 	private SeatRepository seatRepository;
 	@Autowired
 	private TestEntityManager entityManager;
-	@MockBean
-	private WaitingBookingMailEventListener eventListener;
 
 	private void assertSeatStatus(Long id, SeatStatus expected) {
 		assertThat(seatRepository.findById(id)).isPresent()
@@ -122,9 +118,9 @@ class WaitingBookingSchedulerTest extends IntegrationTestSupport {
 		User user = User.ofBuyer("hello123@naver.com", "name", "password");
 		userRepository.save(user);
 
-		LocalDateTime now = LocalDateTime.of(2023, 11, 16, 12, 12);
-		LocalDateTime beforeNow = now.minusSeconds(10);
-		LocalDateTime afterNow = now.plusSeconds(10);
+		LocalDateTime now = LocalDateTime.of(2023, 11, 16, 12, 12, 12, 12);
+		LocalDateTime beforeNow = now.minusSeconds(100);
+		LocalDateTime afterNow = now.plusSeconds(100);
 		// 스케줄러 기준시간 동적으로 조정
 		given(nowLocalDateTime.get()).willReturn(now);
 

@@ -7,6 +7,9 @@ import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,12 +78,27 @@ public class Booking extends TimeBaseEntity {
 		});
 	}
 
+	private Booking(User user, Show show, LocalDateTime localDateTime) {
+		this.user = user;
+		this.show = show;
+		this.bookingStatus = BOOKED;
+		this.createdAt = localDateTime;
+	}
+
 	public static Booking of(
 		User user,
 		Show show,
 		List<Seat> seats
 	) {
 		return new Booking(user, show, seats);
+	}
+
+	public static Booking of(
+		User user,
+		Show show,
+		LocalDateTime localDateTime
+	) {
+		return new Booking(user, show, localDateTime);
 	}
 
 	public void markBookingStatusAsCanceled() {
@@ -90,4 +108,25 @@ public class Booking extends TimeBaseEntity {
 	public long getUserId() {
 		return this.user.getId();
 	}
+
+	public String getShowName() {
+		return this.getShow().getName();
+	}
+
+	public LocalDate getShowDate() {
+		return getFirstTicket().getShowDate();
+	}
+
+	public int getRound() {
+		return getFirstTicket().getRound();
+	}
+
+	public LocalTime getStartTime() {
+		return getFirstTicket().getStartTime();
+	}
+
+	public Ticket getFirstTicket() {
+		return this.getTickets().get(0);
+	}
+
 }

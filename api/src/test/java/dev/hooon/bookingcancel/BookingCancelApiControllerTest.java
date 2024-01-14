@@ -1,6 +1,6 @@
 package dev.hooon.bookingcancel;
 
-import static org.mockito.BDDMockito.*;
+import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -9,28 +9,18 @@ import java.util.List;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import dev.hooon.booking.dto.request.TicketBookingRequest;
 import dev.hooon.common.support.ApiTestSupport;
-import dev.hooon.user.application.UserService;
 import dev.hooon.user.domain.entity.User;
 
 @DisplayName("[BookingCancelApiController API 테스트]")
 @Sql("/sql/booking_cancel_dummy.sql")
 class BookingCancelApiControllerTest extends ApiTestSupport {
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@MockBean
-	private UserService userService;
 
 	private long getBookingId(ResultActions resultActions) throws Exception {
 		String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
@@ -43,7 +33,7 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 		return mockMvc.perform(
 			MockMvcRequestBuilders
 				.post("/api/bookings")
-				.queryParam("userId", "1") // TODO: 인증 구현되면 수정할 것
+				.header(AUTHORIZATION, accessToken)
 				.accept(APPLICATION_JSON)
 				.contentType(APPLICATION_JSON)
 				.content(toJson(ticketBookingRequest))
@@ -56,7 +46,6 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 		// given
 		User user = new User();
 		ReflectionTestUtils.setField(user, "id", 1L);
-		given(userService.getUserById(1L)).willReturn(user);
 
 		// 예약 API 먼저 수행
 		ResultActions bookingResultActions = doBooking();
@@ -66,7 +55,7 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 		ResultActions resultActions = mockMvc.perform(
 			MockMvcRequestBuilders
 				.post("/api/bookings/cancel/" + bookingId)
-				.queryParam("userId", "1") // TODO: 인증 구현되면 수정할 것
+				.header(AUTHORIZATION, accessToken)
 		);
 
 		// then
