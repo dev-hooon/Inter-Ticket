@@ -43,8 +43,9 @@ public class SeatService {
 		seatRepository.updateStatusByIdIn(targetIds, SeatStatus.AVAILABLE);
 	}
 
-	public List<Seat> findByIdIn(List<Long> idList) {
-		return seatRepository.findByIdIn(idList);
+	@Transactional(readOnly = true)
+	public List<Seat> findByIdIn(List<Long> ids) {
+		return seatRepository.findByIdIn(ids);
 	}
 
 	public ShowSeatResponse getBookedSeatsInfo(BookedSeatQueryRequest request) {

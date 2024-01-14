@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +18,6 @@ import dev.hooon.show.domain.entity.seat.SeatStatus;
 import dev.hooon.show.dto.query.SeatDateRoundDto;
 import dev.hooon.show.dto.query.seats.SeatsDetailDto;
 import dev.hooon.show.dto.query.seats.SeatsInfoDto;
-import jakarta.persistence.LockModeType;
 
 public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 
@@ -67,8 +66,8 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		@Param("grade") SeatGrade grade
 	);
 
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	List<Seat> findByIdIn(List<Long> idList);
+	@EntityGraph(attributePaths = "show")
+	List<Seat> findWithShowByIdIn(List<Long> idList);
 
 	@Query("""
 		select new dev.hooon.show.dto.query.seats.SeatsDetailDto(

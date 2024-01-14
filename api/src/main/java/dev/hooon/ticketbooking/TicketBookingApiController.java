@@ -23,7 +23,10 @@ public class TicketBookingApiController {
 		@RequestParam(name = "userId") Long userId, // TODO
 		@Valid @RequestBody TicketBookingRequest ticketBookingRequest
 	) {
-		TicketBookingResponse ticketBookingResponse = ticketBookingFacade.bookingTicket(userId, ticketBookingRequest);
+		TicketBookingResponse ticketBookingResponse = ticketBookingFacade.bookingTicket(
+			userId,
+			ticketBookingRequest.seatIds()
+		);
 		return ResponseEntity.ok(ticketBookingResponse);
 	}
 }
