@@ -1,4 +1,4 @@
-package dev.hooon.bookingcancel;
+package dev.hooon.booking;
 
 import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.*;
