@@ -12,6 +12,7 @@ import java.util.List;
 
 import dev.hooon.common.entity.TimeBaseEntity;
 import dev.hooon.show.domain.entity.Show;
+import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.user.domain.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,12 +47,12 @@ public class Booking extends TimeBaseEntity {
 	@JoinColumn(name = "booking_show_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
 	private Show show;
 
-    @Enumerated(STRING)
-    @Column(name = "booking_status", nullable = false)
-    private BookingStatus bookingStatus;
+	@Enumerated(STRING)
+	@Column(name = "booking_status", nullable = false)
+	private BookingStatus bookingStatus;
 
-    @Column(name = "booking_ticket_count", nullable = false)
-    private int ticketCount = 0;
+	@Column(name = "booking_ticket_count", nullable = false)
+	private int ticketCount = 0;
 
 	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<Ticket> tickets = new ArrayList<>();
@@ -62,17 +63,24 @@ public class Booking extends TimeBaseEntity {
 		this.ticketCount++;
 	}
 
-	private Booking(User user, Show show) {
+	private Booking(User user, Show show, List<Seat> seats) {
 		this.user = user;
 		this.show = show;
 		this.bookingStatus = BOOKED;
+		seats.forEach(seat -> {
+			seat.markSeatStatusAsBooked();
+			Ticket ticket = Ticket.of(seat);
+			ticket.setBooking(this);
+			this.addTicket(ticket);
+		});
 	}
 
 	public static Booking of(
 		User user,
-		Show show
+		Show show,
+		List<Seat> seats
 	) {
-		return new Booking(user, show);
+		return new Booking(user, show, seats);
 	}
 
 	public void markBookingStatusAsCanceled() {

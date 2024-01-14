@@ -34,7 +34,7 @@ public class Ticket extends TimeBaseEntity {
 	private Seat seat;
 
 	@ManyToOne
-	@JoinColumn(name = "booking_id")
+	@JoinColumn(name = "booking_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
 	private Booking booking;
 
 	private Ticket(Seat seat) {

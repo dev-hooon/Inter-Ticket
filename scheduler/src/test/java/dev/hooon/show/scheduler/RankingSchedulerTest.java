@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,9 +59,9 @@ class RankingSchedulerTest extends IntegrationTestSupport {
 		userRepository.save(user);
 
 		List<Booking> bookings = List.of(
-			Booking.of(user, shows.get(0)),
-			Booking.of(user, shows.get(1)),
-			Booking.of(user, shows.get(2))
+			Booking.of(user, shows.get(0), new ArrayList<>()),
+			Booking.of(user, shows.get(1), new ArrayList<>()),
+			Booking.of(user, shows.get(2), new ArrayList<>())
 		);
 		bookings.forEach(booking -> bookingRepository.save(booking));
 

@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import dev.hooon.booking.domain.entity.Booking;
-import dev.hooon.booking.domain.entity.Ticket;
 import dev.hooon.booking.domain.repository.BookingRepository;
 import dev.hooon.common.fixture.SeatFixture;
 import dev.hooon.common.fixture.TestFixture;
@@ -57,8 +56,7 @@ class RankingApiControllerTest extends ApiTestSupport {
 		Seat seat = SeatFixture.getSeat(show);
 		seatRepository.saveAll(List.of(seat));
 
-		Booking booking = Booking.of(user, show);
-		booking.addTicket(Ticket.of(seat));
+		Booking booking = Booking.of(user, show, List.of(seat));
 		bookingRepository.save(booking);
 
 		//when

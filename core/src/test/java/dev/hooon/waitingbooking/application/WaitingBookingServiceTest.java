@@ -14,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.hooon.user.domain.entity.User;
 import dev.hooon.waitingbooking.domain.entity.WaitingBooking;
-import dev.hooon.waitingbooking.domain.entity.waitingbookingseat.SelectedSeat;
 import dev.hooon.waitingbooking.domain.entity.WaitingStatus;
+import dev.hooon.waitingbooking.domain.entity.waitingbookingseat.SelectedSeat;
 import dev.hooon.waitingbooking.domain.repository.WaitingBookingRepository;
 import dev.hooon.waitingbooking.dto.request.WaitingRegisterRequest;
 
