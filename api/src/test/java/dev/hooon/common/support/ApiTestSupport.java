@@ -2,9 +2,11 @@ package dev.hooon.common.support;
 
 import static org.springframework.http.MediaType.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -36,6 +38,14 @@ public abstract class ApiTestSupport extends TestContainerSupport {
 
 	protected String toJson(Object object) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(object);
+	}
+
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
+
+	@AfterEach
+	public void cleanRedis() {
+		redisTemplate.delete(redisTemplate.keys("*"));
 	}
 
 	@PostConstruct

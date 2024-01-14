@@ -15,6 +15,7 @@ import java.util.List;
 
 import dev.hooon.common.entity.TimeBaseEntity;
 import dev.hooon.show.domain.entity.Show;
+import dev.hooon.show.domain.entity.seat.Seat;
 import dev.hooon.user.domain.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -65,10 +66,16 @@ public class Booking extends TimeBaseEntity {
 		this.ticketCount++;
 	}
 
-	private Booking(User user, Show show) {
+	private Booking(User user, Show show, List<Seat> seats) {
 		this.user = user;
 		this.show = show;
 		this.bookingStatus = BOOKED;
+		seats.forEach(seat -> {
+			seat.markSeatStatusAsBooked();
+			Ticket ticket = Ticket.of(seat);
+			ticket.setBooking(this);
+			this.addTicket(ticket);
+		});
 	}
 
 	private Booking(User user, Show show, LocalDateTime localDateTime) {
@@ -80,9 +87,10 @@ public class Booking extends TimeBaseEntity {
 
 	public static Booking of(
 		User user,
-		Show show
+		Show show,
+		List<Seat> seats
 	) {
-		return new Booking(user, show);
+		return new Booking(user, show, seats);
 	}
 
 	public static Booking of(
