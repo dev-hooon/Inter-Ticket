@@ -23,7 +23,7 @@ public interface ShowJpaRepository extends JpaRepository<Show, Long> {
 		inner join Booking b on s.id = b.show.id
 		where s.category = :category
 		and b.createdAt between :startAt and :endAt
-		group by s.id, s.name, p.name, s.showPeriod.startDate, s.showPeriod.endDate
+		group by s.id
 		order by sum(b.ticketCount) desc
 		""")
 	List<ShowStatisticDto> findBookingStatisticByCategoryAndPeriod(

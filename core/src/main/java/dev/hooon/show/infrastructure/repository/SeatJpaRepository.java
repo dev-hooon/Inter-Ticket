@@ -43,8 +43,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		select
 		new dev.hooon.show.dto.query.seats.SeatsInfoDto(seat.seatGrade, COUNT(seat), seat.price)
 		from Seat seat
-		join seat.show show
-		where show.id= :showId and seat.showDate= :date and seat.showRound.round= :round
+		where seat.show.id= :showId and seat.showDate= :date and seat.showRound.round= :round
 		group by seat.seatGrade, seat.price
 		""")
 	List<SeatsInfoDto> findSeatInfoByShowIdAndDateAndRound(
@@ -58,6 +57,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		new dev.hooon.show.dto.query.seats.SeatsDetailDto(seat.id, seat.showDate, seat.isSeat, seat.positionInfo.sector, seat.positionInfo.row, seat.positionInfo.col, seat.price, seat.seatStatus)
 		from Seat seat
 		where seat.show.id = :showId and seat.showDate = :date and seat.showRound.round = :round and seat.seatGrade = :grade
+		order by seat.id desc
 		""")
 	List<SeatsDetailDto> findSeatsByShowIdAndDateAndRoundAndGrade(
 		@Param("showId") Long showId,
@@ -77,6 +77,7 @@ public interface SeatJpaRepository extends JpaRepository<Seat, Long> {
 		and s.seatStatus = :status
 		and s.showDate = :date
 		and s.showRound.round = :round
+		order by s.id desc
 		""")
 	List<SeatsDetailDto> findSeatsDetailByStatusAndDateAndRound(
 		@Param("showId") Long showId,

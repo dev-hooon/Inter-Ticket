@@ -15,16 +15,13 @@ services:
     platform: linux/amd64
 
   db-master:
-    image: postgres:13-alpine
+    image: mysql:8.0
     container_name: master_db
     environment:
-      POSTGRES_USER: ${MASTER_USER}
-      POSTGRES_PASSWORD: ${MASTER_PASSWORD}
-      POSTGRES_DB: master_db
+      MYSQL_DATABASE: master_db
+      MYSQL_ROOT_PASSWORD: ${MASTER_PASSWORD}
     ports:
-      - "5432:5432"
-    volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      - "3306:3306"
 
   redis:
     image: redis:latest
