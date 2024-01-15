@@ -17,7 +17,8 @@ public enum AuthErrorCode implements ErrorCode {
 	NOT_FOUND_USER_ID("해당 유저의 인증 데이터가 존재하지 않습니다.", "A_007"),
 	TOKEN_EXPIRED("토큰이 만료 시간을 초과했습니다.", "A_008"),
 	UNSUPPORTED_TOKEN("토큰 유형이 지원되지 않습니다.", "A_010"),
-	MALFORMED_TOKEN("토큰의 구조가 올바르지 않습니다.", "A_011");
+	MALFORMED_TOKEN("토큰의 구조가 올바르지 않습니다.", "A_011"),
+	BLACKLISTED_TOKEN("해당 토큰은 블랙리스트에 등록되어있으므로 유효하지 않습니다.", "A_012");
 
 	private final String message;
 	private final String code;

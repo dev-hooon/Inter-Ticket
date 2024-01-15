@@ -5,6 +5,9 @@ import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import dev.hooon.common.entity.TimeBaseEntity;
 import dev.hooon.show.domain.entity.seat.Seat;
 import jakarta.persistence.Column;
@@ -34,7 +37,8 @@ public class Ticket extends TimeBaseEntity {
 	private Seat seat;
 
 	@ManyToOne
-	@JoinColumn(name = "booking_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))	private Booking booking;
+	@JoinColumn(name = "booking_id", nullable = false, foreignKey = @ForeignKey(value = NO_CONSTRAINT))
+	private Booking booking;
 
 	private Ticket(Seat seat) {
 		this.seat = seat;
@@ -52,5 +56,17 @@ public class Ticket extends TimeBaseEntity {
 
 	public void markSeatStatusAsCanceled() {
 		this.seat.markSeatStatusAsCanceled();
+	}
+
+	public LocalDate getShowDate() {
+		return this.getSeat().getShowDate();
+	}
+
+	public int getRound() {
+		return this.getSeat().getRound();
+	}
+
+	public LocalTime getStartTime() {
+		return this.getSeat().getStartTime();
 	}
 }

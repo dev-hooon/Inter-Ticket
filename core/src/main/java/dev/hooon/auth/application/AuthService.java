@@ -1,4 +1,3 @@
-
 package dev.hooon.auth.application;
 
 import static dev.hooon.auth.exception.AuthErrorCode.*;
@@ -9,10 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.hooon.auth.domain.entity.Auth;
+import dev.hooon.auth.domain.entity.BlacklistToken;
 import dev.hooon.auth.domain.repository.AuthRepository;
+import dev.hooon.auth.domain.repository.BlacklistRepository;
 import dev.hooon.auth.dto.request.AuthRequest;
 import dev.hooon.auth.dto.response.AuthResponse;
 import dev.hooon.auth.entity.EncryptHelper;
+import dev.hooon.auth.exception.AuthException;
 import dev.hooon.common.exception.NotFoundException;
 import dev.hooon.user.application.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AuthService {
 	private final JwtProvider jwtProvider;
 	private final AuthRepository authRepository;
 	private final EncryptHelper encryptHelper;
+	private final BlacklistRepository blacklistRepository;
 
 	private Auth getAuthByRefreshToken(String refreshToken) {
 		return authRepository.findByRefreshToken(refreshToken)
@@ -37,7 +40,7 @@ public class AuthService {
 		Optional<Auth> auth = authRepository.findByUserId(userId);
 
 		auth.ifPresentOrElse(
-			(none) -> authRepository.updateRefreshToken(auth.get().getId(), refreshToken),
+			existingAuth -> authRepository.updateRefreshToken(existingAuth.getId(), refreshToken),
 			() -> {
 				Auth newAuth = Auth.of(userId, refreshToken);
 				authRepository.save(newAuth);
@@ -60,7 +63,23 @@ public class AuthService {
 		throw new NotFoundException(FAILED_LOGIN_BY_ANYTHING);
 	}
 
+	@Transactional
+	public void logout(Long userId) {
+		authRepository.findByUserId(userId).ifPresentOrElse(
+			auth ->
+				blacklistRepository.save(BlacklistToken.of(auth.getRefreshToken())),
+			() -> {
+				throw new NotFoundException(NOT_FOUND_USER_ID);
+			}
+		);
+	}
+
 	public String createAccessTokenByRefreshToken(String refreshToken) {
+		boolean isBlacklisted = blacklistRepository.existsByRefreshToken(refreshToken);
+		if (isBlacklisted) {
+			throw new AuthException(BLACKLISTED_TOKEN);
+		}
+
 		Auth auth = getAuthByRefreshToken(refreshToken);
 		Long userId = userService.getUserById(auth.getUserId()).getId();
 		return jwtProvider.createAccessToken(userId);
