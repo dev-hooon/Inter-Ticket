@@ -4,6 +4,7 @@ import static dev.hooon.common.exception.CommonValidationError.*;
 import static dev.hooon.waitingbooking.exception.WaitingBookingErrorCode.*;
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.ConstraintMode.*;
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.*;
 
@@ -20,6 +21,7 @@ import dev.hooon.waitingbooking.domain.entity.waitingbookingseat.ConfirmedSeat;
 import dev.hooon.waitingbooking.domain.entity.waitingbookingseat.SelectedSeat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -43,6 +45,7 @@ public class WaitingBooking extends TimeBaseEntity {
 	@Column(name = "waiting_booking_id")
 	private Long id;
 
+	@Enumerated(STRING)
 	@Column(name = "waiting_booking_status", nullable = false)
 	private WaitingStatus status;
 

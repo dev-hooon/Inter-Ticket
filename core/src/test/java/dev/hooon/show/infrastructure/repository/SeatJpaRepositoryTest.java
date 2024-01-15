@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -88,6 +89,7 @@ class SeatJpaRepositoryTest extends DataJpaTestSupport {
 			round,
 			VIP
 		);
+		Collections.reverse(seatsDetailDtoList);
 
 		// then
 		assertAll(

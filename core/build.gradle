@@ -1,14 +1,9 @@
 dependencies {
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    //테스트 픽쳐에서 사용할 의존성
-    testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testFixturesImplementation "org.testcontainers:testcontainers:1.19.3"
-    testFixturesImplementation "org.testcontainers:postgresql:1.19.3"
-    testFixturesImplementation 'org.springframework:spring-tx:6.1.1'
     // 패스워드 암호화
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
     // JWT
@@ -18,6 +13,12 @@ dependencies {
     // 레디스 LocalDateTime 역직렬화
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    //테스트 픽쳐에서 사용할 의존성
+    testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testFixturesImplementation "org.testcontainers:testcontainers:1.19.3"
+    testFixturesImplementation "org.testcontainers:mysql:1.19.3"
+    testFixturesImplementation 'org.springframework:spring-tx:6.1.1'
 }
 
 bootJar { enabled = false }
