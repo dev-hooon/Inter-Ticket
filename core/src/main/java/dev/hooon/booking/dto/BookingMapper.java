@@ -4,6 +4,9 @@ import java.util.List;
 
 import dev.hooon.booking.domain.entity.Booking;
 import dev.hooon.booking.dto.response.BookingCancelResponse;
+import dev.hooon.booking.dto.response.BookingListResponse;
+import dev.hooon.booking.dto.response.BookingResponse;
+import dev.hooon.booking.dto.response.ShowInfoResponse;
 import dev.hooon.booking.dto.response.TicketBookingResponse;
 import dev.hooon.booking.dto.response.TicketResponse;
 import dev.hooon.booking.dto.response.TicketSeatResponse;
@@ -44,5 +47,23 @@ public final class BookingMapper {
 			booking.getBookingStatus().toString(),
 			ticketSeatResponseList
 		);
+	}
+
+	public static BookingListResponse toBookingListResponse(List<Booking> bookingList) {
+		List<BookingResponse> bookingResponseList = bookingList.stream()
+			.map(booking -> new BookingResponse(
+				booking.getId(),
+				booking.getCreatedAt().toLocalDate(),
+				new ShowInfoResponse(
+					booking.getShowName(),
+					booking.getShowDate(),
+					booking.getRound(),
+					booking.getStartTime()
+				),
+				booking.getTicketCount(),
+				booking.getBookingStatus().toString()
+			))
+			.toList();
+		return new BookingListResponse(bookingResponseList);
 	}
 }

@@ -1,4 +1,4 @@
-package dev.hooon.bookingcancel;
+package dev.hooon.booking;
 
 import static org.springframework.http.HttpHeaders.*;
 import static org.springframework.http.MediaType.*;
@@ -43,7 +43,6 @@ class BookingCancelApiControllerTest extends ApiTestSupport {
 	@DisplayName("사용자는 예매한 티켓을 취소할 수 있다.")
 	@Test
 	void cancelBookingTest() throws Exception {
-
 		// given
 		User user = new User();
 		ReflectionTestUtils.setField(user, "id", 1L);

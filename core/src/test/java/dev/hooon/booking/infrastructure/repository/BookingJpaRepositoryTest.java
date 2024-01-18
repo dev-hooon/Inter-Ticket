@@ -55,9 +55,7 @@ class BookingJpaRepositoryTest extends DataJpaTestSupport {
 		Seat seat1 = SeatFixture.getSeat();
 		Seat seat2 = SeatFixture.getSeat();
 		seatRepository.saveAll(List.of(seat1, seat2));
-		Booking booking = Booking.of(user, show);
-		booking.addTicket(Ticket.of(seat1));
-		booking.addTicket(Ticket.of(seat2));
+		Booking booking = Booking.of(user, show, List.of(seat1, seat2));
 		Booking savedBooking = bookingRepository.save(booking);
 
 		// when

@@ -81,23 +81,23 @@ class ShowSeatsApiControllerTest extends ApiTestSupport {
 			status().isOk(),
 
 			jsonPath("$.seatsDetailInfos.size()").value(2),
-			jsonPath("$.seatsDetailInfos[0].id").exists(),
-			jsonPath("$.seatsDetailInfos[0].date").value("2024-01-01"),
-			jsonPath("$.seatsDetailInfos[0].isSeat").value(true),
-			jsonPath("$.seatsDetailInfos[0].positionInfo_sector").value("1층"),
-			jsonPath("$.seatsDetailInfos[0].positionInfo_row").value("A"),
-			jsonPath("$.seatsDetailInfos[0].positionInfo_col").value("7"),
-			jsonPath("$.seatsDetailInfos[0].price").value(70000),
-			jsonPath("$.seatsDetailInfos[0].status").value(SeatStatus.BOOKED.name()),
-
 			jsonPath("$.seatsDetailInfos[1].id").exists(),
 			jsonPath("$.seatsDetailInfos[1].date").value("2024-01-01"),
 			jsonPath("$.seatsDetailInfos[1].isSeat").value(true),
 			jsonPath("$.seatsDetailInfos[1].positionInfo_sector").value("1층"),
 			jsonPath("$.seatsDetailInfos[1].positionInfo_row").value("A"),
-			jsonPath("$.seatsDetailInfos[1].positionInfo_col").value("8"),
-			jsonPath("$.seatsDetailInfos[1].price").value(50000),
-			jsonPath("$.seatsDetailInfos[1].status").value(SeatStatus.BOOKED.name())
+			jsonPath("$.seatsDetailInfos[1].positionInfo_col").value("7"),
+			jsonPath("$.seatsDetailInfos[1].price").value(70000),
+			jsonPath("$.seatsDetailInfos[1].status").value(SeatStatus.BOOKED.name()),
+
+			jsonPath("$.seatsDetailInfos[0].id").exists(),
+			jsonPath("$.seatsDetailInfos[0].date").value("2024-01-01"),
+			jsonPath("$.seatsDetailInfos[0].isSeat").value(true),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_sector").value("1층"),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_row").value("A"),
+			jsonPath("$.seatsDetailInfos[0].positionInfo_col").value("8"),
+			jsonPath("$.seatsDetailInfos[0].price").value(50000),
+			jsonPath("$.seatsDetailInfos[0].status").value(SeatStatus.BOOKED.name())
 		);
 	}
 }
