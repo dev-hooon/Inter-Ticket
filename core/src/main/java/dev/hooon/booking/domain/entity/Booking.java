@@ -24,6 +24,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "booking_table")
+@Table(name = "booking_table", indexes = @Index(name = "idx_ranking", columnList = "booking_show_id, created_at, booking_ticket_count"))
 @NoArgsConstructor(access = PROTECTED)
 public class Booking extends TimeBaseEntity {
 
