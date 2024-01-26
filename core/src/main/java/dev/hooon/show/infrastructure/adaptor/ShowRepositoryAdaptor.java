@@ -1,11 +1,16 @@
 package dev.hooon.show.infrastructure.adaptor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import dev.hooon.show.domain.entity.Show;
@@ -20,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ShowRepositoryAdaptor implements ShowRepository {
 
 	private final ShowJpaRepository showJpaRepository;
+	private final NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Override
 	public Optional<Show> findById(Long id) {
@@ -37,7 +43,34 @@ public class ShowRepositoryAdaptor implements ShowRepository {
 		LocalDateTime startAt,
 		LocalDateTime endAt
 	) {
-		return showJpaRepository.findBookingStatisticByCategoryAndPeriod(category, startAt, endAt);
+		String sql = """
+			select straight_join show_name, place_name ,
+			show_start_date, show_end_date, sum(booking_ticket_count) as total_ticket_count
+			from show_table
+			left join place_table p on place_id = show_place_id
+			inner join booking_table b
+			on booking_show_id = show_id
+			and b.created_at between :start_at and :end_at
+			where show_category = :category
+			group by show_id
+			order by sum(booking_ticket_count) desc
+			""";
+
+		RowMapper<ShowStatisticDto> rowMapper = (rs, rowNum) -> {
+			String showName = rs.getString("show_name");
+			String placeName = rs.getString("place_name");
+			LocalDate showStartDate = rs.getDate("show_start_date").toLocalDate();
+			LocalDate showEndDate = rs.getDate("show_end_date").toLocalDate();
+			long totalTicketCount = rs.getLong("total_ticket_count");
+
+			return new ShowStatisticDto(showName, placeName, showStartDate, showEndDate, totalTicketCount);
+		};
+
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("start_at", startAt);
+		paramMap.put("end_at", endAt);
+		paramMap.put("category", category.name());
+		return jdbcTemplate.query(sql, paramMap, rowMapper);
 	}
 
 	@Override
