@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    image: openjdk:17-alpine
+    image: springboot-app
     container_name: spring_server
     restart: always
     depends_on:
@@ -29,6 +29,3 @@ services:
     ports:
       - '6379:6379'
     platform: linux/amd64
-
-volumes:
-  postgresql_data:
