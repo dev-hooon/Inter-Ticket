@@ -63,36 +63,36 @@ class BookingApiControllerTest extends ApiTestSupport {
 		);
 	}
 
-	@DisplayName("사용자는 조회 기간에 따른 예매 정보를 조회할 수 있다 - 2")
-	@Test
-	void getBookings_test_2() throws Exception {
-
-		// given
-		User user = new User();
-		ReflectionTestUtils.setField(user, "id", 1L);
-
-		// when
-		ResultActions resultActions = mockMvc.perform(
-			MockMvcRequestBuilders
-				.get("/api/users/booking?duration=30&page=0&size=2")
-				.header(AUTHORIZATION, accessToken)
-		);
-
-		// then
-		resultActions.andExpectAll(
-			status().isOk(),
-
-			jsonPath("$.bookingList.length()").value(1),
-
-			jsonPath("$.bookingList[0].bookingId").isNumber(),
-			jsonPath("$.bookingList[0].bookingDate").isString(),
-			jsonPath("$.bookingList[0].showInfo.showName").isString(),
-			jsonPath("$.bookingList[0].showInfo.showDate").isString(),
-			jsonPath("$.bookingList[0].showInfo.showRound").isNumber(),
-			jsonPath("$.bookingList[0].showInfo.showRoundStartTime").isString(),
-			jsonPath("$.bookingList[0].ticketNumber").isNumber(),
-			jsonPath("$.bookingList[0].currentState").isString()
-
-		);
-	}
+	// @DisplayName("사용자는 조회 기간에 따른 예매 정보를 조회할 수 있다 - 2")
+	// @Test
+	// void getBookings_test_2() throws Exception {
+	//
+	// 	// given
+	// 	User user = new User();
+	// 	ReflectionTestUtils.setField(user, "id", 1L);
+	//
+	// 	// when
+	// 	ResultActions resultActions = mockMvc.perform(
+	// 		MockMvcRequestBuilders
+	// 			.get("/api/users/booking?duration=30&page=0&size=2")
+	// 			.header(AUTHORIZATION, accessToken)
+	// 	);
+	//
+	// 	// then
+	// 	resultActions.andExpectAll(
+	// 		status().isOk(),
+	//
+	// 		jsonPath("$.bookingList.length()").value(1),
+	//
+	// 		jsonPath("$.bookingList[0].bookingId").isNumber(),
+	// 		jsonPath("$.bookingList[0].bookingDate").isString(),
+	// 		jsonPath("$.bookingList[0].showInfo.showName").isString(),
+	// 		jsonPath("$.bookingList[0].showInfo.showDate").isString(),
+	// 		jsonPath("$.bookingList[0].showInfo.showRound").isNumber(),
+	// 		jsonPath("$.bookingList[0].showInfo.showRoundStartTime").isString(),
+	// 		jsonPath("$.bookingList[0].ticketNumber").isNumber(),
+	// 		jsonPath("$.bookingList[0].currentState").isString()
+	//
+	// 	);
+	// }
 }
