@@ -33,4 +33,5 @@ public class UserApiController {
 		return ResponseEntity.ok(new UserJoinResponse(userId));
 	}
 
+	//test
 }
